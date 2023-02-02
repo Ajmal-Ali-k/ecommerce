@@ -234,6 +234,7 @@ const productAdd_post = async (req, res) => {
 
 const orderHistory = (req,res) =>{
   res.render('admin/order-history')
+  console.log("hi");
 }
 //*********** ******************/
 
