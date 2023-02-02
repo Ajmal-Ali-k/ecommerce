@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+
+<!-- Mirrored from loopinfosol.in/themeforest/ekka-html-v33/ekka-admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 08 Jan 2023 23:28:04 GMT -->
+<%- include('./partials/Ahead.ejs') %>
+
+<body class="ec-header-fixed ec-sidebar-fixed ec-sidebar-light ec-header-light" id="body">
+
+	<!--  WRAPPER  -->
+	<div class="wrapper">
+	<!-- LEFT MAIN SIDEBAR -->
+	<%- include('./partials/Aleftsidebar.ejs') %>
+
+		<!--  PAGE WRAPPER -->
+		<div class="ec-page-wrapper">
+
+			<!-- Header -->
+			<%- include('./partials/header.ejs') %>
+
+			<!-- CONTENT WRAPPER -->
+            <div class="ec-content-wrapper">
+				<div class="content">
+					<div class="breadcrumb-wrapper d-flex align-items-center justify-content-between">
+						<div>
+							<h1>Product</h1>
+							<p class="breadcrumbs"><span><a href="index.html">Home</a></span>
+								<span><i class="mdi mdi-chevron-right"></i></span>Product</p>
+						</div>
+						<div>
+							<a href="/admin/product-add" class="btn btn-primary"> Add Porduct</a>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<div class="card card-default">
+								<div class="card-body">
+									<div class="table-responsive">
+										<table id="responsive-data-table" class="table"
+											style="width:100%">
+											<thead>
+												<tr>
+													<th>Product</th>
+													<th>Name</th>
+													<th>Price</th>
+													<th>Offer</th>
+													<!-- <th>Purchased</th> -->
+													<th>Stock</th>
+													<th>category</th>
+													<th>Date</th>
+													<th>Action</th>
+												</tr>
+											</thead>
+												<% for(let i =0 ; i < pdlist.length ;i++) { %> 	
+											<tbody>
+												<tr>
+													<td><img class="tbl-thumb" src="<%= pdlist[i].image[0]%>" alt="Product Image" /></td>
+													<!-- <td><img src="" alt=""> </td> -->
+													<td><%= pdlist[i].product_name %> </td>
+													<td><%= pdlist[i].price %> </td>
+													<td><%= pdlist[i].discount %> </td>
+													<!-- <td>61</td> -->
+													<td><%= pdlist[i].quantity %> </td>
+													<td><%= pdlist[i].catagory %> </td>
+													<td><%= pdlist[i].createdAt.toLocaleDateString("en-US")%> </td>
+													<td>
+														<div class="btn-group mb-1">
+															<button type="button"
+																class="btn btn-outline-success">Info</button>
+															<button type="button"
+																class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
+																data-bs-toggle="dropdown" aria-haspopup="true"
+																aria-expanded="false" data-display="static">
+																<span class="sr-only">Info</span>
+															</button>
+
+															<div class="dropdown-menu">
+																<a class="dropdown-item" href="/admin/updateproduct/<%= pdlist[i].id %> ">Edit</a>
+																<a class="dropdown-item" href="/admin/deleteproduct/<%= pdlist[i].id %>">Delete</a>
+															</div>
+														</div>
+													
+
+													</td>
+												</tr>
+
+										     <% } %> 	
+											 
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div> <!-- End Content -->
+			</div> <!-- End Content Wrapper -->
+            <%- include('./partials/Afooter.ejs') %>
+			
+
+		</div> <!-- End Page Wrapper -->
+	</div> <!-- End Wrapper -->
+
+	<!-- Common Javascript -->
+	<%- include('./partials/commonscript.ejs') %>
+	
+</body>
+
+
+<!-- Mirrored from loopinfosol.in/themeforest/ekka-html-v33/ekka-admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 08 Jan 2023 23:28:28 GMT -->
+</html>

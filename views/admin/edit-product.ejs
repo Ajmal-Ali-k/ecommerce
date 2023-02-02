@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<%- include('./partials/Ahead.ejs') %>
+
+  <body class="ec-header-fixed ec-sidebar-fixed ec-sidebar-light ec-header-light" id="body">
+    <!--  WRAPPER  -->
+    <div class="wrapper">
+      <!-- LEFT MAIN SIDEBAR -->
+      <%- include('./partials/Aleftsidebar.ejs') %>
+
+        <!--  PAGE WRAPPER -->
+        <div class="ec-page-wrapper">
+          <!-- Header -->
+          <%- include('./partials/header.ejs') %>
+
+            <!-- CONTENT WRAPPER -->
+            <div class="ec-content-wrapper">
+              <div class="content">
+                <div class="breadcrumb-wrapper d-flex align-items-center justify-content-between">
+                  <div>
+                    <h1>Edit Product</h1>
+                    <p class="breadcrumbs">
+                      <span><a href="/index">Home</a></span>
+                      <span><i class="mdi mdi-chevron-right"></i></span>Product
+                    </p>
+                  </div>
+                  <div>
+                    <a href="/product-list" class="btn btn-primary"> View All </a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card card-default">
+                      <div class="card-header card-header-border-bottom">
+                        <h2>Edit Product</h2>
+                      </div>
+
+                      <div class="card-body">
+                        <form class="row g-3" method="post" action="/admin/updateproduct/<%= userOne.id %> ">
+                          <div class="row ec-vendor-uploads">
+                            <div class="col-lg-4">
+                              <div class="ec-vendor-img-upload">
+                                <div class="ec-vendor-main-img">
+                                  <div class="avatar-upload">
+                                    <div class="avatar-edit">
+                                      <input type="file" name="image"  value="" id="imageUpload" class="ec-image-upload"
+                                        accept=".png, .jpg, .jpeg" />
+                                      <label for="imageUpload"><img src="/admin/img/icons/edit.svg"
+                                          class="svg_img header_svg" alt="edit" /></label>
+                                    </div>
+                                    <div class="avatar-preview ec-preview">
+                                      <div class="imagePreview ec-div-preview">
+                                        <img class="ec-image-preview"
+                                          src="<%= userOne.image[0] %> " alt="edit" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="thumb-upload-set colo-md-12">
+                                    <div class="thumb-upload">
+                                      <div class="thumb-edit">
+                                        <input type="file" name="image" id="thumbUpload01" class="ec-image-upload"
+                                          accept=".png, .jpg, .jpeg" />
+                                        <label for="imageUpload"><img src="/admin/img/icons/edit.svg"
+                                            class="svg_img header_svg" alt="edit" /></label>
+                                      </div>
+                                      <div class="thumb-preview ec-preview">
+                                        <div class="image-thumb-preview">
+                                          <img class="image-thumb-preview ec-image-preview"
+                                            src="<%= userOne.image[1] %> " alt="edit" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="thumb-upload">
+                                      <div class="thumb-edit">
+                                        <input type="file" name="image" id="thumbUpload02" class="ec-image-upload"
+                                          accept=".png, .jpg, .jpeg" />
+                                        <label for="imageUpload"><img src="/admin/img/icons/edit.svg"
+                                            class="svg_img header_svg" alt="edit" /></label>
+                                      </div>
+                                      <div class="thumb-preview ec-preview">
+                                        <div class="image-thumb-preview">
+                                          <img class="image-thumb-preview ec-image-preview"
+                                            src="<%= userOne.image[2] %> " alt="edit" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!-- <div class="thumb-upload">
+                                      <div class="thumb-edit">
+                                        <input type="file" name="image" id="thumbUpload03" class="ec-image-upload"
+                                          accept=".png, .jpg, .jpeg" />
+                                        <label for="imageUpload"><img src="/admin/img/icons/edit.svg"
+                                            class="svg_img header_svg" alt="edit" /></label>
+                                      </div>
+                                      <div class="thumb-preview ec-preview">
+                                        <div class="image-thumb-preview">
+                                          <img class="image-thumb-preview ec-image-preview"
+                                            src="/admin/img/products/vender-upload-thumb-preview.jpg" alt="edit" />
+                                        </div>
+                                      </div>
+                                    </div> -->
+                                    <!-- <div class="thumb-upload">
+                                      <div class="thumb-edit">
+                                        <input type="file" name="image" id="thumbUpload04" class="ec-image-upload"
+                                          accept=".png, .jpg, .jpeg" />
+                                        <label for="imageUpload"><img src="/admin/img/icons/edit.svg"
+                                            class="svg_img header_svg" alt="edit" /></label>
+                                      </div>
+                                      <div class="thumb-preview ec-preview">
+                                        <div class="image-thumb-preview">
+                                          <img class="image-thumb-preview ec-image-preview"
+                                            src="/admin/img/products/vender-upload-thumb-preview.jpg" alt="edit" />
+                                        </div>
+                                      </div>
+                                    </div> -->
+                                    <!-- <div class="thumb-upload">
+                                      <div class="thumb-edit">
+                                        <input type="file" name="image" id="thumbUpload05" class="ec-image-upload"
+                                          accept=".png, .jpg, .jpeg" />
+                                        <label for="imageUpload"><img src="/admin/img/icons/edit.svg"
+                                            class="svg_img header_svg" alt="edit" /></label>
+                                      </div>
+                                      <div class="thumb-preview ec-preview">
+                                        <div class="image-thumb-preview">
+                                          <img class="image-thumb-preview ec-image-preview"
+                                            src="/admin/img/products/vender-upload-thumb-preview.jpg" alt="edit" />
+                                        </div>
+                                      </div>
+                                    </div> -->
+                                    <!-- <div class="thumb-upload">
+                                      <div class="thumb-edit">
+                                        <input type="file" name="image" id="thumbUpload06" class="ec-image-upload"
+                                          accept=".png, .jpg, .jpeg" />
+                                        <label for="imageUpload"><img src="/admin/img/icons/edit.svg"
+                                            class="svg_img header_svg" alt="edit" /></label>
+                                      </div>
+                                      <div class="thumb-preview ec-preview">
+                                        <div class="image-thumb-preview">
+                                          <img class="image-thumb-preview ec-image-preview"
+                                            src="/admin/img/products/vender-upload-thumb-preview.jpg" alt="edit" />
+                                        </div>
+                                      </div>
+                                    </div> -->
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-8">
+                              <div class="ec-vendor-upload-detail">
+                                <div class="row g-3">
+                                <div class="col-md-12">
+                                  <label for="inputEmail4" class="form-label">Product name</label>
+                                  <input type="text" value="<%= userOne.product_name %> " name="product" class="form-control slug-title" id="inputEmail4" />
+                                </div>
+                                <div class="col-md-6">
+                                  <label class="form-label">Select Categories</label>
+                                  <select name="categories" id="Categories" class="form-select">
+                                    <optgroup label="Fashion">
+                                      <% for(let i=0 ;i<catago.length;i++){ %> 
+                                        <option  ><%= catago[i].name %> </option>
+                                      <% } %> 
+                                      
+                                      
+                                      <!-- <option value="women"></option>
+                                      <option value="Kids"></option> -->
+                                    </optgroup>
+                                  
+                                  </select>
+                                </div>
+                                <div class="col-md-6">
+                                  <label for="inputEmail4" class="form-label">brand Name</label>
+                                  <input type="text" value="<%= userOne.brand %> " name="brand" class="form-control slug-title" id="inputEmail4" />
+                                </div>
+                                <div class="col-md-6">
+                                  <label class="form-label">Price <span>( in rupees)</span></label>
+                                  <input type="number" value="<%= userOne.price %>" name="price" class="form-control" id="price1" />
+                                </div>
+                                <div class="col-md-6">
+                                  <label for="inputEmail4" class="form-label">Discount</label>
+                                  <input type="text" value="<%= userOne.discount %>" name="discount" class="form-control slug-title" id="inputEmail4" />
+                                </div>
+
+                                <div class="col-md-8 mb-25">
+                                  <label class="form-label">Size</label>
+                                  <div class="form-checkbox-box">
+                                    <div class="form-check form-check-inline">
+                                      <input type="checkbox" name="size" value="S" />
+                                      <label>S</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                      <input type="checkbox" name="size" value="M" />
+                                      <label>M</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                      <input type="checkbox" name="size" value="L" />
+                                      <label>L</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                      <input type="checkbox" name="size" value="XL" />
+                                      <label>XL</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                      <input type="checkbox" name="size" value="XXL" />
+                                      <label>XXL</label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <label for="inputEmail4" class="form-label">colour</label>
+                                  <input type="text" name="colour" value="<%=userOne.colour[0]  %> " class="form-control slug-title" id="inputEmail4" />
+                                </div>
+
+                                <div class="col-md-6">
+                                  <label class="form-label">Quantity</label>
+                                  <input type="number" name="quantity" value="<%= userOne.quantity %>" class="form-control" id="quantity1" />
+                                </div>
+
+                                <div class="col-md-12">
+                                  <label class="form-label">Discription</label>
+                                  <textarea class="form-control"  name="discription" rows="3" value=""><%= userOne.discription%></textarea>
+                                </div>
+                                <div class="col-md-12">
+                                  <button type="submit"  class="btn btn-primary">
+                                    Submit
+                                  </button>
+                                </div>
+                              </div>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <%- include('./partials/Afooter.ejs') %>
+          </div>
+    </div>
+    <!-- End Wrapper -->
+
+    <!-- Common Javascript -->
+    <%- include('./partials/commonscript.ejs') %>
+  </body>
+
+
+</html>

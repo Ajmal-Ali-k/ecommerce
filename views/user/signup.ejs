@@ -1,0 +1,204 @@
+
+ <!DOCTYPE html>
+ <html lang="en">
+ 
+
+<head>
+     <meta charset="UTF-8">
+     <meta http-equiv="x-ua-compatible" content="ie=edge" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+     
+     <title>Ekka - Ecommerce HTML Template.</title>
+     <meta name="keywords" content="apparel, catalog, clean, ecommerce, ecommerce HTML, electronics, fashion, html eCommerce, html store, minimal, multipurpose, multipurpose ecommerce, online store, responsive ecommerce template, shops" />
+     <meta name="description" content="Best ecommerce html template for single and multi vendor store.">
+     <meta name="author" content="ashishmaraviya">
+     
+    <!-- site Favicon -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="icon" href="/user/images/favicon/favicon.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/user/images/favicon/favicon.png" />
+    <meta name="msapplication-TileImage" content="/user/images/favicon/favicon.png" />
+
+    <!-- css Icon Font -->
+    <link rel="stylesheet" href="/user/css/vendor/ecicons.min.css" />
+
+    <!-- css All Plugins Files -->
+
+    <link rel="stylesheet" href="/user/css/plugins/animate.css" />
+    <link rel="stylesheet" href="/user/css/plugins/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="/user/css/plugins/jquery-ui.min.css" />
+    <link rel="stylesheet" href="/user/css/plugins/countdownTimer.css" />
+    <link rel="stylesheet" href="/user/css/plugins/slick.min.css" />
+    <link rel="stylesheet" href="/user/css/plugins/nouislider.css" />
+    <link rel="stylesheet" href="/user/css/plugins/bootstrap.css" />
+    <script src="https://kit.fontawesome.com/bf625ee5bc.js" crossorigin="anonymous"></script>
+
+
+    <!-- Main Style -->
+    <link rel="stylesheet" href="/user/css/style.css" />
+    <link rel="stylesheet" href="/user/css/responsive.css" />
+
+    <!-- Background css -->
+    <link rel="stylesheet" id="bg-switcher-css" href="/user/css/backgrounds/bg-4.css">
+     <!-- my css -->
+     <link rel="stylesheet" href="/user/css/signup.css">
+    
+</head>
+<body class="register_page">
+    <div id="ec-overlay"><span class="loader_img"></span></div>
+
+    <!-- Header start  -->
+    <%- include('./partials/navbar.ejs') %>
+        
+    <!-- ekka Cart End -->
+
+    <!-- Ec breadcrumb start -->
+    <div class="sticky-header-next-sec  ec-breadcrumb section-space-mb">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row ec_breadcrumb_inner">
+                        <div class="col-md-6 col-sm-12">
+                            <h2 class="ec-breadcrumb-title">Register</h2>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <!-- ec-breadcrumb-list start -->
+                            <ul class="ec-breadcrumb-list">
+                                <li class="ec-breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="ec-breadcrumb-item active">Register</li>
+                            </ul>
+                            <!-- ec-breadcrumb-list end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Ec breadcrumb end -->
+
+    <!-- Start Register -->
+    <section class="ec-page-content section-space-p">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="section-title">
+                        <h2 class="ec-bg-title">Signup</h2>
+                        <h2 class="ec-title">Signup</h2>
+                        <p class="sub-title mb-3">Best place to buy and sell digital products</p>
+                    </div>
+                </div>
+                <div class="ec-register-wrapper">
+                    <div class="ec-register-container">
+                        <div class="ec-register-form">
+                          <div id="error_message" style="margin-bottom: 20px; padding: 0px; background: #fe8b8e; text-align: center; font-size: 14px; transition: all 0.5s ease;"></div>
+                            <form onsubmit="return validation()" action="/signup-post" method="post" id="myform">
+                                <span class="ec-register-wrap ">
+                                    <label>Name*</label>
+                                    <input type="text"  id="name" name="name" placeholder="Enter your first name"  />
+                                </span>
+                  
+                                <span class="ec-register-wrap ec-register-half">
+                                    <label>Email*</label>
+                                    <input type="email" id="email" name="email" placeholder="Enter your email add..."  />
+                                </span>
+                                <span class="ec-register-wrap ec-register-half">
+                                    <label>Phone Number*</label>
+                                    <input type="text" name="phone" id="phone" placeholder="Enter your phone number" minlength="10" maxlength="10" />
+                                </span>
+                
+                                <span class="ec-register-wrap ec-register-half">
+                                    <label>password *</label>
+                                    <input type="text" name="password" id="password" placeholder="Confirm password" />
+                                </span>
+                                <span class="ec-register-wrap ec-register-half">
+                                    <label>Confirm password *</label>
+                                    <input type="text" name="Confirmpassword" id="Confirmpassword" placeholder="Confirm password" />
+                                </span>
+           
+                                <span class="ec-register-wrap ec-register-btn">
+                                    <button class="btn btn-primary" type="submit">Signup</button>
+                                </span>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Register -->
+
+    <!-- Footer Start -->
+    <%- include('./partials/footer.ejs') %>
+    <!-- Feature tools end -->
+    <script>
+        function validation(){
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+            const password = document.getElementById("password").value;
+            const Confirmpassword = document.getElementById("Confirmpassword").value;
+            const error_message = document.getElementById('error_message')
+            
+
+            error_message.style.padding = "10px";
+            if (name.length <5){
+                text = "please enter valid name"
+                error_message.innerHTML= text;
+                return false ;
+            }
+            if(email.indexOf('@')== -1 || email.length<6){
+                text = "please enter valid email";
+                error_message.innerHTML=text
+                return false
+            }
+            if(isNaN(phone)||phone.length !=10){
+                text ="please enter the valid phone number";
+                error_message.innerHTML=text
+                return false;
+            }
+            if(password.length<6){
+                text="password must need 6 characters"
+                error_message.innerHTML=text;
+                return false;
+            }
+            if(password!==Confirmpassword){
+                text="password is not matching";
+                error_message.innerHTML=text;
+                return false;
+            }
+
+            return true;
+
+
+
+        }
+    </script>
+
+    <!-- Vendor JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="/user/js/vendor/jquery-3.5.1.min.js"></script>
+    <script src="/user/js/vendor/popper.min.js"></script>
+    <script src="/user/js/vendor/bootstrap.min.js"></script>
+    <script src="/user/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="/user/js/vendor/modernizr-3.11.2.min.js"></script>
+
+    <!--Plugins JS-->
+    <script src="/user/js/plugins/swiper-bundle.min.js"></script>
+    <script src="/user/js/plugins/countdownTimer.min.js"></script>
+    <script src="/user/js/plugins/scrollup.js"></script>
+    <script src="/user/js/plugins/jquery.zoom.min.js"></script>
+    <script src="/user/js/plugins/slick.min.js"></script>
+    <script src="/user/js/plugins/infiniteslidev2.js"></script>
+    <script src="/user/js/vendor/jquery.magnific-popup.min.js"></script>
+    <script src="/user/js/plugins/jquery.sticky-sidebar.js"></script>
+
+    <!-- Main Js -->
+    <script src="/user/js/vendor/index.js"></script>
+    <script src="/user/js/main.js"></script>
+
+</body>
+
+<!-- Mirrored from loopinfosol.in/themeforest/ekka-html-v33/ekka-html/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 08 Jan 2023 23:18:32 GMT -->
+</html>

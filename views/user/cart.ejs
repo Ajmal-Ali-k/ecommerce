@@ -1,0 +1,358 @@
+
+ <!DOCTYPE html>
+ <html lang="en">
+
+
+<head>
+     <meta charset="UTF-8">
+     <meta http-equiv="x-ua-compatible" content="ie=edge" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+     
+     <title>Ekka - Ecommerce HTML Template.</title>
+     <meta name="keywords" content="apparel, catalog, clean, ecommerce, ecommerce HTML, electronics, fashion, html eCommerce, html store, minimal, multipurpose, multipurpose ecommerce, online store, responsive ecommerce template, shops" />
+     <meta name="description" content="Best ecommerce html template for single and multi vendor store.">
+     <meta name="author" content="ashishmaraviya">
+     
+    <!-- site Favicon -->
+    <link rel="icon" href="/user/images/favicon/favicon.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/user/images/favicon/favicon.png" />
+    <meta name="msapplication-TileImage" content="/user/images/favicon/favicon.png" />
+
+    <!-- css Icon Font -->
+    <link rel="stylesheet" href="/user/css/vendor/ecicons.min.css" />
+
+    <!-- css All Plugins Files -->
+    <link rel="stylesheet" href="/user/css/plugins/animate.css" /> 
+    <link rel="stylesheet" href="/user/css/plugins/swiper-bundle.min.css" />
+     <link rel="stylesheet" href="/user/css/plugins/jquery-ui.min.css" />
+     <link rel="stylesheet" href="/user/css/plugins/countdownTimer.css" /> 
+     <link rel="stylesheet" href="/user/css/plugins/slick.min.css" /> 
+     <link rel="stylesheet" href="/user/css/plugins/nouislider.css" /> 
+    <link rel="stylesheet" href="/user/css/plugins/bootstrap.css" />
+
+    <!-- Main Style -->
+    <link rel="stylesheet" href="/user/css/style.css" />
+    <!-- <link rel="stylesheet" href="/user/css/responsive.css" /> -->
+
+    <!-- Background css -->
+    <link rel="stylesheet" id="bg-switcher-css" href="/user/css/backgrounds/bg-4.css">
+    
+</head>
+<body class="cart_page">
+    <div id="ec-overlay"><span class="loader_img"></span></div>
+
+    <!-- Header start  -->
+    <%- include('./partials/navbar.ejs') %>
+    <!-- ekka Cart End -->
+
+    <!-- Ec breadcrumb start -->
+    <div class="sticky-header-next-sec  ec-breadcrumb section-space-mb">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row ec_breadcrumb_inner">
+                        <div class="col-md-6 col-sm-12">
+                            <h2 class="ec-breadcrumb-title">Cart</h2>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <!-- ec-breadcrumb-list start -->
+                            <ul class="ec-breadcrumb-list">
+                                <li class="ec-breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="ec-breadcrumb-item active">Cart</li>
+                            </ul>
+                            <!-- ec-breadcrumb-list end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Ec breadcrumb end -->
+
+    <!-- Ec cart page -->
+    <section class="ec-page-content section-space-p">
+        <div class="container">
+            <div class="row">
+                <div class="ec-cart-leftside col-lg-8 col-md-12 ">
+                    <!-- cart content Start -->
+                    <div class="ec-cart-content">
+                        <div class="ec-cart-inner">
+                            <div class="row">
+                                <form action="#">
+                                    <div class="table-content cart-table-content">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th>Price</th>
+                                                    <th style="text-align: center;">Quantity</th>
+                                                    <th>Total</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                                <% for(let i=0;i< cartItems.items.length;i++ ){ %> 
+                                                <tr id="table<%=cartItems.items[i].product.id  %>">
+                                                    <td data-label="Product" class="ec-cart-pro-name"><a
+                                                            href="product-left-sidebar.html"><img class="ec-cart-pro-img mr-4"
+                                                                src="<%= cartItems.items[i].product.image[0] %> "
+                                                                alt="" /><%= cartItems.items[i].product.product_name %></a></td>
+                                                    <td data-label="Price" class="ec-cart-pro-price"><span
+                                                            class="amount"><%= cartItems.items[i].product.price %></span></td>
+                                                    <td data-label="Quantity" class="ec-cart-pro-qty"
+                                                        style="text-align: center;">
+                                                        <!-- <div class="cart-qty-plus-minus" >
+                                                             <input class="cart-plus-minus" type="text"
+                                                                name="cartqtybutton" value="1" />
+                                                        </div>  -->
+                                                        <div class="cart-qty-plus-minus" >
+                                                            <input class="cart-plus-minus" type="text"
+                                                            name="cartqtybutton" id="changeQuantity<%=cartItems.items[i].product.id %>" value="<%=cartItems.items[i].quantity %>" />
+                                                            <div class="ec_cart_qtybtn">
+                                                            <div class="inc ec_qtybtn" id="" onclick="changeQuantity('<%= cartItems._id %>','<%=cartItems.items[i].product.id %>','1')">+</div>
+                                                            <div class="dec ec_qtybtn" id="minus<%=cartItems.items[i].product.id %>" onclick="changeQuantity('<%= cartItems._id %>','<%=cartItems.items[i].product.id %>','-1')">-</div></div> 
+                                                       </div> 
+                                                   
+                                                    </td>
+                                                    <td data-label="Total" class="ec-cart-pro-subtotal" id="itemPrice<%=cartItems.items[i].product.id %>"><%= cartItems.items[i].totalprice %> </td>
+                                                    <td data-label="Remove" class="ec-cart-pro-remove"   onclick="deleteItem('<%=cartItems.items[i].product.id  %>')"  >
+                                                        <span><i class="ecicon eci-trash-o"></i></span>
+                                                      
+                                                    </td>
+                                                </tr>
+                                               
+                                                <!-- <tr>
+                                                    <td data-label="Product" class="ec-cart-pro-name"><a
+                                                            href="product-left-sidebar.html"><img class="ec-cart-pro-img mr-4"
+                                                                src="/user/images/product-image/4.jpg"
+                                                                alt="" />Wool Hat For Men</a></td>
+                                                    <td data-label="Price" class="ec-cart-pro-price"><span
+                                                            class="amount">$95.00</span></td>
+                                                    <td data-label="Quantity" class="ec-cart-pro-qty"
+                                                        style="text-align: center;">
+                                                        <div class="cart-qty-plus-minus">
+                                                            <input class="cart-plus-minus" type="text"
+                                                                name="cartqtybutton" value="1" />
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Total" class="ec-cart-pro-subtotal">$95.00</td>
+                                                    <td data-label="Remove" class="ec-cart-pro-remove">
+                                                        <a href="#"><i class="ecicon eci-trash-o"></i></a>
+                                                    </td>
+                                                </tr> -->
+                                            </tbody>
+                                            <% } %> 
+                                        </table>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="ec-cart-update-bottom">
+                                                <a href="/products" class="btn btn-primary " style="text-decoration: none;">Continue Shopping</a>
+                                                <!-- <button class="btn btn-primary" onclick="checkout('<%=cartItems.owner%>','<%=cartItems.cartTotal%>')">Checkout</button> -->
+                                                <a href="/checkout"  class="btn btn-primary"  style="text-decoration: none;">Checkout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--cart content End -->
+                </div>
+                <!-- Sidebar Area Start -->
+                <div class="ec-cart-rightside col-lg-4 col-md-12">
+                    <div class="ec-sidebar-wrap">
+                        <!-- Sidebar Summary Block -->
+                        <div class="ec-sidebar-block">
+                            <div class="ec-sb-title">
+                                <h3 class="ec-sidebar-title">Summary</h3>
+                            </div>
+                            <!-- <div class="ec-sb-block-content">
+                                <h4 class="ec-ship-title">Estimate Shipping</h4>
+                                <div class="ec-cart-form">
+                                    <p>Enter your destination to get a shipping estimate</p>
+                                    <form action="#" method="post">
+                                        <span class="ec-cart-wrap">
+                                            <label>Country *</label>
+                                            <span class="ec-cart-select-inner">
+                                                <select name="ec_cart_country" id="ec-cart-select-country"
+                                                    class="ec-cart-select">
+                                                    <option selected="" disabled="">United States</option>
+                                                    <option value="1">Country 1</option>
+                                                    <option value="2">Country 2</option>
+                                                    <option value="3">Country 3</option>
+                                                    <option value="4">Country 4</option>
+                                                    <option value="5">Country 5</option>
+                                                </select>
+                                            </span>
+                                        </span>
+                                        <span class="ec-cart-wrap">
+                                            <label>State/Province</label>
+                                            <span class="ec-cart-select-inner">
+                                                <select name="ec_cart_state" id="ec-cart-select-state"
+                                                    class="ec-cart-select">
+                                                    <option selected="" disabled="">Please Select a region, state
+                                                    </option>
+                                                    <option value="1">Region/State 1</option>
+                                                    <option value="2">Region/State 2</option>
+                                                    <option value="3">Region/State 3</option>
+                                                    <option value="4">Region/State 4</option>
+                                                    <option value="5">Region/State 5</option>
+                                                </select>
+                                            </span>
+                                        </span>
+                                        <span class="ec-cart-wrap">
+                                            <label>Zip/Postal Code</label>
+                                            <input type="text" name="postalcode" placeholder="Zip/Postal Code">
+                                        </span>
+                                    </form>
+                                </div>
+                            </div> -->
+
+                            <div class="ec-sb-block-content">
+                                <div class="ec-cart-summary-bottom">
+                                    <div class="ec-cart-summary">
+                                        <div>
+                                            <span class="text-left">Sub-Total</span>
+                                            <span class="text-right" id="sumTotal-1" ><%=cartItems.cartTotal %></span>
+                                        </div>
+                                        <div>
+                                            <span class="text-left">Delivery Charges</span>
+                                            <span class="text-right">50</span>
+                                        </div>
+                                        
+                                        <div class="ec-cart-coupan-content">
+                                            <form class="ec-cart-coupan-form" name="ec-cart-coupan-form" method="post"
+                                                action="#">
+                                                <input class="ec-coupan" type="text" required=""
+                                                    placeholder="Enter Your Coupan Code" name="ec-coupan" value="">
+                                                <button class="ec-coupan-btn button btn-primary" type="submit"
+                                                    name="subscribe" value="">Apply</button>
+                                            </form>
+                                        </div>
+                                        <div class="ec-cart-summary-total">
+                                            <span class="text-left">Total Amount</span>
+                                            <span class="text-right" id="sumTotal-2"><%=cartItems.cartTotal+50 %></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Sidebar Summary Block -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Footer Start -->
+    <%- include('./partials/footer.ejs') %>
+    
+    <!-- Feature tools end -->
+
+    <script>
+        function deleteItem(Id){
+            $.ajax({
+                url:'/removeCart/'+Id,
+                method: "delete",
+                success:((res)=>{
+                    console.log(res)  
+                    document.getElementById('sumTotal-1').innerHTML=res.totalprice;
+                    document.getElementById('sumTotal-2').innerHTML=res.totalprice; 
+                    document.getElementById("table"+Id).remove() 
+                     
+                })
+            })
+        }
+
+
+        
+        function changeQuantity(cartID,productID,num){
+             console.log("adkkdkfdf");
+
+            $.ajax({
+                
+                url: `/cartQuantity?cartID=${cartID}&number=${num}&productID=${productID}`,
+                method:"patch",
+                success:((res)=>{
+                    console.log(res.totalprice);
+                    if(res.quantity == null){
+                        document.getElementById("minus"+productID).style.display="none"
+                        
+                    
+                      
+                    }else{
+                        document.getElementById("minus"+productID).style.display ="inline";
+                        document.getElementById("changeQuantity"+productID).value=res.quantity;
+                        document.getElementById('sumTotal-1').innerHTML=res.totalprice;
+                        document.getElementById("itemPrice"+productID).innerHTML=res.price;
+                        document.getElementById('sumTotal-2').innerHTML=res.totalprice+50 ;
+
+                    }
+
+
+
+                })
+            })
+        }
+
+    </script>
+    <script>
+        
+    //     function checkout(Id,total){
+          
+    //         console.log(total)
+    //         console.log('checkoutttttttttttt')
+    //         $.ajax({
+    //          url:`/checkout?user=${Id}&total=${total}`,
+    //          method:"get",
+    //          success:((res)=>{
+    //             console.log("success")
+    //             if (res.status) {
+    //                 location.href="/checkout"
+    //             }
+    //          })
+                
+    //         })
+    //     }
+    // </script>
+   
+
+
+
+
+    <!-- Vendor JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="/user/js/vendor/jquery-3.5.1.min.js"></script>
+    <script src="/user/js/vendor/popper.min.js"></script>
+    <script src="/user/js/vendor/bootstrap.min.js"></script>
+    <script src="/user/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="/user/js/vendor/modernizr-3.11.2.min.js"></script>
+
+    <!--Plugins JS-->
+    <script src="/user/js/plugins/swiper-bundle.min.js"></script>
+    <script src="/user/js/plugins/countdownTimer.min.js"></script>
+    <script src="/user/js/plugins/scrollup.js"></script>
+    <script src="/user/js/plugins/jquery.zoom.min.js"></script>
+    <script src="/user/js/plugins/slick.min.js"></script>
+    <script src="/user/js/plugins/infiniteslidev2.js"></script>
+    <script src="/user/js/vendor/jquery.magnific-popup.min.js"></script>
+    <script src="/user/js/plugins/jquery.sticky-sidebar.js"></script>
+    <!-- Google translate Js -->
+    <script src="/user/js/vendor/google-translate.js"></script>
+    <script>
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+        }
+    </script>
+    <!-- Main Js -->
+     <script src="/user/js/vendor/index.js"></script>
+    <script src="/user/js/main.js"></script> 
+
+</body>
+
+
+</html>
