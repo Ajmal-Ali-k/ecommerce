@@ -14,7 +14,7 @@ router.get('/logout',userController.logout)
 router.post('/login-post',userController.userLogin_post);
 router.get('/catagory',userController.catagory);
 router.get('/products',userController.productspage)
-router.get('/userprofile',verifyUser,userController.userprofile);
+router.get('/profile',verifyUser,userController.userprofile);
 router.get('/phone',userController.phone)
 router.get('/phone/otp',userController.otp);
 router.get('/previewpage',verifyUser,userController.previewPage);
@@ -31,6 +31,7 @@ router.post('/placeOrder',userController.placeOrder)
 router.get('/history',userController.orderHistory)
 router.post('/verifypayment',userController.varifypayment)
 router.post('/create-order',userController.createOrder)
+router.get('/orderDetails',userController.orderDetails)
 
 
 

@@ -22,4 +22,5 @@ router.get('/updateproduct/:id',adminController.updatePpage)
 router.post('/updateproduct/:id',adminController.updateproduct)
 router.get('/logout',adminController.adminLogout);
 router.get('/orderHistory',adminController.orderHistory)
+router.get('/invoice',adminController.orderInvoice)
 module.exports = router;

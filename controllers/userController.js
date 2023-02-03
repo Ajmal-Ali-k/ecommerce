@@ -519,6 +519,18 @@ const orderHistory = async (req,res)=>{
   res.render("user/history",{orders})
 
 }
+ const orderDetails = async (req,res) =>{
+
+  const  orderId = req.query.orderId
+  console.log("hiii",orderId)
+  const order = await Order.findOne({_id : orderId}).populate('products.product')
+  const OrderedAddress = order.address
+  const address = await Address.findOne({user:order.userId})
+  const index = address.address.findIndex((obj)=> obj._id == OrderedAddress) ;
+  const finalAddress =address.address[index];
+
+  res.render("user/orderdetails",{order,finalAddress})
+ }
 
 
 
@@ -546,5 +558,6 @@ module.exports = {
   placeOrder,
   orderHistory,
   varifypayment,
-  createOrder
+  createOrder,
+  orderDetails
 };

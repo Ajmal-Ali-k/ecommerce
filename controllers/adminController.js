@@ -4,6 +4,8 @@ const { productPhotos } = require("../helpers/multer");
 const Product = require("../model/admin/productSchema");
 const Category = require("../model/admin/catagorySchema");
 const { catagory } = require("./userController");
+const Order = require("../model/user/order");
+const Address = require("../model/user/address");
 
 const index_get = (req, res) => {
   res.render("admin/index");
@@ -232,9 +234,22 @@ const productAdd_post = async (req, res) => {
   res.redirect("/admin/product-add");
 };
 
-const orderHistory = (req,res) =>{
-  res.render('admin/order-history')
+const orderHistory = async (req,res) =>{
+    const orderlist = await Order.find({}).populate("userId").sort({date : -1})  
+
+  res.render('admin/order-history',{orderlist})
   console.log("hi");
+}
+const orderInvoice = async (req,res) =>{
+  const orderId = req.query.orderId
+  const order = await Order.findOne({_id : orderId}).populate('products.product')
+  const OrderedAddress = order.address
+  const address = await Address.findOne({user:order.userId})
+  const index = address.address.findIndex((obj)=> obj._id == OrderedAddress) ;
+  const finalAddress =address.address[index];
+
+  
+  res.render("admin/invoice",{order,finalAddress})
 }
 //*********** ******************/
 
@@ -256,5 +271,6 @@ module.exports = {
   updatePpage,
   updateproduct,
   adminLogout,
-  orderHistory
+  orderHistory,
+  orderInvoice
 };

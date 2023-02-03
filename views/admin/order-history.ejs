@@ -46,17 +46,18 @@
 													<th>Action</th>
 												</tr>
 											</thead>
-
+											<% for(let i=0 ;i<orderlist.length ;i++) {%> 
 											<tbody>
 												<tr>
-													<td>1050</td>
-													<td>Johny Markue</td>
-													<td>johny@example.com</td>
-													<td>3</td>
-													<td>$80</td>
-													<td>PAID</td>
+													<td><%=orderlist[i]._id  %> </td>
+													<td><%=orderlist[i].userId.Name %> </td>
+													<td><%=orderlist[i].userId.email %></td>
+													<td><%=orderlist[i].products.length %></td>
+													<td>$<%=orderlist[i].subtotal%></td>
+													<td><%=orderlist[i].paymentmethod %></td>
+													
 													<td><span class="mb-2 mr-2 badge badge-secondary">Cancel</span></td>
-													<td>2021-10-30</td>
+													<td> <%=orderlist[i].date.toLocaleDateString("en-Us")%>  </td>
 													<td>
 														<div class="btn-group mb-1">
 															<button type="button"
@@ -69,14 +70,14 @@
 															</button>
 
 															<div class="dropdown-menu">
-																<a class="dropdown-item" href="#">Detail</a>
+																<a class="dropdown-item" href="/admin/invoice?orderId=<%=orderlist[i]._id%> ">Detail</a>
 																<a class="dropdown-item" href="#">Track</a>
 																<a class="dropdown-item" href="#">Cancel</a>
 															</div>
 														</div>
 													</td>
 												</tr>
-												<tr>
+												<!-- <tr>
 													<td>1049</td>
 													<td>Ktn Markue</td>
 													<td>ktn@example.com</td>
@@ -103,11 +104,12 @@
 															</div>
 														</div>
 													</td>
-												
+												 -->
 												
 												
 
 											</tbody>
+											<% } %> 
 										</table>
 									</div>
 								</div>

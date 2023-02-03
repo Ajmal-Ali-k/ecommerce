@@ -217,7 +217,7 @@
 
                                                             <% for(let i=0 ;i<addresses.address.length;i++) { %>
                                                                 <div class="col-lg-12 border"
-                                                                    style="margin-top: 5px; width: 700px ; padding-bottom:5px;">
+                                                                    style="margin: 8px; width: 98% ; ">
 
                                                                     <span>
                                                                         <input type="radio" name="address"
@@ -237,16 +237,21 @@
                                                                     <h5>
                                                                         <%= addresses.address[i].name %>
                                                                     </h5>
-                                                                    <p>
+                                                                    <li>
                                                                         <%= addresses.address[i].address %>
-                                                                            <%= addresses.address[i].state %>
-                                                                                <%= addresses.address[i].city %>
-                                                                                    <%= addresses.address[i].pin %>
+                                                                    </li>
+                                                                    <li>
+                                                                        <%= addresses.address[i].state %>
+                                                                    </li>
+                                                                    <li>
+                                                                        <%= addresses.address[i].city %>
+                                                                    </li>
+                                                                    <li>
+                                                                        <%= addresses.address[i].pin %>
+                                                                    </li>
+                                                                    <li>ph:<%= addresses.address[i].phone%>
+                                                                    </li>
 
-                                                                                        <br>
-                                                                                        <%= addresses.address[i].phone
-                                                                                            %>
-                                                                    </p>
 
 
 
@@ -281,12 +286,12 @@
                                         <div>
                                             <span class="text-left">Sub-Total</span>
                                             <span class="text-right">
-                                                <%= usercart.cartTotal %>
+                                                $<%= usercart.cartTotal %>
                                             </span>
                                         </div>
                                         <div>
                                             <span class="text-left">Delivery Charges</span>
-                                            <span class="text-right">50.00</span>
+                                            <span class="text-right">$50.00</span>
                                         </div>
                                         <div>
                                             <span class="text-left">Coupan Discount</span>
@@ -306,10 +311,11 @@
                                         </div>
                                         <div class="ec-checkout-summary-total">
                                             <span class="text-left">Total Amount</span>
-                                            <span class="text-right" >
-                                                <%= usercart.cartTotal %>
+                                            <span class="text-right">
+                                                $<%= usercart.cartTotal+50%>
                                             </span>
-                                            <input type="number" name="total" id="total" value="<%= usercart.cartTotal %>" hidden>
+                                            <input type="number" name="total" id="total"
+                                                value="<%= usercart.cartTotal+50%>" hidden>
                                         </div>
                                     </div>
                                     <!-- <div class="ec-checkout-pro">
@@ -487,10 +493,10 @@
                                 })
 
                             } else if (res.paypal) {
-                                userOrderData= res.userOrderData
-                                amount=res.walletBalance
-                                console.log(amount,"aaaaaaaaaaaaaaaaaa")
-                                
+                                userOrderData = res.userOrderData
+                                amount = res.walletBalance
+                                console.log(amount, "aaaaaaaaaaaaaaaaaa")
+
 
                                 paypal_sdk.Buttons({
                                     createOrder: function () {
@@ -543,34 +549,34 @@
 
 
                     $.ajax({
-                       
+
                         url: '/verifypayment',
                         method: "post",
                         data: {
                             verifyData,
                         },
-                        success:(res)=>{
-                            
-                        if (res.status) {
+                        success: (res) => {
 
-                            Swal.fire({
-                                position: 'top-center',
+                            if (res.status) {
+
+                                Swal.fire({
+                                    position: 'top-center',
                                     icon: 'success',
                                     title: 'Your order placed successfully',
                                     showConfirmButton: false,
                                     timer: 1000
-                            }).then((result) => {
-                                console.log("asdfghjklkjhgfdjiiiiiiiiiiii")
+                                }).then((result) => {
+                                    console.log("asdfghjklkjhgfdjiiiiiiiiiiii")
 
-                                
-                                location.href = "/success"
-                                
-                            })
+
+                                    location.href = "/success"
+
+                                })
+                            }
+
                         }
 
-                        }
 
-                    
 
 
 
