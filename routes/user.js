@@ -29,6 +29,8 @@ router.get('/success',userController.orderSuccess)
 router.get('/logout',userController.logout)
 router.post('/placeOrder',userController.placeOrder)
 router.get('/history',userController.orderHistory)
+router.post('/verifypayment',userController.varifypayment)
+router.post('/create-order',userController.createOrder)
 
 
 

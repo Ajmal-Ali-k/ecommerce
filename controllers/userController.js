@@ -1,3 +1,4 @@
+require("dotenv/config")
 const User = require("../model/user/userModel");
 const bcrypt = require("bcrypt");
 const { sendotp, varifyotp } = require("../helpers/otp");
@@ -8,6 +9,14 @@ const Cart = require("../model/user/cart");
 const Address = require("../model/user/address");
 const Order = require("../model/user/order");
 const { findOne } = require("../model/user/order");
+const paypal = require('@paypal/checkout-server-sdk');
+const envirolment =
+  process.env.NODE_ENV === "production"
+    ? paypal.core.LiveEnvironment
+    : paypal.core.SandboxEnvironment;
+
+const paypalCliend = new paypal.core.PayPalHttpClient(
+  new envirolment(process.env.PAYPAL_CLIND_ID, process.env.SECRET_KEY));
 
 
 
@@ -346,13 +355,17 @@ const addAddres = async (req, res) => {
 
 const checkout = async (req, res) => {
 
+  
   const userId = req.session.user._id
 
   const addresses = await Address.findOne({user:userId});
   console.log(addresses)
   const usercart = await Cart.findOne({owner:userId}).populate('items.product')
+   const paypalclientid=process.env.PAYPAL_CLIND_ID
+   console.log(paypalclientid);
+
                          
-   res.render("user/checkout",{addresses,usercart});
+   res.render("user/checkout",{addresses,usercart,paypalclientid});
 };
 
 const placeOrder = async (req, res) => {
@@ -360,6 +373,8 @@ const placeOrder = async (req, res) => {
   const addressid = req.body.address
   const ordertype = req.body.paymode
   const Amount = req.body.total
+  console.log(req.body.total);
+
   console.log(addressid,ordertype,Amount,"----------------------")
 
   const userId = req.session.user._id
@@ -396,6 +411,7 @@ const placeOrder = async (req, res) => {
  
    
   } else if (ordertype === 'paypal') {
+    console.log("paypalllllllll")
    
   
     const neworder = new Order({
@@ -409,20 +425,23 @@ const placeOrder = async (req, res) => {
       peymentstatus:"accepted"
     });
     await neworder.save().then((result) => {
+      req.session.orderId=result._id
+
+      console.log(result.totalprice,"hiiiiiiiiiiiiiiiiiii")
      
       let userOrderdata = result;
-
-      let response = {
-        Razorpay: true,
+      res.json({
+        paypal: true,
         walletBalance: Amount,
         userOrderData: userOrderdata,
-      };
-      res.json(response);
+
+      });
     });
   }
 };
 
 const orderSuccess =async (req,res) =>{
+  console.log("successs.");
   const userId=req.session.orderId
 
   const  order = await Order.findOne({_id:userId}).populate('products.product')
@@ -435,6 +454,62 @@ const orderSuccess =async (req,res) =>{
   res.render('user/success',{finalAddress,order})
 }
 
+const createOrder= async(req,res)=>{
+  console.log('paypal=============================');
+  console.log(paypalCliend);
+   const request = new paypal.orders.OrdersCreateRequest();
+ 
+  
+   const balance =req.body.items[0].amount;
+   console.log(balance,"balannnnnnnnnnnnnnnnnnnnnn");
+ 
+  
+   request.prefer("return=representation");
+   request.requestBody({
+     intent: "CAPTURE",
+      purchase_units: [
+       {
+         amount: {
+           currency_code: "USD",
+           value: balance, 
+ 
+           breakdown: {
+             item_total: {
+               currency_code: "USD",
+               value: balance,
+             },
+           },
+         },
+       },
+     ],
+   });
+   try {
+    
+     console.log('pay --------------------------------------');
+     
+     const order = await paypalCliend.execute(request);
+ 
+    console.log(order,'sdfgtrrrrrrrrrrrrrrrrrrrrr');
+     res.json({ id:order.result.id });
+   } catch (e) {
+    console.log(e);
+     res.status(500).json(e);
+   }
+ };
+ 
+
+const varifypayment= async (req,res)=>{
+  console.log("verifyyyyyyyyyyyy")
+
+  const userId = req.session.user._id
+  const ordercart = await Cart.findOne({owner:userId})
+  ordercart.items = [];
+  ordercart.cartTotal = 0;
+   ordercart.save();
+  
+      res.json({status:true})
+  
+  }
 
 
 const orderHistory = async (req,res)=>{
@@ -469,5 +544,7 @@ module.exports = {
   addAddres,
   orderSuccess,
   placeOrder,
-  orderHistory
+  orderHistory,
+  varifypayment,
+  createOrder
 };
