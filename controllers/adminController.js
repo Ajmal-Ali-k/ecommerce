@@ -98,9 +98,15 @@ let userunblock = async (req, res) => {
 
 let productDelete = async (req, res) => {
   const id = req.params.id;
-  const status = await Product.deleteOne({ _id: id });
+  const status = await Product.updateOne({ _id: id },{$set:{delete:true}});
   res.redirect("/admin/product-list");
 };
+let undoDelete = async (req, res) => {
+  const id = req.params.id;
+  const status = await Product.updateOne({ _id: id },{$set:{delete:false}});
+  res.redirect("/admin/product-list");
+};
+
 
 let catagoryDelete = async (req, res) => {
   console.log('hiiiiiiiidaaaaaaaaaa')
@@ -272,5 +278,6 @@ module.exports = {
   updateproduct,
   adminLogout,
   orderHistory,
-  orderInvoice
+  orderInvoice,
+  undoDelete
 };

@@ -44,11 +44,13 @@
 													<th>Name</th>
 													<th>Price</th>
 													<th>Offer</th>
-													<!-- <th>Purchased</th> -->
+													
 													<th>Stock</th>
 													<th>category</th>
 													<th>Date</th>
+													<th>Status</th>
 													<th>Action</th>
+													
 												</tr>
 											</thead>
 												<% for(let i =0 ; i < pdlist.length ;i++) { %> 	
@@ -63,6 +65,15 @@
 													<td><%= pdlist[i].quantity %> </td>
 													<td><%= pdlist[i].catagory %> </td>
 													<td><%= pdlist[i].createdAt.toLocaleDateString("en-US")%> </td>
+													<% if(pdlist[i].delete ==false){ %> 
+														
+														<td> <span class="badge badge-success">ACTVE</span></td>
+
+													<%} else{ %> 
+														<td> <span class="badge badge-danger">deleted</span></td>
+												
+														
+													<% } %> 
 													<td>
 														<div class="btn-group mb-1">
 															<button type="button"
@@ -76,7 +87,11 @@
 
 															<div class="dropdown-menu">
 																<a class="dropdown-item" href="/admin/updateproduct/<%= pdlist[i].id %> ">Edit</a>
+																<% if(pdlist[i].delete ==false){ %> 
 																<a class="dropdown-item" href="/admin/deleteproduct/<%= pdlist[i].id %>">Delete</a>
+																<%} else{ %> 
+																<a class="dropdown-item" href="/admin//undodelete/<%= pdlist[i].id %>">undo</a>
+																<% } %> 
 															</div>
 														</div>
 													

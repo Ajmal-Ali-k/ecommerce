@@ -1,7 +1,6 @@
 require("dotenv/config")
 const User = require("../model/user/userModel");
 const bcrypt = require("bcrypt");
-const { sendotp, varifyotp } = require("../helpers/otp");
 const Product = require("../model/admin/productSchema");
 const { response, query } = require("express");
 const { default: mongoose } = require("mongoose");
