@@ -46,6 +46,9 @@ app.use( (req, res, next)=> {
 //routes
 app.use('/admin', adminRouter);
 app.use('/', userRouter);
+app.use('*',(req, res, next)=> {
+  res.status(404).render('user/404');
+});
 
 // app.use(adminroutes);
 

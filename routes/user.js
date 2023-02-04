@@ -17,7 +17,7 @@ router.get('/products',userController.productspage)
 router.get('/profile',verifyUser,userController.userprofile);
 router.get('/phone',userController.phone)
 router.get('/phone/otp',userController.otp);
-router.get('/previewpage',verifyUser,userController.previewPage);
+router.get('/previewpage',userController.previewPage);
 router.get('/wishlist',userController.wishlist);
 router.get('/cart',verifyUser,userController.getCart)
 router.get('/addToCart/:id',verifyLogin,userController.addTocart),
