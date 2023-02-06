@@ -137,7 +137,7 @@
                                         <div class="ec-bl-block-content">
                                             <p>
                                                 <a class="btn btn-primary" data-toggle="collapse"
-                                                    href="#collapseExample" role="button" aria-expanded="false"
+                                                    href="#collapseExample" role="button" aria-expanded="true"
                                                     aria-controls="collapseExample">
                                                     Addresses
                                                 </a>
@@ -207,7 +207,7 @@
                                                 </div>
                                             </div>
                                             </p>
-                                            <div class="collapse" id="collapseExample">
+                                            <div class="collapse('show')" id="collapseExample">
                                                 <div class="card card-body">
                                                     <% if(addresses==0){ %>
                                                         <div class="alert alert-success" role="alert">
@@ -534,7 +534,7 @@
 
                                         return actions.order.capture().then(function (details) {
                                             verifyPayment(res)
-                                            alert("transaction complited")
+                                           
                                         })
                                     }
                                 }).render('#paypal-button-container');

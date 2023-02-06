@@ -1,4 +1,4 @@
-require("dotenv/config")
+require("dotenv/config");
 const User = require("../model/user/userModel");
 const bcrypt = require("bcrypt");
 const Product = require("../model/admin/productSchema");
@@ -8,16 +8,15 @@ const Cart = require("../model/user/cart");
 const Address = require("../model/user/address");
 const Order = require("../model/user/order");
 const { findOne } = require("../model/user/order");
-const paypal = require('@paypal/checkout-server-sdk');
+const paypal = require("@paypal/checkout-server-sdk");
 const envirolment =
   process.env.NODE_ENV === "production"
     ? paypal.core.LiveEnvironment
     : paypal.core.SandboxEnvironment;
 
 const paypalCliend = new paypal.core.PayPalHttpClient(
-  new envirolment(process.env.PAYPAL_CLIND_ID, process.env.SECRET_KEY));
-
-
+  new envirolment(process.env.PAYPAL_CLIND_ID, process.env.SECRET_KEY)
+);
 
 const index_get = (req, res) => {
   res.render("user/index");
@@ -52,7 +51,6 @@ let logout = (req, res) => {
   res.redirect("/");
 };
 
-
 // user signup
 const signup_post = async (req, res) => {
   const userCheck = await User.findOne({ email: req.body.email });
@@ -81,9 +79,6 @@ const signup_post = async (req, res) => {
   }
 };
 
-
-
-
 //user login
 const userLogin_post = async (req, res) => {
   const email = req.body.email;
@@ -98,7 +93,7 @@ const userLogin_post = async (req, res) => {
         console.log(err);
       } else if (data == true) {
         console.log("user login succesful");
-        req.session.loggedin = true
+        req.session.loggedin = true;
         req.session.user = user;
         res.redirect("/");
       } else {
@@ -138,12 +133,12 @@ const addTocart = async (req, res) => {
 
     const prodId = req.params.id;
     const userId = req.session.user._id;
-    console.log(userId)
+    console.log(userId);
     const product = await Product.findOne({ _id: prodId });
 
     const user = await Cart.findOne({ owner: userId });
     const count = user.items.length;
-    req.session.count =count
+    req.session.count = count;
     if (product.quantity < 1) {
     } else {
       if (!user) {
@@ -157,7 +152,6 @@ const addTocart = async (req, res) => {
         const productcheck = await Cart.findOne({
           owner: userId,
           "items.product": prodId,
-         
         });
 
         if (productcheck !== null) {
@@ -218,10 +212,9 @@ const removeCart = async (req, res) => {
         $inc: { cartTotal: -price },
       }
     );
-    res.json({ 
+    res.json({
       totalprice: carts.cartTotal,
-      
-     });
+    });
   } catch (error) {
     console.log(error);
   }
@@ -296,10 +289,9 @@ const userprofile = async (req, res) => {
     const findaddress = useraddress.address;
     res.render("user/userprofile", { user, findaddress, useraddress });
   } else {
-    res.render("user/userprofile", { user ,useraddress});
+    res.render("user/userprofile", { user, useraddress });
   }
 };
-
 
 // address
 
@@ -308,7 +300,7 @@ const addAddres = async (req, res) => {
     const userId = req.session.user._id;
 
     const { name, phone, state, city, address, pin } = req.body;
-    console.log(req.body)
+    console.log(req.body);
     const existAddress = await Address.findOne({ user: userId });
 
     if (existAddress) {
@@ -349,46 +341,53 @@ const addAddres = async (req, res) => {
   }
 };
 
+const deleteAddress = async (req, res) => {
+  const addressid = req.params.id;
+  const userId = req.session.user;
+  console.log(addressid, "this is address", userId, "this is user");
+  const address = await Address.updateOne(
+    { user: userId },
+    { $pull: { address: { _id:addressid } } }
+  );
+  res.redirect("/profile");
+};
+
 //************checkout*******************//
 
-
 const checkout = async (req, res) => {
+  const userId = req.session.user._id;
 
-  
-  const userId = req.session.user._id
+  const addresses = await Address.findOne({ user: userId });
+  console.log(addresses);
+  const usercart = await Cart.findOne({ owner: userId }).populate(
+    "items.product"
+  );
+  const paypalclientid = process.env.PAYPAL_CLIND_ID;
+  console.log(paypalclientid);
 
-  const addresses = await Address.findOne({user:userId});
-  console.log(addresses)
-  const usercart = await Cart.findOne({owner:userId}).populate('items.product')
-   const paypalclientid=process.env.PAYPAL_CLIND_ID
-   console.log(paypalclientid);
-
-                         
-   res.render("user/checkout",{addresses,usercart,paypalclientid});
+  res.render("user/checkout", { addresses, usercart, paypalclientid });
 };
 
 const placeOrder = async (req, res) => {
- 
-  const addressid = req.body.address
-  const ordertype = req.body.paymode
-  const Amount = req.body.total
+  const addressid = req.body.address;
+  const ordertype = req.body.paymode;
+  const Amount = req.body.total;
   console.log(req.body.total);
 
-  console.log(addressid,ordertype,Amount,"----------------------")
+  console.log(addressid, ordertype, Amount, "----------------------");
 
-  const userId = req.session.user._id
-  const ordercart = await Cart.findOne({owner:userId})
+  const userId = req.session.user._id;
+  const ordercart = await Cart.findOne({ owner: userId });
 
-   const address = await Address.findOne({user:userId})
+  const address = await Address.findOne({ user: userId });
 
-   console.log("this is address",Address)
-  
+  console.log("this is address", Address);
+
   const DeliveryAddress = address.address.find(
     (el) => el._id.toString() == addressid
   );
- console.log(DeliveryAddress._id,"this is delivery address");
+  console.log(DeliveryAddress._id, "this is delivery address");
   if (ordertype === "cod") {
- 
     const neworder = new Order({
       date: new Date(),
       userId: ordercart.owner,
@@ -397,22 +396,19 @@ const placeOrder = async (req, res) => {
       address: DeliveryAddress._id,
       paymentmethod: ordertype,
       orderstatus: "Confirmed",
-      peymentstatus:"pending"
+      peymentstatus: "pending",
     });
-    neworder.save().then((result)=>{
-     req.session.orderId=result._id
+    neworder.save().then((result) => {
+      req.session.orderId = result._id;
       ordercart.items = [];
-    ordercart.cartTotal = 0;
-    ordercart.save();
+      ordercart.cartTotal = 0;
+      ordercart.save();
 
-      res.json({ cod: true })
-    })
- 
-   
-  } else if (ordertype === 'paypal') {
-    console.log("paypalllllllll")
-   
-  
+      res.json({ cod: true });
+    });
+  } else if (ordertype === "paypal") {
+    console.log("paypalllllllll");
+
     const neworder = new Order({
       date: new Date(),
       userId: ordercart.owner,
@@ -421,117 +417,111 @@ const placeOrder = async (req, res) => {
       address: DeliveryAddress._id,
       paymentmethod: ordertype,
       orderstatus: "Confirmed",
-      peymentstatus:"accepted"
+      peymentstatus: "accepted",
     });
     await neworder.save().then((result) => {
-      req.session.orderId=result._id
+      req.session.orderId = result._id;
 
-      console.log(result.totalprice,"hiiiiiiiiiiiiiiiiiii")
-     
+      console.log(result.totalprice, "hiiiiiiiiiiiiiiiiiii");
+
       let userOrderdata = result;
       res.json({
         paypal: true,
         walletBalance: Amount,
         userOrderData: userOrderdata,
-
       });
     });
   }
 };
 
-const orderSuccess =async (req,res) =>{
+const orderSuccess = async (req, res) => {
   console.log("successs.");
-  const userId=req.session.orderId
+  const userId = req.session.orderId;
 
-  const  order = await Order.findOne({_id:userId}).populate('products.product')
-  const OrderedAddress = order.address
-  const address = await Address.findOne({user:order.userId})
-  const index = address.address.findIndex((obj)=> obj._id == OrderedAddress) ;
-  const finalAddress =address.address[index];
-  
-  console.log(finalAddress,order);
-  res.render('user/success',{finalAddress,order})
-}
+  const order = await Order.findOne({ _id: userId }).populate(
+    "products.product"
+  );
+  const OrderedAddress = order.address;
+  const address = await Address.findOne({ user: order.userId });
+  const index = address.address.findIndex((obj) => obj._id == OrderedAddress);
+  const finalAddress = address.address[index];
 
-const createOrder= async(req,res)=>{
-  console.log('paypal=============================');
+  console.log(finalAddress, order);
+  res.render("user/success", { finalAddress, order });
+};
+
+const createOrder = async (req, res) => {
+  console.log("paypal=");
   console.log(paypalCliend);
-   const request = new paypal.orders.OrdersCreateRequest();
- 
-  
-   const balance =req.body.items[0].amount;
-   console.log(balance,"balannnnnnnnnnnnnnnnnnnnnn");
- 
-  
-   request.prefer("return=representation");
-   request.requestBody({
-     intent: "CAPTURE",
-      purchase_units: [
-       {
-         amount: {
-           currency_code: "USD",
-           value: balance, 
- 
-           breakdown: {
-             item_total: {
-               currency_code: "USD",
-               value: balance,
-             },
-           },
-         },
-       },
-     ],
-   });
-   try {
-    
-     console.log('pay --------------------------------------');
-     
-     const order = await paypalCliend.execute(request);
- 
-    console.log(order,'sdfgtrrrrrrrrrrrrrrrrrrrrr');
-     res.json({ id:order.result.id });
-   } catch (e) {
+  const request = new paypal.orders.OrdersCreateRequest();
+
+  const balance = req.body.items[0].amount;
+
+  request.prefer("return=representation");
+  request.requestBody({
+    intent: "CAPTURE",
+    purchase_units: [
+      {
+        amount: {
+          currency_code: "USD",
+          value: balance,
+
+          breakdown: {
+            item_total: {
+              currency_code: "USD",
+              value: balance,
+            },
+          },
+        },
+      },
+    ],
+  });
+  try {
+    console.log("pay --------------------------------------");
+
+    const order = await paypalCliend.execute(request);
+
+    console.log(order, "sdfgtrrrrrrrrrrrrrrrrrrrrr");
+    res.json({ id: order.result.id });
+  } catch (e) {
     console.log(e);
-     res.status(500).json(e);
-   }
- };
- 
+    res.status(500).json(e);
+  }
+};
 
-const varifypayment= async (req,res)=>{
-  console.log("verifyyyyyyyyyyyy")
+const varifypayment = async (req, res) => {
+  console.log("verifyyyyyyyyyyyy");
 
-  const userId = req.session.user._id
-  const ordercart = await Cart.findOne({owner:userId})
+  const userId = req.session.user._id;
+  const ordercart = await Cart.findOne({ owner: userId });
   ordercart.items = [];
   ordercart.cartTotal = 0;
-   ordercart.save();
-  
-      res.json({status:true})
-  
-  }
+  ordercart.save();
 
+  res.json({ status: true });
+};
 
-const orderHistory = async (req,res)=>{
-  const userId = req.session.user._id
-  const orders = await Order.find({userId:userId}).populate('products.product').sort({date :-1});
-  console.log(orders)
-  res.render("user/history",{orders})
+const orderHistory = async (req, res) => {
+  const userId = req.session.user._id;
+  const orders = await Order.find({ userId: userId })
+    .populate("products.product")
+    .sort({ date: -1 });
+  console.log(orders);
+  res.render("user/history", { orders });
+};
+const orderDetails = async (req, res) => {
+  const orderId = req.query.orderId;
+  console.log("hiii", orderId);
+  const order = await Order.findOne({ _id: orderId }).populate(
+    "products.product"
+  );
+  const OrderedAddress = order.address;
+  const address = await Address.findOne({ user: order.userId });
+  const index = address.address.findIndex((obj) => obj._id == OrderedAddress);
+  const finalAddress = address.address[index];
 
-}
- const orderDetails = async (req,res) =>{
-
-  const  orderId = req.query.orderId
-  console.log("hiii",orderId)
-  const order = await Order.findOne({_id : orderId}).populate('products.product')
-  const OrderedAddress = order.address
-  const address = await Address.findOne({user:order.userId})
-  const index = address.address.findIndex((obj)=> obj._id == OrderedAddress) ;
-  const finalAddress =address.address[index];
-
-  res.render("user/orderdetails",{order,finalAddress})
- }
-
-
+  res.render("user/orderdetails", { order, finalAddress });
+};
 
 module.exports = {
   index_get,
@@ -558,5 +548,6 @@ module.exports = {
   orderHistory,
   varifypayment,
   createOrder,
-  orderDetails
+  orderDetails,
+  deleteAddress,
 };

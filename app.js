@@ -7,9 +7,7 @@ const mongoose = require('mongoose');
 
 const userRouter = require('./routes/user');
 const adminRouter = require('./routes/admin');
-const User = require ("./model/user/userModel");
-const Cart = require('./model/user/cart');
-const { findOne } = require('./model/user/order');
+
 const app = express();
 
 //middleware

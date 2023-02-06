@@ -155,7 +155,7 @@
                                            <% for(let i=0 ; i < findaddress.length ;i++) { %> 
                                             <div class="col-md-6 col-sm-12">
                                                <div class="ec-vendor-detail-block ec-vendor-block-contact space-bottom-30">
-                                                   <h6>Address<a href="javasript:void(0)" data-link-action="editmodal" title="Edit Detail" data-bs-toggle="modal" data-bs-target="#edit_modal"></a></h6>
+                                                   <h6>Address<a href="javasript:void(0)" data-link-action="editmodal" title="Edit Detail" data-bs-toggle="modal" data-bs-target="#edit_modal"></a><a href="/deleteAddress/<%=findaddress[i]._id %>"> <span><i class="ecicon eci-trash-o"></i></span></a></h6>
                                                    <ul>
                                                     <li><strong>Name :</strong> <%= findaddress[i].name %> </li>
                                                     <li><strong>phone:</strong> <%= findaddress[i].phone %> </li>
