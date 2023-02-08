@@ -293,20 +293,19 @@
                                             <span class="text-left">Delivery Charges</span>
                                             <span class="text-right">$50.00</span>
                                         </div>
+                                        <div >
+                                            <span class="text-left" id="discount" style="display: none;">Discount</span>
+                                            <span class="text-right"   id="afterDiscount"></span>
+                                        </div>
+                                       
+                                       
                                         <div>
                                             <span class="text-left">Coupan Discount</span>
                                             <span class="text-right"><a class="ec-checkout-coupan">Apply
                                                     Coupan</a></span>
                                         </div>
-                                        <div class="alert alert-success" id="success"
-                                        role="alert" style="display: none;">
-                                        Success !
-                                         </div>
-                                         <div class="alert alert-warning" id="error"
-                                                role="alert" style="display: none;">
-                                                Please fill!
-                                                </div>   
-                                        <div class="ec-checkout-coupan-content">
+                                       
+                                        <div class="ec-checkout-coupan-content" id="coupondiv">
                                             <form id="couponform" class="ec-checkout-coupan-form" name="ec-checkout-coupan-form"
                                                  >
                                                
@@ -322,7 +321,7 @@
                                         </div>
                                         <div class="ec-checkout-summary-total">
                                             <span class="text-left">Total Amount</span>
-                                            <span class="text-right">
+                                            <span class="text-right" id="totalshow">
                                                 $<%= usercart.cartTotal+50%>
                                             </span>
                                             <input type="number" name="total" id="total"
@@ -480,13 +479,14 @@
                     const address = $('input[type="radio"][name="address"]:checked').val();
                     const paymode = $('input[type="radio"][name="selector"]:checked').val();
                     const total = document.getElementById('total').value;
+                    const discount = document.getElementById('afterDiscount').innerHTML            
 
 
                     $.ajax({
                         url: "/placeOrder",
                         method: "post",
                         data: {
-                            address, paymode, total
+                            address, paymode, total,discount
                         },
                         success: (res) => {
                             if (res.cod) {
@@ -603,7 +603,7 @@
                     var code = document.getElementById('couponcode').value
                      const carttotal = document.getElementById('total').value;
                     if(code == ''){
-                        document.getElementById('error').style.display = 'inline'
+                        document.getElementById('').style.display = 'inline'
                         setTimeout(()=> document.getElementById('error').style.display ='none',2000)
                     }else{
                         $.ajax({
@@ -613,7 +613,23 @@
                             encode : true,
                             data : $('#couponform').serialize()+ `&carttotal=${carttotal}`,
                             success:(res)=>{
-                                console.log(res)
+                                if(res.status){
+                                    console.log(res.totalprize)
+                                    document.getElementById('discount').style.display="inline"
+                                    document.getElementById('afterDiscount').innerHTML="$"+res.discount
+                                    document.getElementById('totalshow').innerHTML="$"+res.totalprize
+                                    document.getElementById('total').value=res.totalprize;
+                                    document.getElementById('total').innerHTML="$"+res.totalprize
+                                    setTimeout(()=> document.getElementById('couponcode').value ="",2000)
+                                    document.getElementById("coupondiv").style.display = "none";
+                                }
+                                else{
+                                    console.log(res.message+33333333)
+
+                                    document.getElementById("couponcode").style.color = "red";
+                                    document.getElementById('couponcode').value=res.message
+                                    setTimeout(()=> document.getElementById('couponcode').value ="",2000)
+                                }
                             }
                         })
                     }

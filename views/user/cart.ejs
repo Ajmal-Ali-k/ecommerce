@@ -113,7 +113,7 @@
                                                                 src="<%= cartItems.items[i].product.image[0] %> "
                                                                 alt="" /><%= cartItems.items[i].product.product_name %></a></td>
                                                     <td data-label="Price" class="ec-cart-pro-price"><span
-                                                            class="amount"><%= cartItems.items[i].product.price %></span></td>
+                                                            class="amount">$<%= cartItems.items[i].product.price %></span></td>
                                                     <td data-label="Quantity" class="ec-cart-pro-qty"
                                                         style="text-align: center;">
                                                         <!-- <div class="cart-qty-plus-minus" >
@@ -129,7 +129,7 @@
                                                        </div> 
                                                    
                                                     </td>
-                                                    <td data-label="Total" class="ec-cart-pro-subtotal" id="itemPrice<%=cartItems.items[i].product.id %>"><%= cartItems.items[i].totalprice %> </td>
+                                                    <td data-label="Total" class="ec-cart-pro-subtotal" id="itemPrice<%=cartItems.items[i].product.id %>">$<%= cartItems.items[i].totalprice %> </td>
                                                     <td data-label="Remove" class="ec-cart-pro-remove"   onclick="deleteItem('<%=cartItems.items[i].product.id  %>')"  >
                                                         <span><i class="ecicon eci-trash-o"></i></span>
                                                       
@@ -261,9 +261,9 @@
                     }else{
                         document.getElementById("minus"+productID).style.display ="inline";
                         document.getElementById("changeQuantity"+productID).value=res.quantity;
-                        document.getElementById('sumTotal-1').innerHTML=res.totalprice;
-                        document.getElementById("itemPrice"+productID).innerHTML=res.price;
-                        document.getElementById('sumTotal-2').innerHTML=res.totalprice+50 ;
+                        document.getElementById('sumTotal-1').innerHTML='$'+res.totalprice;
+                        document.getElementById("itemPrice"+productID).innerHTML="$"+res.price;
+                        document.getElementById('sumTotal-2').innerHTML='$'+res.totalprice+50 ;
 
                     }
 

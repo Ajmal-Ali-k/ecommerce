@@ -393,6 +393,8 @@ const placeOrder = async (req, res) => {
   const addressid = req.body.address;
   const ordertype = req.body.paymode;
   const Amount = req.body.total;
+  const discount= req.body.discount
+  console.log(discount,"ggggggggg")
   console.log(req.body.total);
 
   console.log(addressid, ordertype, Amount, "----------------------");
@@ -414,6 +416,7 @@ const placeOrder = async (req, res) => {
       userId: ordercart.owner,
       products: ordercart.items,
       subtotal: Amount,
+      discount:discount,
       address: DeliveryAddress._id,
       paymentmethod: ordertype,
       orderstatus: "Confirmed",
@@ -435,6 +438,7 @@ const placeOrder = async (req, res) => {
       userId: ordercart.owner,
       products: ordercart.items,
       subtotal: Amount,
+      discount:discount,
       address: DeliveryAddress._id,
       paymentmethod: ordertype,
       orderstatus: "Confirmed",
@@ -554,11 +558,13 @@ const couponcheck = async (req,res) =>{
     let userId = req.body.user;
     const total = parseInt(req.body.carttotal)
     const coupon = await Coupon.findOne({couponcode:req.body.couponcode})
+
    
-    const usedcoupen = await Coupon.findOne({couponcode:req.body.couponcode,userused:userId})
+    const usedcoupen = await Coupon.findOne({couponcode:req.body.couponcode,userUsed:req.session.user})
     console.log(usedcoupen,coupon);
 
     if(usedcoupen){
+      console.log("used coupon")
       res.json({status:false,message:'INVALID COUPON'})
     }else{
       if(coupon && coupon.mincartAmount <= total){
@@ -566,13 +572,14 @@ const couponcheck = async (req,res) =>{
         const endDate = coupon.expireDate
         if(currrentDate<= endDate){
           console.log('coupon date checking')
-          const couponCheck = await  Coupon.updateOne({_id:coupon._id},{$push:{userUsed:userId}})
+          const couponCheck = await  Coupon.updateOne({_id:coupon._id},{$push:{userUsed:req.session.user}})
         
         console.log("coupon checked")
         const discount = parseInt(coupon.discountAmount);
         const totalprize = total - discount;
         console.log(totalprize);
         res.json({status:true,totalprize,discount})
+        console.log('valid coupon')
         }else{
           res.json({status:false,message :'INVALID COUPON'})
         }

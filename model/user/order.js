@@ -23,6 +23,9 @@ const orderSchema = new mongoose.Schema({
    subtotal:{
     type:Number
    },
+   discount:{
+    type:String
+   },
    address:{
     type:String,
     ref:'Address'
