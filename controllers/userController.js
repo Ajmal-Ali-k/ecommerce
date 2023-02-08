@@ -1,6 +1,6 @@
 require("dotenv/config");
 const User = require("../model/user/userModel");
-const Coupon = require('../model/admin/coupon')
+const Coupon = require("../model/admin/coupon");
 const bcrypt = require("bcrypt");
 const Product = require("../model/admin/productSchema");
 const { response, query } = require("express");
@@ -48,7 +48,7 @@ const wishlist = (req, res) => {
 };
 
 let logout = (req, res) => {
-  req.session.user=null;
+  req.session.user = null;
   res.redirect("/");
 };
 
@@ -116,22 +116,19 @@ const userLogin_post = async (req, res) => {
 let previewPage = async (req, res) => {
   let findedpro;
   const id = req.query.id;
- try {
-  findedpro = await Product.findOne({_id:id});
-  if(findedpro){
-    req.session.temp = findedpro._id;
-  }else{
-    temp =req.session.temp
-    findedpro = await Product.findOne({_id:temp});
+  try {
+    findedpro = await Product.findOne({ _id: id });
+    if (findedpro) {
+      req.session.temp = findedpro._id;
+    } else {
+      temp = req.session.temp;
+      findedpro = await Product.findOne({ _id: temp });
+    }
+    await res.render("user/preview", { findedpro });
+  } catch (error) {
+    findedpro = req.session.temp;
+    res.redirect("/previewpage?id=req.query.id");
   }
-  await res.render('user/preview',{findedpro})
- 
- } catch (error) {
-  findedpro = req.session.temp;
-  res.redirect('/previewpage?id=req.query.id')
-  
- } 
-
 };
 
 //--------------------------cart----------------------------//
@@ -368,12 +365,19 @@ const deleteAddress = async (req, res) => {
   console.log(addressid, "this is address", userId, "this is user");
   const address = await Address.updateOne(
     { user: userId },
-    { $pull: { address: { _id:addressid } } }
+    { $pull: { address: { _id: addressid } } }
   );
   res.redirect("/profile");
 };
 
 //************checkout*******************//
+const inventory = (productId, qntity) => {
+  return new Promise((resolve, reject) => {
+      productModel.findOneAndUpdate({ _id: productId }, { $inc: { quantity: -qntity } }).then(() => {
+          resolve();
+      });
+  });
+};
 
 const checkout = async (req, res) => {
   const userId = req.session.user._id;
@@ -386,15 +390,15 @@ const checkout = async (req, res) => {
   const paypalclientid = process.env.PAYPAL_CLIND_ID;
   console.log(paypalclientid);
 
-  res.render("user/checkout", { addresses, usercart, paypalclientid ,userId});
+  res.render("user/checkout", { addresses, usercart, paypalclientid, userId });
 };
 
 const placeOrder = async (req, res) => {
   const addressid = req.body.address;
   const ordertype = req.body.paymode;
   const Amount = req.body.total;
-  const discount= req.body.discount
-  console.log(discount,"ggggggggg")
+  const discount = req.body.discount;
+  console.log(discount, "ggggggggg");
   console.log(req.body.total);
 
   console.log(addressid, ordertype, Amount, "----------------------");
@@ -416,11 +420,11 @@ const placeOrder = async (req, res) => {
       userId: ordercart.owner,
       products: ordercart.items,
       subtotal: Amount,
-      discount:discount,
+      discount: discount,
       address: DeliveryAddress._id,
       paymentmethod: ordertype,
-      orderstatus: "Confirmed",
-      peymentstatus: "pending",
+      orderstatus: "pending",
+      peymentstatus: "unpaid",
     });
     neworder.save().then((result) => {
       req.session.orderId = result._id;
@@ -438,10 +442,10 @@ const placeOrder = async (req, res) => {
       userId: ordercart.owner,
       products: ordercart.items,
       subtotal: Amount,
-      discount:discount,
+      discount: discount,
       address: DeliveryAddress._id,
       paymentmethod: ordertype,
-      orderstatus: "Confirmed",
+      orderstatus: "pending",
       peymentstatus: "accepted",
     });
     await neworder.save().then((result) => {
@@ -548,52 +552,52 @@ const orderDetails = async (req, res) => {
   res.render("user/orderdetails", { order, finalAddress });
 };
 
-
-
-const couponcheck = async (req,res) =>{
-  console.log("hiiiiiiiiiiiiii")
+const couponcheck = async (req, res) => {
+  console.log("hiiiiiiiiiiiiii");
 
   try {
     console.log("jiiiiiiiiiii");
     let userId = req.body.user;
-    const total = parseInt(req.body.carttotal)
-    const coupon = await Coupon.findOne({couponcode:req.body.couponcode})
+    const total = parseInt(req.body.carttotal);
+    const coupon = await Coupon.findOne({ couponcode: req.body.couponcode });
 
-   
-    const usedcoupen = await Coupon.findOne({couponcode:req.body.couponcode,userUsed:req.session.user})
-    console.log(usedcoupen,coupon);
+    const usedcoupen = await Coupon.findOne({
+      couponcode: req.body.couponcode,
+      userUsed: req.session.user,
+    });
+    console.log(usedcoupen, coupon);
 
-    if(usedcoupen){
-      console.log("used coupon")
-      res.json({status:false,message:'INVALID COUPON'})
-    }else{
-      if(coupon && coupon.mincartAmount <= total){
+    if (usedcoupen) {
+      console.log("used coupon");
+      res.json({ status: false, message: "INVALID COUPON" });
+    } else {
+      if (coupon && coupon.mincartAmount <= total) {
         const currrentDate = new Date();
-        const endDate = coupon.expireDate
-        if(currrentDate<= endDate){
-          console.log('coupon date checking')
-          const couponCheck = await  Coupon.updateOne({_id:coupon._id},{$push:{userUsed:req.session.user}})
-        
-        console.log("coupon checked")
-        const discount = parseInt(coupon.discountAmount);
-        const totalprize = total - discount;
-        console.log(totalprize);
-        res.json({status:true,totalprize,discount})
-        console.log('valid coupon')
-        }else{
-          res.json({status:false,message :'INVALID COUPON'})
+        const endDate = coupon.expireDate;
+        if (currrentDate <= endDate) {
+          console.log("coupon date checking");
+          const couponCheck = await Coupon.updateOne(
+            { _id: coupon._id },
+            { $push: { userUsed: req.session.user } }
+          );
+
+          console.log("coupon checked");
+          const discount = parseInt(coupon.discountAmount);
+          const totalprize = total - discount;
+          console.log(totalprize);
+          res.json({ status: true, totalprize, discount });
+          console.log("valid coupon");
+        } else {
+          res.json({ status: false, message: "INVALID COUPON" });
         }
-      }else{
-        res.json({status:false,message :'INVALID COUPON'})
+      } else {
+        res.json({ status: false, message: "INVALID COUPON" });
       }
     }
-    
   } catch (error) {
-    console.log(error)
-    
+    console.log(error);
   }
-
-}
+};
 
 module.exports = {
   index_get,
@@ -622,5 +626,5 @@ module.exports = {
   createOrder,
   orderDetails,
   deleteAddress,
-  couponcheck
+  couponcheck,
 };
