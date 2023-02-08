@@ -298,11 +298,22 @@
                                             <span class="text-right"><a class="ec-checkout-coupan">Apply
                                                     Coupan</a></span>
                                         </div>
+                                        <div class="alert alert-success" id="success"
+                                        role="alert" style="display: none;">
+                                        Success !
+                                         </div>
+                                         <div class="alert alert-warning" id="error"
+                                                role="alert" style="display: none;">
+                                                Please fill!
+                                                </div>   
                                         <div class="ec-checkout-coupan-content">
-                                            <form class="ec-checkout-coupan-form" name="ec-checkout-coupan-form"
-                                                method="post" action="#">
-                                                <input class="ec-coupan" type="text" required=""
-                                                    placeholder="Enter Your Coupan Code" name="ec-coupan" value="" />
+                                            <form id="couponform" class="ec-checkout-coupan-form" name="ec-checkout-coupan-form"
+                                                 >
+                                               
+                                                <input class="ec-coupan" type="text" id="couponcode"
+                                                    placeholder="Enter Your Coupan Code" name="couponcode" />
+                                                <input type="text" name="user" value="<%=userId%>" hidden> 
+                                               
                                                 <button class="ec-coupan-btn button btn-primary" type="submit"
                                                     name="subscribe" value="">
                                                     Apply
@@ -584,12 +595,30 @@
 
 
                 }
+           
+                let clicked = false;
+                    const couponForm = document.getElementById('couponform')
+                    couponForm.addEventListener("submit", (e) => {
+                    e.preventDefault();
+                    var code = document.getElementById('couponcode').value
+                     const carttotal = document.getElementById('total').value;
+                    if(code == ''){
+                        document.getElementById('error').style.display = 'inline'
+                        setTimeout(()=> document.getElementById('error').style.display ='none',2000)
+                    }else{
+                        $.ajax({
+                            url:'/couponcheck',
+                            method:'post',
+                            dataType:'json',
+                            encode : true,
+                            data : $('#couponform').serialize()+ `&carttotal=${carttotal}`,
+                            success:(res)=>{
+                                console.log(res)
+                            }
+                        })
+                    }
 
-
-
-
-
-
+                    })
             </script>
 
 

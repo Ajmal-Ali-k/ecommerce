@@ -24,4 +24,7 @@ router.post('/updateproduct/:id',adminController.updateproduct)
 router.get('/logout',adminController.adminLogout);
 router.get('/orderHistory',adminController.orderHistory)
 router.get('/invoice',adminController.orderInvoice)
+router.get('/coupon',adminController.coupon)
+router.post('/coupon',adminController.postaddCoupon)
+router.get('/coupon/:id',adminController.deleteCoupon)
 module.exports = router;

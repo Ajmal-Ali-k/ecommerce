@@ -6,6 +6,8 @@ const Category = require("../model/admin/catagorySchema");
 const { catagory } = require("./userController");
 const Order = require("../model/user/order");
 const Address = require("../model/user/address");
+const Coupon = require('../model/admin/coupon');
+const { find } = require("../model/user/userModel");
 
 const index_get = (req, res) => {
   res.render("admin/index");
@@ -257,6 +259,26 @@ const orderInvoice = async (req,res) =>{
   
   res.render("admin/invoice",{order,finalAddress})
 }
+const postaddCoupon = async (req, res) => {
+  console.log("asdfghjkhg")
+ 
+  const coupon = new Coupon(req.body);
+  coupon.save().then(() => {
+    res.redirect("/admin/coupon");
+  });
+};
+
+
+const coupon = async (req,res)=>{
+  const coupon = await Coupon.find({})
+  res.render('admin/coupon',{coupon})
+}
+const deleteCoupon = async (req,res) =>{
+  console.log("opoooooooooo")
+  const  couponId = req.params.id
+  const coupon = await Coupon.deleteOne({_id:couponId})
+  res.redirect('/admin/coupon')
+}
 //*********** ******************/
 
 module.exports = {
@@ -279,5 +301,7 @@ module.exports = {
   adminLogout,
   orderHistory,
   orderInvoice,
-  undoDelete
+  undoDelete,
+  coupon,
+  postaddCoupon,deleteCoupon
 };

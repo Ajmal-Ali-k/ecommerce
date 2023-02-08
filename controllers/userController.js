@@ -1,5 +1,6 @@
 require("dotenv/config");
 const User = require("../model/user/userModel");
+const Coupon = require('../model/admin/coupon')
 const bcrypt = require("bcrypt");
 const Product = require("../model/admin/productSchema");
 const { response, query } = require("express");
@@ -47,7 +48,7 @@ const wishlist = (req, res) => {
 };
 
 let logout = (req, res) => {
-  req.session.destroy();
+  req.session.user=null;
   res.redirect("/");
 };
 
@@ -106,11 +107,31 @@ const userLogin_post = async (req, res) => {
 
 /********preview page******************/
 
-let previewPage = async (req, res) => {
-  const id = req.query.id;
+// let previewPage = async (req, res) => {
+//   const id = req.query.id;
 
-  const findedpro = await Product.findOne({ _id: id });
-  res.render("user/preview", { findedpro });
+//   const findedpro = await Product.findOne({ _id: id });
+//   res.render("user/preview", { findedpro });
+// };
+let previewPage = async (req, res) => {
+  let findedpro;
+  const id = req.query.id;
+ try {
+  findedpro = await Product.findOne({_id:id});
+  if(findedpro){
+    req.session.temp = findedpro._id;
+  }else{
+    temp =req.session.temp
+    findedpro = await Product.findOne({_id:temp});
+  }
+  await res.render('user/preview',{findedpro})
+ 
+ } catch (error) {
+  findedpro = req.session.temp;
+  res.redirect('/previewpage?id=req.query.id')
+  
+ } 
+
 };
 
 //--------------------------cart----------------------------//
@@ -365,7 +386,7 @@ const checkout = async (req, res) => {
   const paypalclientid = process.env.PAYPAL_CLIND_ID;
   console.log(paypalclientid);
 
-  res.render("user/checkout", { addresses, usercart, paypalclientid });
+  res.render("user/checkout", { addresses, usercart, paypalclientid ,userId});
 };
 
 const placeOrder = async (req, res) => {
@@ -523,6 +544,15 @@ const orderDetails = async (req, res) => {
   res.render("user/orderdetails", { order, finalAddress });
 };
 
+
+
+const couponcheck = async (req,res) =>{
+  let userId = req.body.user;
+  const total = parseInt(req.body.carttotal)
+  const couponcode =req.body.couponcode
+  let coupon = await Coupon
+}
+
 module.exports = {
   index_get,
   userLogin_get,
@@ -550,4 +580,5 @@ module.exports = {
   createOrder,
   orderDetails,
   deleteAddress,
+  couponcheck
 };
