@@ -547,10 +547,45 @@ const orderDetails = async (req, res) => {
 
 
 const couponcheck = async (req,res) =>{
-  let userId = req.body.user;
-  const total = parseInt(req.body.carttotal)
-  const couponcode =req.body.couponcode
-  let coupon = await Coupon
+  console.log("hiiiiiiiiiiiiii")
+
+  try {
+    console.log("jiiiiiiiiiii");
+    let userId = req.body.user;
+    const total = parseInt(req.body.carttotal)
+    const coupon = await Coupon.findOne({couponcode:req.body.couponcode})
+   
+    const usedcoupen = await Coupon.findOne({couponcode:req.body.couponcode,userused:userId})
+    console.log(usedcoupen,coupon);
+
+    if(usedcoupen){
+      res.json({status:false,message:'INVALID COUPON'})
+    }else{
+      if(coupon && coupon.mincartAmount <= total){
+        const currrentDate = new Date();
+        const endDate = coupon.expireDate
+        if(currrentDate<= endDate){
+          console.log('coupon date checking')
+          const couponCheck = await  Coupon.updateOne({_id:coupon._id},{$push:{userUsed:userId}})
+        
+        console.log("coupon checked")
+        const discount = parseInt(coupon.discountAmount);
+        const totalprize = total - discount;
+        console.log(totalprize);
+        res.json({status:true,totalprize,discount})
+        }else{
+          res.json({status:false,message :'INVALID COUPON'})
+        }
+      }else{
+        res.json({status:false,message :'INVALID COUPON'})
+      }
+    }
+    
+  } catch (error) {
+    console.log(error)
+    
+  }
+
 }
 
 module.exports = {
