@@ -371,13 +371,7 @@ const deleteAddress = async (req, res) => {
 };
 
 //************checkout*******************//
-const inventory = (productId, qntity) => {
-  return new Promise((resolve, reject) => {
-      productModel.findOneAndUpdate({ _id: productId }, { $inc: { quantity: -qntity } }).then(() => {
-          resolve();
-      });
-  });
-};
+
 
 const checkout = async (req, res) => {
   const userId = req.session.user._id;
@@ -397,7 +391,10 @@ const placeOrder = async (req, res) => {
   const addressid = req.body.address;
   const ordertype = req.body.paymode;
   const Amount = req.body.total;
-  const discount = req.body.discount;
+  let discount = req.body.discount;
+  if(!discount){
+    discount = "$0"
+  }
   console.log(discount, "ggggggggg");
   console.log(req.body.total);
 
@@ -428,6 +425,14 @@ const placeOrder = async (req, res) => {
     });
     neworder.save().then((result) => {
       req.session.orderId = result._id;
+      const orderedproducts = result.products
+      orderedproducts.forEach(async(element) =>{
+        let remove = await Product.findByIdAndUpdate(
+          {_id:element.product},
+          {$inc:{quantity :-element.quantity}}
+        )
+      });
+      console.log('removed product')
       ordercart.items = [];
       ordercart.cartTotal = 0;
       ordercart.save();
@@ -450,6 +455,14 @@ const placeOrder = async (req, res) => {
     });
     await neworder.save().then((result) => {
       req.session.orderId = result._id;
+      const orderedproducts = result.products
+      orderedproducts.forEach(async(element) =>{
+        let remove = await Product.findByIdAndUpdate(
+          {_id:element.product},
+          {$inc:{quantity :-element.quantity}}
+        )
+      });
+      console.log('removed product')
 
       console.log(result.totalprice, "hiiiiiiiiiiiiiiiiiii");
 
@@ -462,6 +475,7 @@ const placeOrder = async (req, res) => {
     });
   }
 };
+
 
 const orderSuccess = async (req, res) => {
   console.log("successs.");
