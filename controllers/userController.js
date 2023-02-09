@@ -613,6 +613,26 @@ const couponcheck = async (req, res) => {
   }
 };
 
+const cancelOrder = async (req, res) => {
+  try {
+    const ID = req.body.ID;
+    console.log(ID);
+    const order = await Order.findByIdAndUpdate(req.body.ID, {
+      orderstatus: "Cancelled",
+    });
+    orderProduct = order.products;
+    orderProduct.forEach(async (element) => {
+      let update = await Product.findByIdAndUpdate(
+        element.Product ,
+        { $inc: { quantity: element.quantity } }
+      );
+    });
+    res.json({ status: true });
+  } catch (err) {
+    console.log(err);
+  }
+ 
+};
 module.exports = {
   index_get,
   userLogin_get,
@@ -641,4 +661,5 @@ module.exports = {
   orderDetails,
   deleteAddress,
   couponcheck,
+  cancelOrder
 };

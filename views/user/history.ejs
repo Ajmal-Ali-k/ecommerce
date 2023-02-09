@@ -1,16 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
 
- <!DOCTYPE html>
- <html lang="en">
- 
- 
+
 <!-- Mirrored from loopinfosol.in/themeforest/ekka-html-v33/ekka-html/user-history.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 08 Jan 2023 23:19:21 GMT -->
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-     
+
     <title>Ekka - Ecommerce HTML Template.</title>
-    <meta name="keywords" content="apparel, catalog, clean, ecommerce, ecommerce HTML, electronics, fashion, html eCommerce, html store, minimal, multipurpose, multipurpose ecommerce, online store, responsive ecommerce template, shops" />
+    <meta name="keywords"
+        content="apparel, catalog, clean, ecommerce, ecommerce HTML, electronics, fashion, html eCommerce, html store, minimal, multipurpose, multipurpose ecommerce, online store, responsive ecommerce template, shops" />
     <meta name="description" content="Best ecommerce html template for single and multi vendor store.">
     <meta name="author" content="ashishmaraviya">
 
@@ -30,6 +31,7 @@
     <link rel="stylesheet" href="/user/css/plugins/slick.min.css" />
     <link rel="stylesheet" href="/user/css/plugins/nouislider.css" />
     <link rel="stylesheet" href="/user/css/plugins/bootstrap.css" />
+    <link rel="stylesheet" href="sweetalert2.min.css">
 
     <!-- Main Style -->
     <link rel="stylesheet" href="/user/css/style.css" />
@@ -37,104 +39,124 @@
 
     <!-- Background css -->
     <link rel="stylesheet" id="bg-switcher-css" href="/user/css/backgrounds/bg-4.css">
-    
+
 </head>
+
 <body class="shop_page">
     <div id="ec-overlay"><span class="loader_img"></span></div>
 
     <!-- Header start  -->
     <%- include('./partials/navbar.ejs') %>
 
-    
-    <!-- ekka Cart End -->
 
-    <!-- Ec breadcrumb start -->
-    <div class="sticky-header-next-sec  ec-breadcrumb section-space-mb">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="row ec_breadcrumb_inner">
-                        <div class="col-md-6 col-sm-12">
-                            <h2 class="ec-breadcrumb-title">User History</h2>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <!-- ec-breadcrumb-list start -->
-                            <ul class="ec-breadcrumb-list">
-                                <li class="ec-breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="ec-breadcrumb-item active">History</li>
-                            </ul>
-                            <!-- ec-breadcrumb-list end -->
+        <!-- ekka Cart End -->
+
+        <!-- Ec breadcrumb start -->
+        <div class="sticky-header-next-sec  ec-breadcrumb section-space-mb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row ec_breadcrumb_inner">
+                            <div class="col-md-6 col-sm-12">
+                                <h2 class="ec-breadcrumb-title">User History</h2>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <!-- ec-breadcrumb-list start -->
+                                <ul class="ec-breadcrumb-list">
+                                    <li class="ec-breadcrumb-item"><a href="index.html">Home</a></li>
+                                    <li class="ec-breadcrumb-item active">History</li>
+                                </ul>
+                                <!-- ec-breadcrumb-list end -->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Ec breadcrumb end -->
+        <!-- Ec breadcrumb end -->
 
-    <!-- User history section -->
-    <section class="ec-page-content ec-vendor-uploads ec-user-account section-space-p">
-        <div class="container">
-            <div class="row">
-                <!-- Sidebar Area Start -->
-                <div class="ec-shop-leftside ec-vendor-sidebar col-lg-3 col-md-12">
-                    <div class="ec-sidebar-wrap">
-                        <!-- Sidebar Category Block -->
-                        <div class="ec-sidebar-block">
-                            <div class="ec-vendor-block">
-                                <div class="ec-vendor-block-items">
-                                    <ul>
-                                        <li><a href="/profile">User Profile</a></li>
-                                        <li><a href="/history">History</a></li>
-                                        <li><a href="/wishlist">Wishlist</a></li>
-                                        <li><a href="/cart">Cart</a></li>
-                                        <!-- <li><a href="/checkout">Checkout</a></li> -->
-                                        <!-- <li><a href="track-order.html">Track Order</a></li>
+        <!-- User history section -->
+        <section class="ec-page-content ec-vendor-uploads ec-user-account section-space-p">
+            <div class="container">
+                <div class="row">
+                    <!-- Sidebar Area Start -->
+                    <div class="ec-shop-leftside ec-vendor-sidebar col-lg-3 col-md-12">
+                        <div class="ec-sidebar-wrap">
+                            <!-- Sidebar Category Block -->
+                            <div class="ec-sidebar-block">
+                                <div class="ec-vendor-block">
+                                    <div class="ec-vendor-block-items">
+                                        <ul>
+                                            <li><a href="/profile">User Profile</a></li>
+                                            <li><a href="/history">History</a></li>
+                                            <li><a href="/wishlist">Wishlist</a></li>
+                                            <li><a href="/cart">Cart</a></li>
+                                            <!-- <li><a href="/checkout">Checkout</a></li> -->
+                                            <!-- <li><a href="track-order.html">Track Order</a></li>
                                         <li><a href="user-invoice.html">Invoice</a></li> -->
-                                    </ul>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="ec-shop-rightside col-lg-9 col-md-12">
-                    <div class="ec-vendor-dashboard-card">
-                        <div class="ec-vendor-card-header">
-                            <h5>order History</h5>
-                            <div class="ec-header-btn">
-                                <a class="btn btn-lg btn-primary" href="/">Shop Now</a>
+                    <div class="ec-shop-rightside col-lg-9 col-md-12">
+                        <div class="ec-vendor-dashboard-card">
+                            <div class="ec-vendor-card-header">
+                                <h5>order History</h5>
+                                <div class="ec-header-btn">
+                                    <a class="btn btn-lg btn-primary" href="/">Shop Now</a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="ec-vendor-card-body">
-                            <div class="ec-vendor-card-table">
-                                <table class="table ec-table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">No</th>
-                                            <!-- <th scope="col">Image</th>
+                            <div class="ec-vendor-card-body">
+                                <div class="ec-vendor-card-table">
+                                    <% if(orders == 0 ){ %>
+                                        <div>
+                                            <h3 style="text-align: center;">please order Something</h3>
+                                        </div>
+                                       
+                                        <% }else { %>
+                                          
+                                    <table class="table ec-table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">No</th>
+                                                <!-- <th scope="col">Image</th>
                                             <th scope="col">Name</th> -->
-                                            <th scope="col">Date</th>
-                                            <th scope="col">Price</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% for(i=0 ; i<orders.length ; i++){ %> 
-                                            
-                                        <tr>
-                                            <th scope="row"><span><%= 1+i%></span></th>
-                                           
-                                            <td><span><%= orders[i].date.toLocaleDateString()%></span></td>
-                                            <td><span><%= orders[i].subtotal %></span> </td>
-                                            <td><span><%= orders[i].orderstatus %> </span></td>
-                                            <td><span class="tbl-btn"><a class="btn btn-lg btn-primary" href="/orderDetails?orderId=<%=orders[i]._id%>">View</a></span></td>
-                                            <% if(orders[i].orderstatus=="pending"){ %>
-                                            <td><span class="tbl-btn"><a class="btn btn-lg btn-primary" href="">Cancel</a></span></td>
-                                            <% } %>
-                                        </tr>
-                                        <% } %> 
-                                        <!-- <tr>
+                                                <th scope="col">Date</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for(i=0 ; i<orders.length ; i++){ %>
+
+                                                <tr>
+                                                    <th scope="row"><span>
+                                                            <%= 1+i%>
+                                                        </span></th>
+
+                                                    <td><span>
+                                                            <%= orders[i].date.toLocaleDateString()%>
+                                                        </span></td>
+                                                    <td><span>
+                                                            <%= orders[i].subtotal %>
+                                                        </span> </td>
+                                                    <td><span id="status<%= orders[i]._id%>">
+                                                            <%= orders[i].orderstatus %>
+                                                        </span></td>
+                                                    <td><span class="tbl-btn"><a class="btn btn-lg btn-primary"
+                                                                href="/orderDetails?orderId=<%=orders[i]._id%>">View</a></span>
+                                                    </td>
+                                                    <% if(orders[i].orderstatus=="pending" ){ %>
+                                                        <td><span class="tbl-btn" id="button<%= orders[i]._id%>"><button class="btn btn-lg btn-primary"
+                                                                    onclick="cancel('<%=orders[i]._id%>')">Cancel</button></span>
+                                                        </td>
+                                                        <% } %>
+                                                </tr>
+                                                <% } %>
+                                                    <!-- <tr>
                                             <th scope="row"><span>548</span></th>
                                             <td><img class="prod-img" src="/user/images/product-image/2.jpg"
                                                     alt="product image"></td>
@@ -145,54 +167,98 @@
                                             <td><span class="tbl-btn"><a class="btn btn-lg btn-primary"
                                                         href="#">View</a></span></td>
                                         </tr> -->
-                                       
-                                    </tbody>
-                                </table>
+
+                                        </tbody>
+                                        <% } %>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- End User history section -->
+        </section>
+        <!-- End User history section -->
 
 
-    <!-- Footer navigation panel for responsive display -->
-    <%- include('./partials/footer.ejs') %>
-    
-    <!-- Feature tools end -->
+        <!-- Footer navigation panel for responsive display -->
+        <%- include('./partials/footer.ejs') %>
 
-    <!-- Vendor JS -->
-    <script src="/user/js/vendor/jquery-3.5.1.min.js"></script>
-    <script src="/user/js/vendor/popper.min.js"></script>
-    <script src="/user/js/vendor/bootstrap.min.js"></script>
-    <script src="/user/js/vendor/bootstrap-tagsinput.js"></script>
-    <script src="/user/js/vendor/jquery-migrate-3.3.0.min.js"></script>
-    <script src="/user/js/vendor/modernizr-3.11.2.min.js"></script>
-    <script src="/user/js/vendor/jquery.magnific-popup.min.js"></script>
+            <!-- Feature tools end -->
+            <script>
+                function cancel(ID) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, cancel it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire(
+                                'Deleted!',
+                                'Your order has been canceled.',
+                                'success'
+                            )
+                        }
+                    }).then(() => {
+                        $.ajax({
+                            url: "/cancelorder",
+                            method: "put",
+                            data: { ID: ID },
+                            success: ((res) => {
+                                if (res.status) {
+                                    document.getElementById('status' + ID).innerHTML = "cancelled"
+                                    document.getElementById('button'+ID).remove()
+                                }
 
-    <!--Plugins JS-->
-    <script src="/user/js/plugins/swiper-bundle.min.js"></script>
-    <script src="/user/js/plugins/nouislider.js"></script>
-    <script src="/user/js/plugins/countdownTimer.min.js"></script>
-    <script src="/user/js/plugins/scrollup.js"></script>
-    <script src="/user/js/plugins/jquery.zoom.min.js"></script>
-    <script src="/user/js/plugins/slick.min.js"></script>
-    <script src="/user/js/plugins/infiniteslidev2.js"></script>
-    <script src="/user/js/plugins/jquery.sticky-sidebar.js"></script>
-    <!-- Google translate Js -->
-    <script src="/user/js/vendor/google-translate.js"></script>
-    <script>
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
-        }
-    </script>
-    <!-- Main Js -->
-    <script src="/user/js/main.js"></script>
+                            })
+
+                        })
+
+
+                    })
+
+
+                }
+            </script>
+
+            <!-- Vendor JS -->
+            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="sweetalert2.all.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+            <script src="/user/js/vendor/jquery-3.5.1.min.js"></script>
+            <script src="/user/js/vendor/popper.min.js"></script>
+            <script src="/user/js/vendor/bootstrap.min.js"></script>
+            <script src="/user/js/vendor/bootstrap-tagsinput.js"></script>
+            <script src="/user/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+            <script src="/user/js/vendor/modernizr-3.11.2.min.js"></script>
+            <script src="/user/js/vendor/jquery.magnific-popup.min.js"></script>
+
+            <!--Plugins JS-->
+            <script src="/user/js/plugins/swiper-bundle.min.js"></script>
+            <script src="/user/js/plugins/nouislider.js"></script>
+            <script src="/user/js/plugins/countdownTimer.min.js"></script>
+            <script src="/user/js/plugins/scrollup.js"></script>
+            <script src="/user/js/plugins/jquery.zoom.min.js"></script>
+            <script src="/user/js/plugins/slick.min.js"></script>
+            <script src="/user/js/plugins/infiniteslidev2.js"></script>
+            <script src="/user/js/plugins/jquery.sticky-sidebar.js"></script>
+            <!-- Google translate Js -->
+            <script src="/user/js/vendor/google-translate.js"></script>
+            <script>
+                function googleTranslateElementInit() {
+                    new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+                }
+            </script>
+            <!-- Main Js -->
+            <script src="/user/js/main.js"></script>
 
 </body>
 
 
 <!-- Mirrored from loopinfosol.in/themeforest/ekka-html-v33/ekka-html/user-history.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 08 Jan 2023 23:19:21 GMT -->
+
 </html>

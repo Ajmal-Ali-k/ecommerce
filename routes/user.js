@@ -34,6 +34,7 @@ router.post('/verifypayment',userController.varifypayment)
 router.post('/create-order',userController.createOrder)
 router.get('/orderDetails',userController.orderDetails)
 router.post('/couponcheck',userController.couponcheck)
+router.put('/cancelorder',userController.cancelOrder)
 
 
 
