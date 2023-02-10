@@ -2,150 +2,337 @@
 <html lang="en" dir="ltr">
 
 
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="Ekka - Admin Dashboard HTML Template.">
 
-<%- include('./partials/Ahead.ejs') %>
+	<title>Ekka - Admin Dashboard HTML Template.</title>
+
+	<!-- GOOGLE FONTS -->
+	<link rel="stylesheet" href="sweetalert2.min.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com/">
+	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&amp;family=Poppins:wght@300;400;500;600;700;800;900&amp;family=Roboto:wght@400;500;700;900&amp;display=swap"
+		rel="stylesheet">
+
+	<link href="../../../../cdn.jsdelivr.net/npm/%40mdi/font%404.4.95/css/materialdesignicons.min.css"
+		rel="stylesheet" />
+
+	<!-- PLUGINS CSS STYLE -->
+	<link href="/admin/plugins/simplebar/simplebar.css" rel="stylesheet" />
+
+	<!-- Data-Tables -->
+	<link href='/admin/plugins/data-tables/datatables.bootstrap5.min.css' rel='stylesheet'>
+	<link href='/admin/plugins/data-tables/responsive.datatables.min.css' rel='stylesheet'>
+
+	<!-- Ekka CSS -->
+	<link id="ekka-css" rel="stylesheet" href="/admin/css/ekka.css" />
+
+	<!-- FAVICON -->
+	<link href="/admin/img/favicon.png" rel="shortcut icon" />
+</head>
+
 
 <body class="ec-header-fixed ec-sidebar-fixed ec-sidebar-light ec-header-light" id="body">
 
 	<!--  WRAPPER  -->
 	<div class="wrapper">
-	<!-- LEFT MAIN SIDEBAR -->
-	<%- include('./partials/Aleftsidebar.ejs') %>
+		<!-- LEFT MAIN SIDEBAR -->
+		<%- include('./partials/Aleftsidebar.ejs') %>
 
-		<!--  PAGE WRAPPER -->
-		<div class="ec-page-wrapper">
+			<!--  PAGE WRAPPER -->
+			<div class="ec-page-wrapper">
 
-			<!-- Header -->
-			<%- include('./partials/header.ejs') %>
+				<!-- Header -->
+				<%- include('./partials/header.ejs') %>
 
-			<!-- CONTENT WRAPPER -->
-            <div class="ec-content-wrapper">
-				<div class="content">
-					<div class="breadcrumb-wrapper breadcrumb-wrapper-2">
-						<h1>Orders History</h1>
-						<p class="breadcrumbs"><span><a href="index.html">Home</a></span>
-							<span><i class="mdi mdi-chevron-right"></i></span>History
-						</p>
+					<!-- CONTENT WRAPPER -->
+					<div class="ec-content-wrapper">
+						<div class="content">
+							<div class="breadcrumb-wrapper breadcrumb-wrapper-2">
+								<h1>Orders History</h1>
+								<p class="breadcrumbs"><span><a href="index.html">Home</a></span>
+									<span><i class="mdi mdi-chevron-right"></i></span>History
+								</p>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<div class="card card-default">
+										<div class="card-body">
+											<div class="table-responsive">
+												<table id="responsive-data-table" class="table" style="width:100%">
+													<thead>
+														<tr>
+															<th>ID</th>
+															<th>Customer</th>
+															<th>Email</th>
+															<th>Items</th>
+															<th>Price</th>
+															<th>Payment</th>
+															<th>Status</th>
+															<th>Date</th>
+															<th>Action</th>
+														</tr>
+													</thead>
+													<% for(let i=0 ;i<orderlist.length ;i++) {%>
+														<tbody>
+															<tr>
+																<td id="orderID<%=orderlist[i]._id %>">
+																	<%=orderlist[i]._id %>
+																</td>
+																<td>
+																	<%=orderlist[i].userId.Name %>
+																</td>
+																<td>
+																	<%=orderlist[i].userId.email %>
+																</td>
+																<td>
+																	<%=orderlist[i].products.length %>
+																</td>
+																<td>$<%=orderlist[i].subtotal%>
+																</td>
+																<td>
+																	<%=orderlist[i].paymentmethod %>
+																</td>
+
+																<% if(orderlist[i].orderstatus== "shipped") {%>
+																	<td><button type="button"
+																			class="mb-2 mr-2 badge badge-info"
+																			onclick="status('<%=orderlist[i]._id %>')"
+																			data-toggle="modal"
+																			data-target=".bd-example-modal-sm">
+																			<%= orderlist[i].orderstatus%>
+																		</button></td>
+
+																	<% }%>
+																	<% if(orderlist[i].orderstatus== "delivered") {%>
+																		<td><button type="button"
+																				class="mb-2 mr-2 badge badge-success"
+																				onclick="status('<%=orderlist[i]._id %>')"
+																				data-toggle="modal"
+																				data-target=".bd-example-modal-sm">
+																				<%= orderlist[i].orderstatus%>
+																			</button></td>
+	
+																		<% }%>
+																		<% if(orderlist[i].orderstatus== "processing") {%>
+																			<td><button type="button"
+																					class="mb-2 mr-2 badge badge-warning"
+																					onclick="status('<%=orderlist[i]._id %>')"
+																					data-toggle="modal"
+																					data-target=".bd-example-modal-sm">
+																					<%= orderlist[i].orderstatus%>
+																				</button></td>
+		
+																			<% }%>
+																			<% if(orderlist[i].orderstatus== "cancelled") {%>
+																				<td><button type="button"
+																						class="mb-2 mr-2 badge badge-danger"
+																						onclick="status('<%=orderlist[i]._id %>')"
+																						data-toggle="modal"
+																						data-target=".bd-example-modal-sm">
+																						<%= orderlist[i].orderstatus%>
+																					</button></td>
+			
+																				<% }%>
+																				
+
+
+																			<td> <%=orderlist[i].date.toLocaleDateString("en-Us")%>
+																			</td>
+																			<td>
+																				<div class="btn-group mb-1">
+																					<a
+																						href="/admin/invoice?orderId=<%=orderlist[i]._id%> "><button
+																							type="button"
+																							class="badge badge-primary">details</button></a>
+																
+																				</div>
+																			</td>
+															</tr>
+															
+
+
+
+
+														</tbody>
+														<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog"
+																			aria-labelledby="mySmallModalLabel" aria-hidden="true">
+															<div class="modal-dialog modal-sm">
+															<div class="modal-content">
+																<div class="">
+																	<div class="d-flex justify-content-around">
+																		<button class="my-3 mx-2 badge badge-primary col-6" style="width: 100px;"
+																			id="shipped">Shipped</button>
+																				<button class="my-3 mx-2 badge badge-success col-6" style="width: 100px; ;"
+																					id="delivered">Delivered</button>
+
+																				</div>
+																<div class="d-flex justify-content-around">
+																	<button class="my-3 mx-2 badge badge-danger col-6" style="width: 100px; ;"
+																		id="Cancelled">Cancelled</button>
+																	<button class="my-3 mx-2 badge badge-warning col-6" style="width: 100px;"
+																		id="processing">processing</button>
+																</div>
+
+
+
+
+										</div>
+								<input type="text" id="ID<%=orderlist[i]._id %>" value="<%=orderlist[i]._id %>"   hidden>
+
+
+
+							</div>
+						</div>
 					</div>
-					<div class="row">
-						<div class="col-12">
-							<div class="card card-default">
-								<div class="card-body">
-									<div class="table-responsive">
-										<table id="responsive-data-table" class="table" style="width:100%">
-											<thead>
-												<tr>
-													<th>ID</th>
-													<th>Customer</th>
-													<th>Email</th>
-													<th>Items</th>
-													<th>Price</th>
-													<th>Payment</th>
-													<th>Status</th>
-													<th>Date</th>
-													<th>Action</th>
-												</tr>
-											</thead>
-											<% for(let i=0 ;i<orderlist.length ;i++) {%> 
-											<tbody>
-												<tr>
-													<td><%=orderlist[i]._id  %> </td>
-													<td><%=orderlist[i].userId.Name %> </td>
-													<td><%=orderlist[i].userId.email %></td>
-													<td><%=orderlist[i].products.length %></td>
-													<td>$<%=orderlist[i].subtotal%></td>
-													<td><%=orderlist[i].paymentmethod %></td>
-													
-													<!-- <td><span class="mb-2 mr-2 badge badge-secondary">Cancel</span></td> -->
-													<td><select name="" id="status" onchange="status(this,'')">
-														<option value=" "></option>
-													 <option  value="conformed">Conformed</option>
-													 <option value="cancelled">Cancelled</option>
-													 <option value="delivered">Deliverd</option>
-													 <option value="shipped">Shipped</option>
-													 <option value="pending">Pending</option>
-													 <option value="placed">Placed</option>
-													</select></td>
-													
-													<td> <%=orderlist[i].date.toLocaleDateString("en-Us")%>  </td>
-													<td>
-														<div class="btn-group mb-1">
-															<a href="/admin/invoice?orderId=<%=orderlist[i]._id%> "><button  type="button"
-																class="btn btn-outline-success">details</button></a>
-															<!-- <button type="button"
-																class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-																data-bs-toggle="dropdown" aria-haspopup="true"
-																aria-expanded="false" data-display="static">
-																<span class="sr-only">Info</span>
-															</button> -->
-
-															<!-- <div class="dropdown-menu">
-																<a class="dropdown-item" href="/admin/invoice?orderId=<%=orderlist[i]._id%> ">Detail</a>
-																<a class="dropdown-item" href="#">Track</a>
-																<a class="dropdown-item" href="#">Cancel</a>
-															</div> -->
-														</div>
-													</td>
-												</tr>
-												<!-- <tr>
-													<td>1049</td>
-													<td>Ktn Markue</td>
-													<td>ktn@example.com</td>
-													<td>10</td>
-													<td>$280</td>
-													<td>COD</td>
-													<td><span class="mb-2 mr-2 badge badge-warning">Return</span></td>
-													<td>2021-10-30</td>
-													<td>
-														<div class="btn-group mb-1">
-															<button type="button"
-																class="btn btn-outline-success">Info</button>
-															<button type="button"
-																class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-																data-bs-toggle="dropdown" aria-haspopup="true"
-																aria-expanded="false" data-display="static">
-																<span class="sr-only">Info</span>
-															</button>
-
-															<div class="dropdown-menu">
-																<a class="dropdown-item" href="#">Detail</a>
-																<a class="dropdown-item" href="#">Track</a>
-																<a class="dropdown-item" href="#">Cancel</a>
-															</div>
-														</div>
-													</td>
-												 -->
-												
-												
-
-											</tbody>
-											<% } %> 
-										</table>
+				</div>
+			</div>
+														<% } %>
+												</table>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div> 
-			</div> 
 
 
 
 
 
 
-            
-			 <!-- End Content Wrapper -->
-            <!-- Footer -->
-            <%- include('./partials/Afooter.ejs') %>
-			
+
+					<!-- End Content Wrapper -->
+
+					<!-- modal -->
+
+					
+			</div>
+	</div>
+
+	<!-- Footer -->
+	<!-- Footer -->
+	<%- include('./partials/Afooter.ejs') %>
+
 
 		</div> <!-- End Page Wrapper -->
-	</div> <!-- End Wrapper -->
+		</div> <!-- End Wrapper -->
+		<script>
+			function status(orderId) {
+				
+				document.getElementById("shipped").addEventListener("click",e=>{
+					let ID=document.getElementById(`ID${orderId}`).value
+					console.log(ID)
+					$.ajax({
+					url: `/admin/orderstatus?id=${ID}&status=shipped`,
+					method: "post",
+					success: ((res) => {
+					    
+						if(res.Status){
 
-	<!-- Common Javascript -->
-	<%- include('./partials/commonscript.ejs') %>
-	
+                        setTimeout(() => location.reload(), 500)
+						}
+                    
+					})
+				})
+				})
+				document.getElementById("delivered").addEventListener("click",e=>{
+					let ID=document.getElementById(`ID${orderId}`).value
+					console.log(ID)
+					$.ajax({
+					url: `/admin/orderstatus?id=${ID}&status=delivered`,
+					method: "post",
+					success: ((res) => {
+						if(res.Status){
+
+setTimeout(() => location.reload(), 500)
+}
+						console.log("1111111111")
+					})
+				})
+				})
+				document.getElementById("Cancelled").addEventListener("click",e=>{
+					let ID=document.getElementById(`ID${orderId}`).value
+					console.log(ID)
+					$.ajax({
+					url: `/admin/orderstatus?id=${ID}&status=cancelled`,
+					method: "post",
+					success: ((res) => {
+						if(res.Status){
+
+setTimeout(() => location.reload(), 500)
+}
+						console.log("1111111111")
+					})
+				})
+				})
+				document.getElementById("processing").addEventListener("click",e=>{
+					let ID=document.getElementById(`ID${orderId}`).value
+					console.log(ID)
+					$.ajax({
+					url: `/admin/orderstatus?id=${ID}&status=processing`,
+					method: "post",
+					success: ((res) => {
+						if(res.Status){
+
+setTimeout(() => location.reload(), 500)
+}
+						console.log("1111111111")
+					})
+				})
+				})
+				
+				$.ajax({
+					url: `/admin/orderstatus?id=${ID}&status=${status}`,
+					method: "post",
+					success: ((res) => {
+						if(res.Status){
+
+setTimeout(() => location.reload(), 500)
+}
+						console.log("1111111111")
+					})
+				})
+
+
+			}
+		</script>
+
+		<!-- Common Javascript -->
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+			integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+			crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+			integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+			crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+			integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+			crossorigin="anonymous"></script>
+		<!-- Common Javascript -->
+		<script src="/admin/js/bootstrap.bundle.min.js"></script>
+		<script src="/admin/plugins/simplebar/simplebar.min.js"></script>
+		<script src="/admin/plugins/jquery/jquery-3.5.1.min.js"></script>
+		<script src="/admin/plugins/jquery-zoom/jquery.zoom.min.js"></script>
+		<script src="/admin/plugins/slick/slick.min.js"></script>
+
+		<!-- Data-Tables -->
+		<script src='/admin/plugins/data-tables/jquery.datatables.min.js'></script>
+		<script src='/admin/plugins/data-tables/datatables.bootstrap5.min.js'></script>
+		<script src='/admin/plugins/data-tables/datatables.responsive.min.js'></script>
+
+		<!-- Option Switcher -->
+		<script src="/admin/plugins/options-sidebar/optionswitcher.js"></script>
+
+		<!-- Ekka Custom -->
+		<script src="/admin/js/ekka.js"></script>
+
+
 </body>
 
 

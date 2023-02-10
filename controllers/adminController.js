@@ -279,6 +279,21 @@ const deleteCoupon = async (req,res) =>{
   const coupon = await Coupon.deleteOne({_id:couponId})
   res.redirect('/admin/coupon')
 }
+const orderStatus = async (req, res) => {
+  try {
+    const orderID = req.query.id;
+    const Status = req.query.status;
+    console.log(Status, orderID);
+    const order = await Order.updateOne(
+      { _id: orderID },
+      { orderstatus: req.query.status }
+    );
+    res.json({ Status: true });
+  } catch (err) {
+    console.log(err);
+  }
+ 
+};
 //*********** ******************/
 
 module.exports = {
@@ -303,5 +318,7 @@ module.exports = {
   orderInvoice,
   undoDelete,
   coupon,
-  postaddCoupon,deleteCoupon
+  postaddCoupon,
+  deleteCoupon,
+  orderStatus
 };

@@ -27,4 +27,5 @@ router.get('/invoice',adminController.orderInvoice)
 router.get('/coupon',adminController.coupon)
 router.post('/coupon',adminController.postaddCoupon)
 router.get('/coupon/:id',adminController.deleteCoupon)
+router.post('/orderstatus',adminController.orderStatus)
 module.exports = router;
