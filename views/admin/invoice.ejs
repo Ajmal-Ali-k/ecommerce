@@ -141,7 +141,10 @@
 							<div class="col-lg-3 col-xl-3 col-xl-3 ml-sm-auto">
 								<ul class="list-unstyled mt-3">
 									<li class="mid pb-3 text-dark"> Subtotal
-										<span class="d-inline-block float-right text-default">$<%= order.subtotal-50 %> </span>
+										<span class="d-inline-block float-right text-default">$<%= order.subtotal+order.discount-50%> </span>
+									</li>
+									<li class="mid pb-3 text-dark">Discount
+										<span class="d-inline-block float-right text-default">$<%= order.discount %></span>
 									</li>
 
 									<li class="mid pb-3 text-dark">Shipping Charge
@@ -149,7 +152,7 @@
 									</li>
 
 									<li class="pb-3 text-dark">Total
-										<span class="d-inline-block float-right">$<%= order.subtotal-50 %> </span>
+										<span class="d-inline-block float-right">$<%= order.subtotal %> </span>
 									</li>
 								</ul>
 

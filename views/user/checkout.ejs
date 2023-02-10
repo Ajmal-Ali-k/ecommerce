@@ -616,7 +616,7 @@
                                 if(res.status){
                                     console.log(res.totalprize)
                                     document.getElementById('discount').style.display="inline"
-                                    document.getElementById('afterDiscount').innerHTML="$"+res.discount
+                                    document.getElementById('afterDiscount').innerHTML=res.discount
                                     document.getElementById('totalshow').innerHTML="$"+res.totalprize
                                     document.getElementById('total').value=res.totalprize;
                                     document.getElementById('total').innerHTML="$"+res.totalprize

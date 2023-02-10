@@ -446,21 +446,10 @@ const placeOrder = async (req, res) => {
       address: DeliveryAddress._id,
       paymentmethod: ordertype,
       orderstatus: "pending",
-      peymentstatus: "accepted",
+      peymentstatus: "pending",
     });
     await neworder.save().then((result) => {
       req.session.orderId = result._id;
-      const orderedproducts = result.products
-      orderedproducts.forEach(async(element) =>{
-        let remove = await Product.findByIdAndUpdate(
-          {_id:element.product},
-          {$inc:{quantity :-element.quantity}}
-        )
-      });
-      console.log('removed product')
-
-      console.log(result.totalprice, "hiiiiiiiiiiiiiiiiiii");
-
       let userOrderdata = result;
       res.json({
         paypal: true,
@@ -527,9 +516,39 @@ const createOrder = async (req, res) => {
   }
 };
 
-const varifypayment = async (req, res) => {
-  console.log("verifyyyyyyyyyyyy");
+// const varifypayment = async (req, res) => {
+//   console.log("verifyyyyyyyyyyyy");
+//   const orderedproducts = result.products
+//   orderedproducts.forEach(async(element) =>{
+//     let remove = await Product.findByIdAndUpdate(
+//       {_id:element.product},
+//       {$inc:{quantity :-element.quantity}}
+//     )
+//   });
 
+//   const userId = req.session.user._id;
+//   const ordercart = await Cart.findOne({ owner: userId });
+//   ordercart.items = [];
+//   ordercart.cartTotal = 0;
+//   ordercart.save();
+
+//   res.json({ status: true });
+// };
+const varifypayment = async (req, res) => {
+console.log("payment verification")
+try {
+  const orderUpdate = await Order.findOneAndUpdate(
+    {_id:req.session.orderId},
+    {$set:{peymentstatus:"confirmed",orderstatus:"processing"}}
+  )
+  const orderedproducts =orderUpdate.products;
+  orderedproducts.forEach(async(element)=>{
+    await Product.findByIdAndUpdate(
+      {_id:element.product},
+      {$inc:{quantity:-element.quantity}}
+    )
+  })
+  console.log("product removed  bbbbbbbbb")
   const userId = req.session.user._id;
   const ordercart = await Cart.findOne({ owner: userId });
   ordercart.items = [];
@@ -537,7 +556,15 @@ const varifypayment = async (req, res) => {
   ordercart.save();
 
   res.json({ status: true });
+
+  
+} catch (error) {
+  console.log(error)
+  
+}
+
 };
+
 
 const orderHistory = async (req, res) => {
   const userId = req.session.user._id;
