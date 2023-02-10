@@ -1,9 +1,11 @@
+require("dotenv/config");
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session')
 const mongoose = require('mongoose');
+const db = require('./config/database')
 
 const userRouter = require('./routes/user');
 const adminRouter = require('./routes/admin');
@@ -27,8 +29,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const key =process.env.SESSIONKEY
 app.use(session({
-  secret:"sessionKey",
+  secret:key,
   resave : false,
   saveUninitialized:true,
   cookie:{maxAge:6000000}
@@ -48,22 +51,18 @@ app.use('*',(req, res, next)=> {
   res.status(404).render('user/404');
 });
 
-// app.use(adminroutes);
 
+const port = process.env.PORT ;
+db.dbConnection((res)=>{
+  if(res){
+    console.log("mongoose running");
+  }else{
+    console.log("mongoose error")
+  }
+})
 
-
-
-
-
-//database connection
-const port = process.env.PORT || 2000 ;
- mongoose.set('strictQuery', false);
-mongoose.connect("mongodb://localhost:27017/ekka", { useNewUrlParser: true, useUnifiedTopology: true})
-  .then((result) => app.listen(port,()=>{
-    console.log(`server is running at port no ${port}`);
-  }))
-  .catch((err) => console.log(err));
-
-
+  app.listen(port,()=>{
+    console.log(`server is running at port no${port}`)
+  })
 
 

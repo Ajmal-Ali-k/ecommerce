@@ -107,12 +107,7 @@ const userLogin_post = async (req, res) => {
 
 /********preview page******************/
 
-// let previewPage = async (req, res) => {
-//   const id = req.query.id;
 
-//   const findedpro = await Product.findOne({ _id: id });
-//   res.render("user/preview", { findedpro });
-// };
 let previewPage = async (req, res) => {
   let findedpro;
   const id = req.query.id;

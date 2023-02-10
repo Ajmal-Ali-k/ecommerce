@@ -294,6 +294,9 @@ const orderStatus = async (req, res) => {
   }
  
 };
+const dailyreport =async (req,res)=>{
+  res.render('admin/dailyreport');
+}
 //*********** ******************/
 
 module.exports = {
@@ -320,5 +323,6 @@ module.exports = {
   coupon,
   postaddCoupon,
   deleteCoupon,
-  orderStatus
+  orderStatus,
+  dailyreport
 };
