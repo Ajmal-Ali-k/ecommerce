@@ -29,4 +29,7 @@ router.post('/coupon',verifyAdmin,adminController.postaddCoupon)
 router.get('/coupon/:id',verifyAdmin,adminController.deleteCoupon)
 router.post('/orderstatus',verifyAdmin,adminController.orderStatus)
 router.get('/dailyreport',verifyAdmin,adminController.dailyreport)
+router.get('/monthlyreport',verifyAdmin,adminController.monthlyreport)
+router.get('/yearlyreport',verifyAdmin,adminController.yearlyreport)
+
 module.exports = router;

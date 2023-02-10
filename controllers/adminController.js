@@ -111,10 +111,9 @@ let undoDelete = async (req, res) => {
 
 
 let catagoryDelete = async (req, res) => {
-  console.log('hiiiiiiiidaaaaaaaaaa')
+  
   const id = req.query.catID;
   const status = await Category.deleteOne({ _id: id });
-  // res.redirect("/admin/add-category");
   res.json({status:true});
 };
 
@@ -294,8 +293,105 @@ const orderStatus = async (req, res) => {
   }
  
 };
+
+/////////////************reports*************/////////////////////
+
 const dailyreport =async (req,res)=>{
-  res.render('admin/dailyreport');
+  try {
+    const dailyReport = await Order.aggregate([{
+      $match:{
+        orderstatus:{ $eq:"delivered"}
+      },
+      },
+      {
+        $group:{
+          _id:{
+            year:{$year:"$createdAt"},
+            month:{$month:"$createdAt"},
+            day:{$dayOfMonth:"$createdAt"},
+          },
+            totalprice : {$sum :"$subtotal"},
+            products :{$sum : {$size :"$products"}},
+            count :{$sum :1}
+        }
+      },
+      {$sort:{createdAt :-1}}
+     
+    ])
+    console.log(dailyReport[0].totalprice);
+    console.log(dailyReport);
+    res.render('admin/dailyreport',{dailyReport});
+    
+  } catch (error) {
+    console.log(error)
+  }
+
+ 
+}
+const monthlyreport =async (req,res)=>{
+  try {
+    const monthlyReport = await Order.aggregate([{
+      $match:{
+        orderstatus:{ $eq:"delivered"}
+      },
+      },
+      {
+        $group:{
+          _id:{
+            year:{$year:"$createdAt"},
+            month:{$month:"$createdAt"},
+            
+          },
+            totalprice : {$sum :"$subtotal"},
+            products :{$sum : {$size :"$products"}},
+            count :{$sum :1}
+        }
+      },
+      {$sort:{createdAt :-1}},     
+    ]);
+    console.log(monthlyReport)
+    function getMonthName(monthNumber){
+      const date  = new Date()
+      date.setMonth(monthNumber -1);
+      return  date.toLocaleDateString('en-US',{month:"long"})
+    }
+    let month=[];
+    for(let i = 0 ;i< monthlyReport.length;i++){
+      month.push(getMonthName(monthlyReport[i]._id.month));
+    }
+    res.render('admin/monthlyreport',{monthlyReport,month})
+  }catch(error){
+    console.log(error);
+
+  }
+}
+
+
+const yearlyreport =async(req,res)=>{
+  try {
+    const yearlyReport = await Order.aggregate([
+      {$match:{
+        orderstatus:{$eq:"delivered"}
+      }},
+      {
+        $group:{
+          _id:{
+            year:{$year:"$createdAt"}
+          },
+          totalprice : {$sum :"$subtotal"},
+            products :{$sum : {$size :"$products"}},
+            count :{$sum :1}
+        }
+      }
+
+    ])
+    console.log(yearlyReport)
+    res.render("admin/yearlyreport",{yearlyReport})
+    
+  } catch (error) {
+    console.log(error)
+    
+  }
 }
 //*********** ******************/
 
@@ -324,5 +420,7 @@ module.exports = {
   postaddCoupon,
   deleteCoupon,
   orderStatus,
-  dailyreport
+  dailyreport,
+  monthlyreport,
+  yearlyreport
 };

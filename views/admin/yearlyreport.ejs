@@ -78,13 +78,13 @@
 											</thead>
 
 											<tbody>
-												<% for(let i=0 ; i<dailyReport.length;i++){ %>
 												<tr>
-													<td><%= dailyReport[i]._id.day%>/<%= dailyReport[i]._id.month%>/<%= dailyReport[i]._id.year%></td>
-													<td><%= dailyReport[i].count %></td>
-													<td><%= dailyReport[i].products%></td>
-													<td>$<%= dailyReport[i].totalprice%></td>
-													<td>$<%= dailyReport[i].totalprice*15/100%></td>
+													<% for( let i = 0; i < yearlyReport.length; i++ ) { %>
+													<td><%= yearlyReport[i]._id.year%></td>
+													<td><%= yearlyReport[i].count %></td>
+													<td><%= yearlyReport[i].product %></td>
+													<td>$<%= yearlyReport[i].totalprice%></td>
+													<td>$<%= yearlyReport[i].totalprice*15/100 %></td>
 													<!-- <td>PAID</td> -->
 													<!-- <td><span class="mb-2 mr-2 badge badge-secondary">Cancel</span></td>
 													<td>2021-10-30</td>
@@ -108,7 +108,6 @@
 													</td> -->
 												</tr>
 												<% } %>
-												
 												<!-- <tr>
 													<td>1047</td>
 													<td>Bhavesh Markue</td>
