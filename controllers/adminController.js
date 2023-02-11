@@ -8,6 +8,7 @@ const Order = require("../model/user/order");
 const Address = require("../model/user/address");
 const Coupon = require('../model/admin/coupon');
 const { find } = require("../model/user/userModel");
+const Banner =require('../model/admin/banner')
 
 const index_get = (req, res) => {
   res.render("admin/index");
@@ -393,7 +394,79 @@ const yearlyreport =async(req,res)=>{
     
   }
 }
-//*********** ******************/
+//*********** cart******************/
+
+
+
+const dailyChart = async(req,res)=>{
+  try {
+    const order = await Order.find({})
+    let today = new Date();
+    let startDate = new Date(today.setUTCHours(0,0,0,0))
+    let endDate = new Date(today.setHours(23,59,59,999))
+
+
+    const todaySales = await Order.aggregate([
+      {
+      $match:{
+        orderstatus:{$eq:"delivered"},
+        createdAt:{$lt:endDate,$gt:startDate}
+      },
+     },{
+      $group:{
+        _id:"",
+        total:{$sum:"$subtotal"},
+        count:{$sum:1}
+      },
+     },{
+      $project:{
+        _id:0
+      }
+     }
+    ]);
+    const totalAmount = todaySales[0].total
+    const totalOrder = todaySales[0].count
+    console.log(totalAmount,000000000000000000000)
+    res.json({Status:true,totalAmount,totalOrder})
+
+  } catch (error) {
+    console.log(error)
+    
+  }
+}
+const yearlyChart = async (req, res) => {
+
+  try {
+    const yearReport = await Order.aggregate([
+      {
+        $match: { orderstatus: { $eq: "delivered" } },
+      },
+      {
+        $group: {
+          _id: {
+            year: { $year: "$createdAt" },
+          },
+          totalprice: { $sum: "$subtotal" },
+        },
+      },
+      { $sort: { "_id.year": -1 } },
+    ]);
+    let totalSales = [];
+    let years = [];
+  
+    for (let i = 0; i < yearReport.length; i++) {
+      totalSales.push(yearReport[i].totalprice);
+      years.push(yearReport[i]._id.year);
+    }
+    console.log(years);
+    console.log(totalSales);
+  
+    res.json({ status: true, totalSales, years });
+  } catch (err) {
+    console.log(err);
+  }
+ 
+};
 
 module.exports = {
   index_get,

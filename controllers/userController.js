@@ -388,7 +388,7 @@ const placeOrder = async (req, res) => {
   const Amount = req.body.total;
   let discount = req.body.discount;
   if(!discount){
-    discount = "$0"
+    discount = "0"
   }
   console.log(discount, "ggggggggg");
   console.log(req.body.total);
@@ -415,7 +415,7 @@ const placeOrder = async (req, res) => {
       discount: discount,
       address: DeliveryAddress._id,
       paymentmethod: ordertype,
-      orderstatus: "pending",
+      orderstatus: "processing",
       peymentstatus: "unpaid",
     });
     neworder.save().then((result) => {
