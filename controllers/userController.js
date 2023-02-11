@@ -8,6 +8,7 @@ const { default: mongoose } = require("mongoose");
 const Cart = require("../model/user/cart");
 const Address = require("../model/user/address");
 const Order = require("../model/user/order");
+const Banner = require('../model/admin/banner')
 const { findOne } = require("../model/user/order");
 const paypal = require("@paypal/checkout-server-sdk");
 const envirolment =
@@ -19,8 +20,9 @@ const paypalCliend = new paypal.core.PayPalHttpClient(
   new envirolment(process.env.PAYPAL_CLIND_ID, process.env.SECRET_KEY)
 );
 
-const index_get = (req, res) => {
-  res.render("user/index");
+const index_get = async (req, res) => {
+  const banner = await Banner.find({})
+  res.render("user/index",{banner});
 };
 const userLogin_get = (req, res) => {
   res.render("user/login");
