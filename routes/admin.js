@@ -31,5 +31,6 @@ router.post('/orderstatus',verifyAdmin,adminController.orderStatus)
 router.get('/dailyreport',verifyAdmin,adminController.dailyreport)
 router.get('/monthlyreport',verifyAdmin,adminController.monthlyreport)
 router.get('/yearlyreport',verifyAdmin,adminController.yearlyreport)
-
+router.get('/createBanner',verifyAdmin,adminController.createbanner)
+router.post('/createBanner',verifyAdmin,productPhotos,adminController.addbanner)
 module.exports = router;

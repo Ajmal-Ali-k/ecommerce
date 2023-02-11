@@ -468,6 +468,31 @@ const yearlyChart = async (req, res) => {
  
 };
 
+
+const createbanner = async(req,res)=>{
+  res.render('admin/bannerCreate')
+}
+const addbanner = async (req,res)=>{
+  try {
+    console.log(req.files)
+    console.log(req.body)
+    const image = req.files
+    if(image==null){
+      res.redirect('/admin/createBanner')
+    }else{
+      let img= image[0].path.substring(6)
+      Object.assign(req.body, { image: img});
+      const banner = await Banner.create(
+        req.body
+      )
+    }
+    res.redirect('/admin/createBanner')
+  } catch (error) {
+    console.log(error)
+    
+  }
+}
+
 module.exports = {
   index_get,
   userlist,
@@ -495,5 +520,7 @@ module.exports = {
   orderStatus,
   dailyreport,
   monthlyreport,
-  yearlyreport
+  yearlyreport,
+  createbanner,
+  addbanner
 };

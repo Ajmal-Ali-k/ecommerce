@@ -3,7 +3,8 @@ const mongoose=require("mongoose")
 const Banner=new mongoose.Schema({
 
   image:{
-    type:String
+    type:String,
+    required:true
   }   ,
   title:{
     type:String
@@ -11,11 +12,9 @@ const Banner=new mongoose.Schema({
   url:{
     type:String
   },
-  description:{
-    type:String
-  },
-  subImage:{
+  discription:{
     type:String
   }
+  
 })
 module.exports=mongoose.model("Banner",Banner)
