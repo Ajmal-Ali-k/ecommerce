@@ -492,6 +492,28 @@ const addbanner = async (req,res)=>{
     
   }
 }
+const listbanner = async (req,res) =>{
+  try {
+    const banner=await Banner.find({})
+    console.log(banner);
+    if(banner){
+    res.render("admin/bannerlist",{banner})}
+  } catch (err) {
+    console.log(err);
+  }
+}
+const deleteBanner=async(req,res)=>{
+  try {
+    console.log(777777777777777);
+    const bannerID=req.query.dltID
+    console.log(bannerID);
+    const remove=await Banner.findByIdAndDelete(bannerID)
+    res.json({status:true})
+  } catch (err) {
+   console.log(err); 
+  }
+ 
+}
 
 module.exports = {
   index_get,
@@ -522,5 +544,7 @@ module.exports = {
   monthlyreport,
   yearlyreport,
   createbanner,
-  addbanner
+  addbanner,
+  listbanner,
+  deleteBanner
 };

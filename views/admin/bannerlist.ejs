@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<!-- Mirrored from loopinfosol.in/themeforest/ekka-html-v33/ekka-admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 08 Jan 2023 23:28:04 GMT -->
+<%- include('./partials/Ahead.ejs') %>
+
+<body class="ec-header-fixed ec-sidebar-fixed ec-sidebar-light ec-header-light" id="body">
+  <!--  WRAPPER  -->
+  <div class="wrapper">
+    <!-- LEFT MAIN SIDEBAR -->
+    <%- include('./partials/Aleftsidebar.ejs') %>
+
+    <!--  PAGE WRAPPER -->
+    <div class="ec-page-wrapper">
+      <!-- Header -->
+      <%- include('./partials/header.ejs') %>
+
+      <!-- CONTENT WRAPPER -->
+      <div class="ec-content-wrapper">
+        <div class="content">
+          <div class="breadcrumb-wrapper breadcrumb-contacts">
+            <div>
+              <h1>Banner List</h1>
+              <p class="breadcrumbs">
+                <span><a href="/index">Home</a></span>
+                <span><i class="mdi mdi-chevron-right"></i></span>Bannerlist
+              </p>
+            </div>
+            <!-- <div>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addUser"
+                >
+                  Add User
+                </button>
+              </div> -->
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="ec-vendor-list card card-default">
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table id="responsive-data-table" class="table">
+                      <thead>
+                        <tr>
+                          <th>Image</th>
+                          <th>title</th>
+                          <th>url</th>
+                          <th>Discription</th>
+                          <!-- <th>Total Buy</th> -->
+                          <!-- <th>Status</th>
+                          <th>Join On</th> -->
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <% if (banner.length>0) { %>
+                        <% for(let i=0 ;i< banner.length;i++){ %>
+                      <tbody id="banner">
+                     
+                        <tr>
+                          <td>
+                            <img class="vendor-thumb" src="<%= banner[i].image %>" alt="user profile" />
+                          </td>
+                          <td><%= banner[i].title %></td>
+                          <td><%= banner[i].url%></td>
+                          <td><%= banner[i].discription %></td>
+                        
+                          <td>
+                             <button type="button" onclick="deleteBanner('<%=banner[i]._id%>')" class="btn btn-danger btn-sm btn-outline-primary ">delete</button>   
+                          </td>
+                        </tr>
+                  
+                      </tbody>
+                      <% }} %>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- End Content -->
+        </div>
+        <!-- End Content Wrapper -->
+        <!-- Footer -->
+        <%- include('./partials/Afooter.ejs') %>
+      </div>
+      <!-- End Page Wrapper -->
+    </div>
+    <!-- End Wrapper -->
+
+    <!-- Common Javascript -->
+    <script>
+                function deleteBanner(ID){
+           console.log(ID);
+            $.ajax({
+                
+                url:`/admin/deletebanner?dltID=${ID}`,
+                method:"delete",
+               
+                success:((res)=>{
+                    if (res.status) {
+                        document.getElementById("banner").remove()
+                    }
+                })
+            })
+        }
+    </script>
+    <%- include('./partials/commonscript.ejs') %>
+</body>
+
+
+
+</html>

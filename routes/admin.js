@@ -33,4 +33,6 @@ router.get('/monthlyreport',verifyAdmin,adminController.monthlyreport)
 router.get('/yearlyreport',verifyAdmin,adminController.yearlyreport)
 router.get('/createBanner',verifyAdmin,adminController.createbanner)
 router.post('/createBanner',verifyAdmin,productPhotos,adminController.addbanner)
+router.get('/bannerlist',verifyAdmin,adminController.listbanner)
+router.delete('/deletebanner',verifyAdmin,adminController.deleteBanner)
 module.exports = router;
