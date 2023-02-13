@@ -149,7 +149,7 @@
                                                     <td><span class="tbl-btn"><a class="btn btn-lg btn-primary"
                                                                 href="/orderDetails?orderId=<%=orders[i]._id%>">View</a></span>
                                                     </td>
-                                                    <% if(orders[i].orderstatus=="pending" ){ %>
+                                                    <% if(orders[i].orderstatus=="processing" ){ %>
                                                         <td><span class="tbl-btn" id="button<%= orders[i]._id%>"><button class="btn btn-lg btn-primary"
                                                                     onclick="cancel('<%=orders[i]._id%>')">Cancel</button></span>
                                                         </td>

@@ -35,7 +35,7 @@ router.post('/create-order',userController.createOrder)
 router.get('/orderDetails',userController.orderDetails)
 router.post('/couponcheck',userController.couponcheck)
 router.put('/cancelorder',userController.cancelOrder)
-
+router.post('/otp_verify',userController.otpverify)
 
 
 

@@ -657,6 +657,15 @@ const cancelOrder = async (req, res) => {
   }
  
 };
+
+const otpverify = async (req,res,next)=>{
+  console.log("hiiiiiiii")
+  console.log(req.body)
+
+}
+
+
+
 module.exports = {
   index_get,
   userLogin_get,
@@ -685,5 +694,6 @@ module.exports = {
   orderDetails,
   deleteAddress,
   couponcheck,
-  cancelOrder
+  cancelOrder,
+  otpverify
 };

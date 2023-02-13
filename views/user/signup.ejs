@@ -23,6 +23,12 @@
     <link rel="stylesheet" href="/user/css/vendor/ecicons.min.css" />
 
     <!-- css All Plugins Files -->
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css"
+    integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7"
+    crossorigin="anonymous"
+/>
 
     <link rel="stylesheet" href="/user/css/plugins/animate.css" />
     <link rel="stylesheet" href="/user/css/plugins/swiper-bundle.min.css" />
@@ -90,33 +96,51 @@
                 <div class="ec-register-wrapper">
                     <div class="ec-register-container">
                         <div class="ec-register-form">
-                          <div id="error_message" style="margin-bottom: 20px; padding: 0px; background: #fe8b8e; text-align: center; font-size: 14px; transition: all 0.5s ease;"></div>
-                            <form onsubmit="return validation()" action="/signup-post" method="post" id="myform">
+                            <div
+                            class="alert alert-danger mt-0 mb-2"
+                            style="display: none"
+                            id="errmsg"
+                            role="alert"
+                        ></div>
+                          <!-- <div id="error_message" style="margin-bottom: 20px; padding: 0px; background: #fe8b8e; text-align: center; font-size: 14px; transition: all 0.5s ease;"></div> -->
+                            <form   id="myform">
                                 <span class="ec-register-wrap ">
                                     <label>Name*</label>
-                                    <input type="text"  id="name" name="name" placeholder="Enter your first name"  />
+                                    <p class="text-danger fw-light opacity-75 " id="nameidwarning"></p>
+                                    <input type="text"  id="name" name="name" placeholder="Enter your first name" required onkeyup="onkey()" onkeydown="return /[a-z]/i.test(event.key)"  />
+                                    <!-- <div id="nameidwarning" style="color: #ff0099;margin: 10px 2px;font-size: 0.8em; font-weight: bold;"></div> -->
+                               
                                 </span>
                   
                                 <span class="ec-register-wrap ec-register-half">
                                     <label>Email*</label>
-                                    <input type="email" id="email" name="email" placeholder="Enter your email add..."  />
+                                    <p class="text-danger fw-light opacity-75" id="emailidwarning"></p>
+                                    <input type="email" id="email" autocomplete="off" name="email" placeholder="Enter your email add..."  required onkeyup="emailkey()" />
+                                  
                                 </span>
                                 <span class="ec-register-wrap ec-register-half">
                                     <label>Phone Number*</label>
-                                    <input type="text" name="phone" id="phone" placeholder="Enter your phone number" minlength="10" maxlength="10" />
+                                    <p class="text-danger fw-light opacity-75" id="mobileidwarning"></p>
+                                    <input type="text" name="phone" id="phone" placeholder="Enter your phone number" minlength="10" maxlength="10" required onkeypress="return isNumberKey(event)" onkeyup="mobilekey()" />
+                                 
+                                    
                                 </span>
                 
                                 <span class="ec-register-wrap ec-register-half">
                                     <label>password *</label>
-                                    <input type="text" name="password" id="password" placeholder="Confirm password" />
+                                    <p class="text-danger fw-light opacity-75" id="passwordidwarning"></p>
+                                    <input type="text" name="password" id="password" placeholder="Confirm password" onkeyup="passwordkey()" required/>
+                                   
                                 </span>
                                 <span class="ec-register-wrap ec-register-half">
                                     <label>Confirm password *</label>
-                                    <input type="text" name="Confirmpassword" id="Confirmpassword" placeholder="Confirm password" />
+                                    <p class="text-danger fw-light opacity-75" id="password2idwarning"></p>
+                                    <input type="text" name="Confirmpassword" id="confirmpassword" placeholder="Confirm password" onkeyup="passwordkey()" required />
+                                   
                                 </span>
            
                                 <span class="ec-register-wrap ec-register-btn">
-                                    <button class="btn btn-primary" type="submit">Signup</button>
+                                    <button class="btn btn-primary" type="submit"  onclick="validatesignup()">Signup</button>
                                 </span>
                             </form>
                         </div>
@@ -130,40 +154,55 @@
     <!-- Footer Start -->
     <%- include('./partials/footer.ejs') %>
     <!-- Feature tools end -->
-    <script>
+    <!-- <script>
         function validation(){
             const name = document.getElementById("name").value;
             const email = document.getElementById("email").value;
             const phone = document.getElementById("phone").value;
             const password = document.getElementById("password").value;
             const Confirmpassword = document.getElementById("Confirmpassword").value;
-            const error_message = document.getElementById('error_message')
             
+             const error_message = document.getElementById('error_message')
 
-            error_message.style.padding = "10px";
-            if (name.length <5){
+
+         
+            
+             error_message.style.padding = "10px";  
+          
+            if (name.length <4){
+ 
                 text = "please enter valid name"
-                error_message.innerHTML= text;
+                error_message.innerHTML= text
+                setTimeout(()=> document.getElementById('error_message').innerHTML ="",2000)
+                setTimeout(()=> document.getElementById('error_message').style.padding ="0px",2000)
                 return false ;
             }
             if(email.indexOf('@')== -1 || email.length<6){
                 text = "please enter valid email";
                 error_message.innerHTML=text
+                setTimeout(()=> document.getElementById('error_message').innerHTML ="",2000)
+                setTimeout(()=> document.getElementById('error_message').style.padding ="0px",2000)
                 return false;
             }
             if(isNaN(phone)||phone.length !=10){
                 text ="please enter the valid phone number";
                 error_message.innerHTML=text
+                setTimeout(()=> document.getElementById('error_message').innerHTML ="",2000)
+                setTimeout(()=> document.getElementById('error_message').style.padding ="0px",2000)
                 return false;
             }
             if(password.length<6){
                 text="password must need 6 characters"
                 error_message.innerHTML=text;
+                setTimeout(()=> document.getElementById('error_message').innerHTML ="",2000)
+                setTimeout(()=> document.getElementById('error_message').style.padding ="0px",2000)
                 return false;
             }
             if(password!==Confirmpassword){
                 text="password is not matching";
                 error_message.innerHTML=text;
+                setTimeout(()=> document.getElementById('error_message').innerHTML ="",2000)
+                setTimeout(()=> document.getElementById('error_message').style.padding ="0px",2000)
                 return false;
             }
 
@@ -172,10 +211,164 @@
 
 
         }
+    </script> -->
+    
+    <script>
+         let name = document.getElementById("name"),
+                email = document.getElementById("email"),
+                mobile = document.getElementById("phone");
+            let password = document.getElementById("password"),
+                password2 = document.getElementById("confirmpassword"),
+                namewarning = document.getElementById("nameidwarning");
+            let emailwarning = document.getElementById("emailidwarning"),
+                mobilewarning = document.getElementById("mobileidwarning");
+            let passwordwarning = document.getElementById("passwordidwarning"),
+                password2warning = document.getElementById("password2idwarning");
+
+            function validatesignup() {
+                namewarning.innerHTML = "";
+                emailwarning.innerHTML = "";
+                mobilewarning.innerHTML = "";
+                passwordwarning.innerHTML = "";
+                password2warning.innerHTML = "";
+                event.preventDefault();
+                let form = event.target.form;
+                let validation = true;
+
+                if (name.value == "") {
+                    namewarning.textContent = "Please enter your name";
+                    validation = false;
+                } else if (name.value.length < 4 || name.value.length > 20) {
+                    namewarning.innerHTML = "Please enter your full name";
+                    validation = false;
+                }
+                if (email.value == "") {
+                    emailwarning.innerHTML = "Please enter your email id";
+                    validation = false;
+                } else {
+                     var validRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+                    if (!email.value.match(validRegex) || email.value.length > 20) {
+                        emailwarning.innerHTML = "email id is not in valid format";
+                        validation = false;
+                    } else {
+                        let check = email.value.split("");
+                        if (!isNaN(check[0])) {
+                            emailwarning.innerHTML = "email id is not in valid format";
+                            validation = false;
+                        }
+                    }
+                }
+                // let userRegex = /^[a-z0-9._\-]+$/;
+                // if (username.value == "") {
+                //     usernamewarning.innerHTML = "Please enter your username";
+                //     validation = false;
+                // } else if (username.value.length < 4 || username.value.length > 15 || !username.value.match(userRegex)) {
+                //     usernamewarning.innerHTML = "username is not in valid format";
+                //     validation = false;
+                // }
+
+                if (mobile.value == "") {
+                    mobilewarning.innerHTML = "Please enter your mobile number";
+                    validation = false;
+                } else if (mobile.value.length != 10) {
+                    mobilewarning.innerHTML = "Mobile number is not in valid format";
+                    validation = false;
+                }
+                if (password.value == "") {
+                    passwordwarning.innerHTML = "Please enter a password";
+                    validation = false;
+                } else if (password.value.length < 6 || password.value.length > 12) {
+                    passwordwarning.innerHTML = "Password should be between 6 to 12 letters";
+                    validation = false;
+                } else if (password2.value == "") {
+                    password2warning.innerHTML = "Please confirm your password";
+                    validation = false;
+                } else if (password.value != password2.value) {
+                    password2warning.innerHTML = "Password confirmation is failed";
+                    validation = false;
+                }
+                // if (validation) {
+                //     try {
+                //         axios
+                //             .post("/otp_verify", {
+                //                 fullname: name.value,
+                //                 email: email.value,
+                //                 username: username.value,
+                //                 phone: phone.value,
+                //                 password: password.value,
+                //                 confirmpassword: password2.value,
+                //             })
+                //             .then((e) => {
+                //                 if (e.data.error) {
+                //                     document.getElementById("errmsg").innerHTML = error;
+                //                 }
+                //                 if (!e.data.response) {
+                //                     form.submit();
+                //                     location.href = "/otp";
+                //                     // location.href = "/";
+                //                 } else {
+                //                     errmsg.style.display = "block";
+                //                     document.getElementById("errmsg").innerHTML = e.data.response;
+                //                 }
+                //             });
+                //     } catch (error) {
+                //         console.log(error);
+                //     }
+                // }
+                if(validation){
+                    try {
+                        console.log("jiiiiiiiiii")
+                        $.ajax({
+                            
+                            url:"/otp_verify",
+                            method:"post",
+                            data:$("#myform").serialize(),
+                            success:(res)=>{
+                                console.log(res)
+                            }
+                        })
+                    } catch (error) {
+                        console.log(error)
+                        
+                    }
+                }
+            }
+            function emailkey() {
+                emailwarning.innerHTML = "";
+            }
+            // function usernameKey() {
+            //     usernamewarning.innerHTML = "";
+            // }
+
+            function passwordkey() {
+                passwordwarning.innerHTML = "";
+            }
+
+            function confirmkey() {
+                password2warning.innerHTML = "";
+            }
+
+            function mobilekey() {
+                mobilewarning.innerHTML = "";
+            }
+
+            function onkey() {
+                namewarning.innerHTML = "";
+            }
+
+            function isNumberKey(evt) {
+                var charCode = evt.which ? evt.which : evt.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) return false;
+                return true;
+            }
     </script>
+           
+    
+    
 
     <!-- Vendor JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="/user/js/vendor/jquery-3.5.1.min.js"></script>
