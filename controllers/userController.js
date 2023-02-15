@@ -8,9 +8,10 @@ const { default: mongoose } = require("mongoose");
 const Cart = require("../model/user/cart");
 const Address = require("../model/user/address");
 const Order = require("../model/user/order");
-const Banner = require('../model/admin/banner')
+const Banner = require("../model/admin/banner");
 const { findOne } = require("../model/user/order");
 const paypal = require("@paypal/checkout-server-sdk");
+const { sendotp, varifyotp } = require("../helpers/otp");
 const envirolment =
   process.env.NODE_ENV === "production"
     ? paypal.core.LiveEnvironment
@@ -19,10 +20,15 @@ const envirolment =
 const paypalCliend = new paypal.core.PayPalHttpClient(
   new envirolment(process.env.PAYPAL_CLIND_ID, process.env.SECRET_KEY)
 );
+let userDetail;
 
 const index_get = async (req, res) => {
-  const banner = await Banner.find({})
-  res.render("user/index",{banner});
+  const view = await Product.find().limit(8);
+  const banner = await Banner.find({});
+  const kids= await Product.find({catagory:"kids"}).limit(8)
+  const women = await Product.find({catagory:"women"}).limit(8)
+  const men = await Product.find({catagory:"men"}).limit(8)
+  res.render("user/index", { banner,view,kids,women,men });
 };
 const userLogin_get = (req, res) => {
   res.render("user/login");
@@ -35,7 +41,7 @@ const catagory = (req, res) => {
   res.render("user/catagory");
 };
 const productspage = async (req, res) => {
-  const view = await Product.find();
+  const view = await Product.find({delete:false});
   res.render("user/products", { view });
 };
 
@@ -43,14 +49,16 @@ const phone = (req, res) => {
   res.render("user/phone");
 };
 const otp = (req, res) => {
-  res.render("user/otp");
+  const phone = userDetail.phone
+  console.log(phone);
+  res.render("user/otp",{phone});
 };
 const wishlist = (req, res) => {
   res.render("user/wishlist");
 };
 
 let logout = (req, res) => {
-  req.session.user = null;
+  req.session.user= null
   res.redirect("/");
 };
 
@@ -108,7 +116,6 @@ const userLogin_post = async (req, res) => {
 };
 
 /********preview page******************/
-
 
 let previewPage = async (req, res) => {
   let findedpro;
@@ -369,7 +376,6 @@ const deleteAddress = async (req, res) => {
 
 //************checkout*******************//
 
-
 const checkout = async (req, res) => {
   const userId = req.session.user._id;
 
@@ -389,8 +395,8 @@ const placeOrder = async (req, res) => {
   const ordertype = req.body.paymode;
   const Amount = req.body.total;
   let discount = req.body.discount;
-  if(!discount){
-    discount = "0"
+  if (!discount) {
+    discount = "0";
   }
   console.log(discount, "ggggggggg");
   console.log(req.body.total);
@@ -422,14 +428,14 @@ const placeOrder = async (req, res) => {
     });
     neworder.save().then((result) => {
       req.session.orderId = result._id;
-      const orderedproducts = result.products
-      orderedproducts.forEach(async(element) =>{
+      const orderedproducts = result.products;
+      orderedproducts.forEach(async (element) => {
         let remove = await Product.findByIdAndUpdate(
-          {_id:element.product},
-          {$inc:{quantity :-element.quantity}}
-        )
+          { _id: element.product },
+          { $inc: { quantity: -element.quantity } }
+        );
       });
-      console.log('removed product')
+      console.log("removed product");
       ordercart.items = [];
       ordercart.cartTotal = 0;
       ordercart.save();
@@ -461,7 +467,6 @@ const placeOrder = async (req, res) => {
     });
   }
 };
-
 
 const orderSuccess = async (req, res) => {
   console.log("successs.");
@@ -537,36 +542,31 @@ const createOrder = async (req, res) => {
 //   res.json({ status: true });
 // };
 const varifypayment = async (req, res) => {
-console.log("payment verification")
-try {
-  const orderUpdate = await Order.findOneAndUpdate(
-    {_id:req.session.orderId},
-    {$set:{peymentstatus:"confirmed",orderstatus:"processing"}}
-  )
-  const orderedproducts =orderUpdate.products;
-  orderedproducts.forEach(async(element)=>{
-    await Product.findByIdAndUpdate(
-      {_id:element.product},
-      {$inc:{quantity:-element.quantity}}
-    )
-  })
-  console.log("product removed  bbbbbbbbb")
-  const userId = req.session.user._id;
-  const ordercart = await Cart.findOne({ owner: userId });
-  ordercart.items = [];
-  ordercart.cartTotal = 0;
-  ordercart.save();
+  console.log("payment verification");
+  try {
+    const orderUpdate = await Order.findOneAndUpdate(
+      { _id: req.session.orderId },
+      { $set: { peymentstatus: "confirmed", orderstatus: "processing" } }
+    );
+    const orderedproducts = orderUpdate.products;
+    orderedproducts.forEach(async (element) => {
+      await Product.findByIdAndUpdate(
+        { _id: element.product },
+        { $inc: { quantity: -element.quantity } }
+      );
+    });
+    console.log("product removed  bbbbbbbbb");
+    const userId = req.session.user._id;
+    const ordercart = await Cart.findOne({ owner: userId });
+    ordercart.items = [];
+    ordercart.cartTotal = 0;
+    ordercart.save();
 
-  res.json({ status: true });
-
-  
-} catch (error) {
-  console.log(error)
-  
-}
-
+    res.json({ status: true });
+  } catch (error) {
+    console.log(error);
+  }
 };
-
 
 const orderHistory = async (req, res) => {
   const userId = req.session.user._id;
@@ -646,25 +646,71 @@ const cancelOrder = async (req, res) => {
     });
     orderProduct = order.products;
     orderProduct.forEach(async (element) => {
-      let update = await Product.findByIdAndUpdate(
-        element.Product ,
-        { $inc: { quantity: element.quantity } }
-      );
+      let update = await Product.findByIdAndUpdate(element.Product, {
+        $inc: { quantity: element.quantity },
+      });
     });
     res.json({ status: true });
   } catch (err) {
     console.log(err);
   }
- 
 };
 
-const otpverify = async (req,res,next)=>{
-  console.log("hiiiiiiii")
-  console.log(req.body)
+const otpverify = async (req, res, next) => {
+  userDetail = {
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone,
+    password: req.body.password,
+  };
+  console.log(userDetail, "this is user details");
+  try {
+    let response = null;
+    if (req.session.user) {
+      res.redirect("/login");
+    } else {
+      userDetail = req.body;
+      if (await User.findOne({ email: userDetail.email })) {
+        response = " this email already exist";
+        console.log("this email is alreay exist");
+      } else if (await User.findOne({ phoneNo: userDetail.phone })) {
+        response = "this number is already exist";
+        console.log("this number is already exist");
+      } else {
+        userDetail = req.body;
+        console.log("otpsending");
+        sendotp(userDetail.phone);
+        response = null;
+      }
+    }
+    res.json({ response });
+  } catch (error) {
+    next(error);
+  }
+};
 
+const otpVerifyPost = async (req,res) =>{
+  const password = userDetail.password
+  const phone = userDetail.phone
+  const otp = req.query.otp
+  console.log('hiiiiiiiiiiiii',otp)
+  await varifyotp(phone,otp).then(async(verification_check)=>{
+    if(verification_check.status=="approved"){
+      const hashedpassword = await bcrypt.hash(password,10)
+      await User.create({
+        Name: userDetail.name,
+        email: userDetail.email,
+        phoneNo: userDetail.phone,
+        password: hashedpassword,
+      })
+      .then((e)=>{
+        res.json({response:true})
+      })
+    }else{
+      res.json({response:false})
+    }
+  }) 
 }
-
-
 
 module.exports = {
   index_get,
@@ -695,5 +741,6 @@ module.exports = {
   deleteAddress,
   couponcheck,
   cancelOrder,
-  otpverify
+  otpverify,
+  otpVerifyPost
 };

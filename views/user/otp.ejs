@@ -54,7 +54,7 @@
     <div id="ec-overlay"><span class="loader_img"></span></div>
 
     <!-- Header start  -->
-    <%- include('./partials/navbar.ejs') %>
+  
     <!-- ekka Cart End -->
 
     <!-- Ec breadcrumb start -->
@@ -64,7 +64,7 @@
           <div class="col-12">
             <div class="row ec_breadcrumb_inner">
               <div class="col-md-6 col-sm-12">
-                <h2 class="ec-breadcrumb-title">Login</h2>
+                <h2 class="ec-breadcrumb-title">OTP</h2>
               </div>
               <div class="col-md-6 col-sm-12">
                 <!-- ec-breadcrumb-list start -->
@@ -72,7 +72,7 @@
                   <li class="ec-breadcrumb-item">
                     <a href="index.html">Home</a>
                   </li>
-                  <li class="ec-breadcrumb-item active">phone</li>
+                  <li class="ec-breadcrumb-item active">OTP</li>
                 </ul>
                 <!-- ec-breadcrumb-list end -->
               </div>
@@ -89,20 +89,27 @@
                   <div class="section-title">
                       <h2 class="ec-bg-title"></h2>
                       <h2 class="ec-title"></h2>
-                      <p class="sub-title mb-3">verify your otp</p>
+                      <p class="sub-title mb-3">Please enter your one time password <br>
+                       to verify your account</p>
                   </div>
               </div>
               <div class="ec-login-wrapper">
                   <div class="ec-login-container">
                       <div class="ec-login-form">
-                          <form action="/login-post" method="post">
+                          <form id="myform">
+                            <div>
+                              <span>A code has been sent to</span> <small>*******<%=phone.substring(6)%></small>
+                            </div>
                               
                               <span class="ec-login-wrap">
                                   <label>OTP</label>
-                                  <input type="password" name="password" placeholder="Enter your otp" required />
+                                  <input type="text" name="otp" id="otpid" placeholder="Enter your otp"  maxlength="6" onkeyup="otpcheck()" required />
                               </span>
+                              <p class="ml-5 text-danger" id="errmsg" style="display: none">
+                                OTP verification failed
+                            </p>
                               <span class="ec-login-wrap ec-login-btn">
-                                  <button class="btn btn-primary" type="submit">verify</button>
+                                  <!-- <button class="btn btn-primary" type="submit">verify</button> -->
                                   <!-- <a href="register.html" class="btn btn-secondary">Register</a> -->
                               </span>
                           </form>
@@ -116,10 +123,41 @@
     <!-- Ec login page -->
 
     <!-- Footer Start -->
+    <script>
+      function otpcheck(){
+        let otp = document.getElementById("otpid").value
+        console.log(otp)
+        if(otp.length === 6){
+          document.getElementById("otpid").disabled = true;
+          try {
+            $.ajax({
+              url:`/otpverify?otp=${otp}`,
+              method:"post" ,
+              success:((res)=>{
+                if(res.response){
+                  location.href='/login'
+                }
+                else{
+                  document.getElementById("otpid").value="";
+                  document.getElementById("otpid").disabled=false;
+                  document.getElementById('errmsg').style.display=""
+                }
+                
+              })
+
+
+            })
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      }
+    </script>
 
 
     <!-- Feature tools end -->
     <!-- Vendor JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
     <script src="/user/js/vendor/jquery-3.5.1.min.js"></script>
     <script src="/user/js/vendor/popper.min.js"></script>

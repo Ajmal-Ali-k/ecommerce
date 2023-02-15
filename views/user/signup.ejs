@@ -102,7 +102,7 @@
                             id="errmsg"
                             role="alert"
                         ></div>
-                          <!-- <div id="error_message" style="margin-bottom: 20px; padding: 0px; background: #fe8b8e; text-align: center; font-size: 14px; transition: all 0.5s ease;"></div> -->
+                          <div id="error_message" style="margin-bottom: 20px; padding: 0px; background: #fe8b8e; text-align: center; font-size: 14px; transition: all 0.5s ease;"></div>
                             <form   id="myform">
                                 <span class="ec-register-wrap ">
                                     <label>Name*</label>
@@ -320,11 +320,23 @@
                         console.log("jiiiiiiiiii")
                         $.ajax({
                             
-                            url:"/otp_verify",
+                            url:'/sign_up',
                             method:"post",
                             data:$("#myform").serialize(),
                             success:(res)=>{
-                                console.log(res)
+                              
+                                if(res.response ==null){
+                                form.submit();
+                                location.href='/otp';
+                                }
+                                else{
+                                    // errmsg.style.display = "block";
+                                    document.getElementById("error_message").style.padding="10px"
+                                 document.getElementById("error_message").innerHTML = res.response;
+                                 setTimeout(()=> document.getElementById('error_message').innerHTML ="",3000)
+                              setTimeout(()=> document.getElementById('error_message').style.padding ="0px",3000)
+
+                                }
                             }
                         })
                     } catch (error) {

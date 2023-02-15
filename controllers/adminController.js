@@ -232,7 +232,7 @@ const productAdd_post = async (req, res) => {
       catagory: categories,
       image: img,
       discription: discription,
-      discount: `${discount}%OFF`,
+      discount: discount,
       size: size,
     },
     (err, dar) => {
@@ -504,9 +504,9 @@ const listbanner = async (req,res) =>{
 }
 const deleteBanner=async(req,res)=>{
   try {
-    console.log(777777777777777);
+    
     const bannerID=req.query.dltID
-    console.log(bannerID);
+    
     const remove=await Banner.findByIdAndDelete(bannerID)
     res.json({status:true})
   } catch (err) {

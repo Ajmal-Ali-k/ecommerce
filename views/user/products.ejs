@@ -98,7 +98,7 @@
 		
 								<img src=" <%= view[i].image[0] %> " class="img-center" alt="">
 							</a>
-							<span class="ec-product-ribbon"><%= view[i].discount %> </span>
+							<span class="ec-product-ribbon"><%= view[i].discount%>%</span>
 						</div>
 						<div class="ec-product-body">
 							<p class="ec-description"><%= view[i].catagory %> Fashion <span>In stock</span></p>
@@ -121,7 +121,7 @@
 								<a href="#">L</a>
 							</div>
 							<div class="ec-link-btn">
-								<a class=" ec-add-to-cart"   onclick= "addToCart('<%=view[i]._id  %>'),popup()"    >add to cart</a>
+								<a class=" ec-add-to-cart"   onclick= "addToCart('<%=view[i]._id  %>')"    >add to cart</a>
 								<div class="ec-link-icon">
 									<a href="#" data-tip="Add to Wishlist"><img src="/user/images/icons/wishlist.svg"
 											class="svg_img header_svg pro_svg" alt="wishlist" /></a>
@@ -153,7 +153,17 @@
         url:'/addToCart/'+Id,
         method:'get',
 		success:(res)=>{
-			if(res.status==false){
+			if(res.cart){
+				Swal.fire({
+  		position: 'top-center',
+  		icon: 'success',
+  		title: 'Added to cart',
+  		showConfirmButton: false,
+  		timer: 1000
+		})
+
+			}
+			else{
 				location.href="/login"
 			}
 			console.log(res)
@@ -162,18 +172,6 @@
 	}
 
 
-	function popup(){
-
-		Swal.fire({
-  		position: 'top-center',
-  		icon: 'success',
-  		title: 'Added to cart',
-  		showConfirmButton: false,
-  		timer: 1000
-		})
-
-
-	}
 	
 
 	
