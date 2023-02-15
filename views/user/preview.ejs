@@ -147,8 +147,8 @@
                                         <div class="ec-single-sales">
                                             <div class="ec-single-sales-inner">
                                                 <div class="ec-single-sales-title">sales accelerators</div>
-                                                <div class="ec-single-sales-visitor">real time <span>24</span> visitor
-                                                    right now!</div>
+                                                <!-- <div class="ec-single-sales-visitor">real time <span>24</span> visitor
+                                                    right now!</div> -->
                                                 <div class="ec-single-sales-progress">
                                                     <span class="ec-single-progress-desc">Hurry up! <%= findedpro.quantity %> left  in
                                                         stock</span>
@@ -164,7 +164,7 @@
                                         <div class="ec-single-price-stoke">
                                             <div class="ec-single-price">
                                                 <span class="ec-single-ps-title">As low as</span>
-                                                <span class="new-price"><%=findedpro.price%></span>
+                                                <span class="new-price">$<%=findedpro.price%></span>
                                             </div>
                                             <div class="ec-single-stoke">
                                                 <span class="ec-single-ps-title">IN STOCK</span>
@@ -185,37 +185,37 @@
                                                 </div>
                                             </div>
                                             <div class="ec-pro-variation-inner ec-pro-variation-color">
-                                                <span>Color</span>
+                                                <!-- <span>Color</span>
                                                 <div class="ec-pro-variation-content">
                                                     <ul>
                                                         <li class="active"><span
                                                                 style="background-color:#23839c;"></span></li>
                                                         <li><span style="background-color:#000;"></span></li>
                                                     </ul>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                         <div class="ec-single-qty">
-                                            <div class="qty-plus-minus">
+                                            <!-- <div class="qty-plus-minus">
                                                 <input class="qty-input" type="text" name="ec_qtybtn" value="1" />
-                                            </div>
+                                            </div> -->
                                             <div class="ec-single-cart ">
-                                                <button class="btn btn-primary">Add To Cart</button>
+                                                <button class="btn btn-primary" onclick= "addToCart('<%=findedpro._id  %>')">Add To Cart</button>
                                             </div>
                                             <div class="ec-single-wishlist">
                                                 <a class="ec-btn-group wishlist" title="Wishlist"><img
                                                         src="/user/images/icons/wishlist.svg" class="svg_img pro_svg"
                                                         alt="" /></a>
                                             </div>
-                                            <div class="ec-single-quickview">
+                                            <!-- <div class="ec-single-quickview">
                                                 <a href="#" class="ec-btn-group quickview" data-link-action="quickview"
                                                     title="Quick view" data-bs-toggle="modal"
                                                     data-bs-target="#ec_quickview_modal"><img
                                                         src="/user/images/icons/quickview.svg" class="svg_img pro_svg"
                                                         alt="" /></a>
-                                            </div>
+                                            </div> -->
                                         </div>
-                                        <div class="ec-single-social">
+                                        <!-- <div class="ec-single-social">
                                             <ul class="mb-0">
                                                 <li class="list-inline-item facebook"><a href="#"><i
                                                             class="ecicon eci-facebook"></i></a></li>
@@ -232,7 +232,7 @@
                                                 <li class="list-inline-item plus"><a href="#"><i
                                                             class="ecicon eci-plus"></i></a></li>
                                             </ul>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -1190,8 +1190,38 @@
         </div>
     </div>
     <!-- Feature tools end -->
+    <script>
+		function addToCart(Id){
+    $.ajax({
+        url:'/addToCart/'+Id,
+        method:'get',
+		success:(res)=>{
+			if(res.cart){
+				Swal.fire({
+  		position: 'top-center',
+  		icon: 'success',
+  		title: 'Added to cart',
+  		showConfirmButton: false,
+  		timer: 1000
+		})
+
+			}
+			else{
+				location.href="/login"
+			}
+			console.log(res)
+		}
+    })
+	}
+
+
+	
+
+	
+	</script>
 
     <!-- Vendor JS -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/user/js/vendor/jquery-3.5.1.min.js"></script>
     <script src="/user/js/vendor/popper.min.js"></script>
     <script src="/user/js/vendor/bootstrap.min.js"></script>

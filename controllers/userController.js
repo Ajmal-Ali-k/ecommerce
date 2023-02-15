@@ -6,6 +6,7 @@ const Product = require("../model/admin/productSchema");
 const { response, query } = require("express");
 const { default: mongoose } = require("mongoose");
 const Cart = require("../model/user/cart");
+const Category =require("../model/admin/catagorySchema");
 const Address = require("../model/user/address");
 const Order = require("../model/user/order");
 const Banner = require("../model/admin/banner");
@@ -37,8 +38,22 @@ const userLogin_get = (req, res) => {
 const signup_get = (req, res) => {
   res.render("user/signup");
 };
-const catagory = (req, res) => {
-  res.render("user/catagory");
+const catagory = async(req, res) => {
+  console.log("hhhhhjjjjjjjjjj")
+  const id = req.query.id;
+  let category;
+  let product;
+  if(id){
+     product = await Product.find({catagory:id});
+     category = await Category.find({});
+    console.log(category,"this is category")
+    console.log(product, "this is product")
+  }else{
+    product = await Product.find({})
+     category = await Category.find({}); 
+  }
+  res.render("user/catagory",{ category, product });
+ 
 };
 const productspage = async (req, res) => {
   const view = await Product.find({delete:false});
