@@ -60,9 +60,7 @@ const productspage = async (req, res) => {
   res.render("user/products", { view });
 };
 
-const phone = (req, res) => {
-  res.render("user/phone");
-};
+
 const otp = (req, res) => {
   const phone = userDetail.phone
   console.log(phone);
@@ -73,6 +71,7 @@ const wishlist = (req, res) => {
 };
 
 let logout = (req, res) => {
+  req.session.loggedin = null;
   req.session.user= null
   res.redirect("/");
 };
@@ -727,6 +726,59 @@ const otpVerifyPost = async (req,res) =>{
   }) 
 }
 
+const forgotPassword = async (req,res)=>{
+  res.render('user/forgot_password')
+}
+
+
+const forgotpost = async (req,res)=>{
+  console.log("jiiiiiiiiiiiiii");
+  let response =null;
+  console.log(req.body.email)
+  let findUser = await User.findOne({ email: req.body.email},{_id:0,phoneNo:1}).then((user)=>{
+    console.log(user,111  )
+    if(user){
+         sendotp(user.phoneNo);
+        res.json({mobile:user.phoneNo ,status:true})
+    }else{
+      res.json({response:"email not found"});
+    }
+  })
+}
+
+const forgotOtpVerify = async (req, res) => {
+  try {
+    let {otp, mobile} = req.body;
+    console.log(otp, mobile);
+    await varifyotp(mobile, otp).then((response) => {
+      console.log("waiting for verification");
+      if(response){
+        console.log("verification approved");
+        res.json({response:true})
+      }else{
+        res.json({response:false})
+      }
+    })
+  } catch (error) {
+  console.log(error)    
+  }
+}
+const changePassword = async(req,res,next)=>{
+  try {
+    let {password,email} = req.body;
+    console.log(req.body,"this is req body")
+    password = await bcrypt.hash(password,10);
+    User.updateOne({email: email},{$set: {password:password}}).then((e)=>{
+      res.json({status:true})
+      console.log("password updated")
+    })
+  } catch (error) {
+    console.log(error)
+    next(error)
+    
+  }
+
+}
 module.exports = {
   index_get,
   userLogin_get,
@@ -736,7 +788,6 @@ module.exports = {
   catagory,
   productspage,
   userprofile,
-  phone,
   otp,
   previewPage,
   wishlist,
@@ -757,5 +808,9 @@ module.exports = {
   couponcheck,
   cancelOrder,
   otpverify,
-  otpVerifyPost
+  otpVerifyPost,
+  forgotPassword,
+  forgotpost,
+  forgotOtpVerify,
+  changePassword
 };

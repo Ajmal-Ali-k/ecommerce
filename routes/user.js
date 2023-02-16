@@ -15,7 +15,6 @@ router.post('/login-post',userController.userLogin_post);
 router.get('/catagory',userController.catagory);
 router.get('/products',userController.productspage)
 router.get('/profile',verifyUser,userController.userprofile);
-router.get('/phone',userController.phone)
 router.get('/otp',userController.otp);
 router.get('/previewpage',userController.previewPage);
 router.get('/wishlist',userController.wishlist);
@@ -37,7 +36,10 @@ router.post('/couponcheck',userController.couponcheck)
 router.put('/cancelorder',userController.cancelOrder)
 router.post('/sign_up',userController.otpverify)
 router.post('/otpverify',userController.otpVerifyPost)
-
+router.get('/forgot_password',userController.forgotPassword)
+router.post('/forgotpassword',userController.forgotpost)
+router.post('/forgotOtp',userController.forgotOtpVerify)
+router.patch('/changepassword',userController.changePassword)
 
 
 

@@ -129,13 +129,13 @@
                                 <span class="ec-register-wrap ec-register-half">
                                     <label>password *</label>
                                     <p class="text-danger fw-light opacity-75" id="passwordidwarning"></p>
-                                    <input type="text" name="password" id="password" placeholder="Confirm password" onkeyup="passwordkey()" required/>
+                                    <input type="text" name="password" id="password" placeholder="enter your password" onkeyup="passwordkey()" required/>
                                    
                                 </span>
                                 <span class="ec-register-wrap ec-register-half">
                                     <label>Confirm password *</label>
                                     <p class="text-danger fw-light opacity-75" id="password2idwarning"></p>
-                                    <input type="text" name="Confirmpassword" id="confirmpassword" placeholder="Confirm password" onkeyup="passwordkey()" required />
+                                    <input type="text" name="Confirmpassword" id="confirmpassword" placeholder="Confirm password" onkeyup="confirmkey()" required />
                                    
                                 </span>
            
@@ -287,34 +287,7 @@
                     password2warning.innerHTML = "Password confirmation is failed";
                     validation = false;
                 }
-                // if (validation) {
-                //     try {
-                //         axios
-                //             .post("/otp_verify", {
-                //                 fullname: name.value,
-                //                 email: email.value,
-                //                 username: username.value,
-                //                 phone: phone.value,
-                //                 password: password.value,
-                //                 confirmpassword: password2.value,
-                //             })
-                //             .then((e) => {
-                //                 if (e.data.error) {
-                //                     document.getElementById("errmsg").innerHTML = error;
-                //                 }
-                //                 if (!e.data.response) {
-                //                     form.submit();
-                //                     location.href = "/otp";
-                //                     // location.href = "/";
-                //                 } else {
-                //                     errmsg.style.display = "block";
-                //                     document.getElementById("errmsg").innerHTML = e.data.response;
-                //                 }
-                //             });
-                //     } catch (error) {
-                //         console.log(error);
-                //     }
-                // }
+            
                 if(validation){
                     try {
                         console.log("jiiiiiiiiii")
