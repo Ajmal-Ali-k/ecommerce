@@ -9,10 +9,9 @@ const Address = require("../model/user/address");
 const Coupon = require('../model/admin/coupon');
 const { find } = require("../model/user/userModel");
 const Banner =require('../model/admin/banner')
+const Admin = require('../model/admin/adminschema')
 
-const index_get = (req, res) => {
-  res.render("admin/index");
-};
+
 //product list
 const productList_get = async (req, res) => {
   const pdlist = await Product.find({});
@@ -29,6 +28,11 @@ const sign_get = (req, res) => {
 const userProfile_get = (req, res) => {
   res.render("admin/user-profile");
 };
+const adminHome = async(req,res)=>{
+  const recentOrders = await Order.find({}).populate('userId').limit(5).sort({date:-1})  
+  console.log(recentOrders,"this is recent order")
+  res.render("admin/index",{recentOrders});
+}
 
 //user list rendering
 
@@ -65,21 +69,43 @@ const postCategory = async (req, res) => {
 
 const adminMail = process.env.adminMail;
 const adminPassword = process.env.adminPassword;
-const sign_post = (req, res) => {
-  console.log(req.body);
-  const admin = req.body.email;
+const sign_post =async (req, res) => {
+  console.log("hiiiii")
+  const email = req.body.email;
   const password = req.body.password;
-  if (adminMail == admin && adminPassword == password) {
-    console.log("admin login success");
-    req.session.admin = true;
-    req.session.save();
+  let response = null;
+  let adminMod = await Admin.findOne({ email: email, password: password });
+  console.log(adminMod);
+ 
 
-    res.render("admin/index");
+try {
+  if (adminMod) {
+      if (email == adminMod.email) {
+          if (password == adminMod.password) {
+              req.session.admin = true;
+              response = false;
+          } else {
+              req.session.adminLoginError = true;
+              response = true;
+          }
+      } else {
+          req.session.adminLoginError = true;
+          response = true;
+      }
   } else {
-    res.redirect("/admin");
+      response = true;
   }
-};
+  res.json({ response });
+} catch (error) {
+  console.log(error);
+  error.admin = true;
+  next(error);
+}
+  
 
+
+
+}
 let adminLogout = (req, res) => {
   req.session.admin = null;
   res.redirect("/");
@@ -516,7 +542,7 @@ const deleteBanner=async(req,res)=>{
 }
 
 module.exports = {
-  index_get,
+  
   userlist,
   productList_get,
   productAdd_get,
@@ -546,5 +572,6 @@ module.exports = {
   createbanner,
   addbanner,
   listbanner,
-  deleteBanner
+  deleteBanner,
+  adminHome
 };

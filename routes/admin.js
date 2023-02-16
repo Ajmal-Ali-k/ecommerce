@@ -5,8 +5,8 @@ const {verifyAdmin} = require("../middleware/adminverify")
 
 const router = Router()
 router.get('/',adminController.sign_get);
-router.post('/',adminController.sign_post);
-router.get('/index',verifyAdmin,adminController.index_get);
+router.post('/index',adminController.sign_post);
+router.get('/adminHome',verifyAdmin,adminController.adminHome)
 router.get('/user-list',verifyAdmin,adminController.userlist);
 router.get('/product-list',verifyAdmin,adminController.productList_get);
 router.get('/product-add',verifyAdmin,adminController.productAdd_get);

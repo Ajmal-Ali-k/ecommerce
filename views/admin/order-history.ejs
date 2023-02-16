@@ -26,7 +26,7 @@
 
 	<!-- Data-Tables -->
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
 
 	<!-- Ekka CSS -->
 	<link id="ekka-css" rel="stylesheet" href="/admin/css/ekka.css" />
@@ -98,7 +98,7 @@
 																	<%=orderlist[i].paymentmethod %>
 																</td>
 
-																<% if(orderlist[i].orderstatus== "shipped") {%>
+																<% if(orderlist[i].orderstatus=="shipped" ) {%>
 																	<td><button type="button"
 																			class="mb-2 mr-2 badge badge-info"
 																			onclick="status('<%=orderlist[i]._id %>')"
@@ -108,111 +108,127 @@
 																		</button></td>
 
 																	<% }%>
-																	<% if(orderlist[i].orderstatus== "delivered") {%>
-																		<td><button type="button"
-																				class="mb-2 mr-2 badge badge-success"
-																				onclick="status('<%=orderlist[i]._id %>')"
-																				data-toggle="modal"
-																				data-target=".bd-example-modal-sm">
-																				<%= orderlist[i].orderstatus%>
-																			</button></td>
-	
-																		<% }%>
-																		<% if(orderlist[i].orderstatus== "processing") {%>
+																		<% if(orderlist[i].orderstatus=="delivered" )
+																			{%>
 																			<td><button type="button"
-																					class="mb-2 mr-2 badge badge-warning"
+																					class="mb-2 mr-2 badge badge-success"
 																					onclick="status('<%=orderlist[i]._id %>')"
 																					data-toggle="modal"
 																					data-target=".bd-example-modal-sm">
 																					<%= orderlist[i].orderstatus%>
 																				</button></td>
-		
+
 																			<% }%>
-																			<% if(orderlist[i].orderstatus== "cancelled") {%>
-																				<td><button type="button"
-																						class="mb-2 mr-2 badge badge-danger"
-																						onclick="status('<%=orderlist[i]._id %>')"
-																						data-toggle="modal"
-																						data-target=".bd-example-modal-sm">
-																						<%= orderlist[i].orderstatus%>
-																					</button></td>
-			
-																				<% }%>
-																				
+																				<% if(orderlist[i].orderstatus=="processing"
+																					) {%>
+																					<td><button type="button"
+																							class="mb-2 mr-2 badge badge-warning"
+																							onclick="status('<%=orderlist[i]._id %>')"
+																							data-toggle="modal"
+																							data-target=".bd-example-modal-sm">
+																							<%=
+																								orderlist[i].orderstatus%>
+																						</button></td>
+
+																					<% }%>
+																						<% if(orderlist[i].orderstatus=="cancelled"
+																							) {%>
+																							<td><button type="button"
+																									class="mb-2 mr-2 badge badge-danger"
+																									onclick="status('<%=orderlist[i]._id %>')"
+																									data-toggle="modal"
+																									data-target=".bd-example-modal-sm">
+																									<%=
+																										orderlist[i].orderstatus%>
+																								</button></td>
+
+																							<% }%>
 
 
-																			<td> <%=orderlist[i].date.toLocaleDateString("en-IN")%>
-																			</td>
-																			<td>
-																				<div class="btn-group mb-1">
-																					<a
-																						href="/admin/invoice?orderId=<%=orderlist[i]._id%> "><button
-																							type="button"
-																							class="badge badge-primary">details</button></a>
-																
-																				</div>
-																			</td>
+
+																								<td> <%=orderlist[i].date.toLocaleDateString("en-IN")%>
+																								</td>
+																								<td>
+																									<div
+																										class="btn-group mb-1">
+																										<a
+																											href="/admin/invoice?orderId=<%=orderlist[i]._id%> "><button
+																												type="button"
+																												class="badge badge-primary">details</button></a>
+
+																									</div>
+																								</td>
 															</tr>
-															
+
 
 
 
 
 														</tbody>
-														<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog"
-																			aria-labelledby="mySmallModalLabel" aria-hidden="true">
+														<div class="modal fade bd-example-modal-sm" tabindex="-1"
+															role="dialog" aria-labelledby="mySmallModalLabel"
+															aria-hidden="true">
 															<div class="modal-dialog modal-sm">
-															<div class="modal-content">
-																<div class="">
-																	<div class="d-flex justify-content-around">
-																		<button class="my-3 mx-2 badge badge-primary col-6" style="width: 100px;"
-																			id="shipped">Shipped</button>
-																				<button class="my-3 mx-2 badge badge-success col-6" style="width: 100px; ;"
-																					id="delivered">Delivered</button>
+																<div class="modal-content">
+																	<div class="">
+																		<div class="d-flex justify-content-around">
+																			<button
+																				class="my-3 mx-2 badge badge-primary col-6"
+																				style="width: 100px;"
+																				id="shipped">Shipped</button>
+																			<button
+																				class="my-3 mx-2 badge badge-success col-6"
+																				style="width: 100px; ;"
+																				id="delivered">Delivered</button>
 
-																				</div>
-																<div class="d-flex justify-content-around">
-																	<button class="my-3 mx-2 badge badge-danger col-6" style="width: 100px; ;"
-																		id="Cancelled">Cancelled</button>
-																	<button class="my-3 mx-2 badge badge-warning col-6" style="width: 100px;"
-																		id="processing">processing</button>
+																		</div>
+																		<div class="d-flex justify-content-around">
+																			<button
+																				class="my-3 mx-2 badge badge-danger col-6"
+																				style="width: 100px; ;"
+																				id="Cancelled">Cancelled</button>
+																			<button
+																				class="my-3 mx-2 badge badge-warning col-6"
+																				style="width: 100px;"
+																				id="processing">processing</button>
+																		</div>
+
+
+
+
+																	</div>
+																	<input type="text" id="ID<%=orderlist[i]._id %>"
+																		value="<%=orderlist[i]._id %>" hidden>
+
+
+
 																</div>
-
-
-
-
-										</div>
-								<input type="text" id="ID<%=orderlist[i]._id %>" value="<%=orderlist[i]._id %>"   hidden>
-
-
-
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-														<% } %>
-												</table>
+															</div>
+														</div>
 											</div>
 										</div>
+										<% } %>
+											</table>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-
-
-
-
-
-
-
-					<!-- End Content Wrapper -->
-
-					<!-- modal -->
-
-					
 			</div>
+	</div>
+
+
+
+
+
+
+
+	<!-- End Content Wrapper -->
+
+	<!-- modal -->
+
+
+	</div>
 	</div>
 
 	<!-- Footer -->
@@ -222,86 +238,92 @@
 
 		</div> <!-- End Page Wrapper -->
 		<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
-    <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+		<script type="text/javascript" language="javascript"
+			src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" language="javascript"
+			src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+		<script type="text/javascript" language="javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+		<script type="text/javascript" language="javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+		<script type="text/javascript" language="javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+		<script type="text/javascript" language="javascript"
+			src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
 		</div> <!-- End Wrapper -->
 		<script>
 			function status(orderId) {
-				
-				document.getElementById("shipped").addEventListener("click",e=>{
-					let ID=document.getElementById(`ID${orderId}`).value
+
+				document.getElementById("shipped").addEventListener("click", e => {
+					let ID = document.getElementById(`ID${orderId}`).value
 					console.log(ID)
 					$.ajax({
-					url: `/admin/orderstatus?id=${ID}&status=shipped`,
-					method: "post",
-					success: ((res) => {
-					    
-						if(res.Status){
+						url: `/admin/orderstatus?id=${ID}&status=shipped`,
+						method: "post",
+						success: ((res) => {
 
-                        setTimeout(() => location.reload(), 500)
-						}
-                    
+							if (res.Status) {
+
+								setTimeout(() => location.reload(), 500)
+							}
+
+						})
 					})
 				})
-				})
-				document.getElementById("delivered").addEventListener("click",e=>{
-					let ID=document.getElementById(`ID${orderId}`).value
+				document.getElementById("delivered").addEventListener("click", e => {
+					let ID = document.getElementById(`ID${orderId}`).value
 					console.log(ID)
 					$.ajax({
-					url: `/admin/orderstatus?id=${ID}&status=delivered`,
-					method: "post",
-					success: ((res) => {
-						if(res.Status){
+						url: `/admin/orderstatus?id=${ID}&status=delivered`,
+						method: "post",
+						success: ((res) => {
+							if (res.Status) {
 
-setTimeout(() => location.reload(), 500)
-}
-						console.log("1111111111")
+								setTimeout(() => location.reload(), 500)
+							}
+							console.log("1111111111")
+						})
 					})
 				})
-				})
-				document.getElementById("Cancelled").addEventListener("click",e=>{
-					let ID=document.getElementById(`ID${orderId}`).value
+				document.getElementById("Cancelled").addEventListener("click", e => {
+					let ID = document.getElementById(`ID${orderId}`).value
 					console.log(ID)
 					$.ajax({
-					url: `/admin/orderstatus?id=${ID}&status=cancelled`,
-					method: "post",
-					success: ((res) => {
-						if(res.Status){
+						url: `/admin/orderstatus?id=${ID}&status=cancelled`,
+						method: "post",
+						success: ((res) => {
+							if (res.Status) {
 
-setTimeout(() => location.reload(), 500)
-}
-						console.log("1111111111")
+								setTimeout(() => location.reload(), 500)
+							}
+							console.log("1111111111")
+						})
 					})
 				})
-				})
-				document.getElementById("processing").addEventListener("click",e=>{
-					let ID=document.getElementById(`ID${orderId}`).value
+				document.getElementById("processing").addEventListener("click", e => {
+					let ID = document.getElementById(`ID${orderId}`).value
 					console.log(ID)
 					$.ajax({
-					url: `/admin/orderstatus?id=${ID}&status=processing`,
-					method: "post",
-					success: ((res) => {
-						if(res.Status){
+						url: `/admin/orderstatus?id=${ID}&status=processing`,
+						method: "post",
+						success: ((res) => {
+							if (res.Status) {
 
-setTimeout(() => location.reload(), 500)
-}
-						console.log("1111111111")
+								setTimeout(() => location.reload(), 500)
+							}
+							console.log("1111111111")
+						})
 					})
 				})
-				})
-				
+
 				$.ajax({
 					url: `/admin/orderstatus?id=${ID}&status=${status}`,
 					method: "post",
 					success: ((res) => {
-						if(res.Status){
+						if (res.Status) {
 
-setTimeout(() => location.reload(), 500)
-}
+							setTimeout(() => location.reload(), 500)
+						}
 						console.log("1111111111")
 					})
 				})
@@ -310,18 +332,18 @@ setTimeout(() => location.reload(), 500)
 			}
 		</script>
 		<script>
-			$(document).ready(function() {
-					$('#example').DataTable({
+			$(document).ready(function () {
+				$('#example').DataTable({
 					dom: 'Bfrtip',
 					paging: true,
-					 buttons: false
-					});
+					buttons: false
 				});
+			});
 		</script>
 
 		<!-- Data-Tables -->
 
-		
+
 
 		<!-- Common Javascript -->
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -341,8 +363,8 @@ setTimeout(() => location.reload(), 500)
 		<script src="/admin/plugins/jquery-zoom/jquery.zoom.min.js"></script>
 		<script src="/admin/plugins/slick/slick.min.js"></script>
 
-	
-		<script src="https://kit.fontawesome.com/bf625ee5bc.js" crossorigin="anonymous"></script> 
+
+		<script src="https://kit.fontawesome.com/bf625ee5bc.js" crossorigin="anonymous"></script>
 
 		<!-- Option Switcher -->
 		<script src="/admin/plugins/options-sidebar/optionswitcher.js"></script>

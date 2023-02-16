@@ -12,7 +12,7 @@
 					<div class="card">
 						<div class="card-header bg-primary">
 							<div class="ec-brand">
-								<a href="# title="Ekka">
+								<a href="# title=">
 									<img class="ec-brand-icon" src="/admin/img/logo/logo-login.png" alt="" />
 								</a>
 							</div>
@@ -20,14 +20,16 @@
 						<div class="card-body p-5">
 							<h4 class="text-dark mb-5">Sign In</h4>
 							
-							<form action="/admin" method="post" onsubmit= "return validation()" name="loginform">
+							<form  name="loginform">
 								<div class="row">
 									<div class="form-group col-md-12 mb-4">
 										<input type="email" class="form-control" id="email" placeholder="Username" name="email" required>
+										<p class="text-danger mb-1 fw-light opacity-75" id="emailidwarning"></p>
 									</div>
 									
 									<div class="form-group col-md-12 ">
 										<input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
+										<p class="text-danger mb-1 fw-light opacity-75" id="passwordidwarning"></p>
 									</div>
 									
 									<div class="col-md-12">
@@ -41,8 +43,8 @@
 											
 											<!-- <p><a class="text-blue" href="#">Forgot Password?</a></p> -->
 										</div>
-										
-										<button type="submit" class="btn btn-primary btn-block mb-4">Sign In</button>
+										<p class="text-danger" id="errmsg"></p>
+										<button type="submit" class="btn btn-primary btn-block mb-4" onclick="validate()">Sign In</button>
 										
 										<!-- <p class="sign-upp">Don't have an account yet ?
 											<a class="text-blue" href="sign-up.html">Sign Up</a>
@@ -55,25 +57,57 @@
 				</div>
 			</div>
 		</div>
-		<script>
-			function validation() {
-				const email=document.loginform.email.value;
-				const password=document.loginform.password.value;
-			  
-		if (email==null || email==""){  
-		  alert("email can't be blank");  
-		  return false;  
-		}else if(password==""){
-		   alert("Please Enter password")
-		}else if(password.length<6){  
-		  alert("Password must be at least 6 characters long.");  
-		 return false;  
-		  }  
-		
-			}
-		</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
+		 <script>
+            function validate() {
+				console.log("huhuhuhuhuhuhuhuhuh");
+                let email = document.getElementById("email");
+                let password = document.getElementById("password");
+                let emailwarning = document.getElementById("emailidwarning");
+                let passwordwarning = document.getElementById("passwordidwarning");
+				console.log("dgjhfdguhghh")
+                document.getElementById("errmsg").innerHTML = "";
+                event.preventDefault();
+                let form = event.target.form;
+                let validation = true;
+                emailwarning.innerHTML = "";
+                passwordwarning.innerHTML = "";
+                if (email.value === "") {
+                    emailwarning.innerHTML = "Please enter your email id";
+                    validation = false;
+                }
+                if (password.value === "") {
+                    passwordwarning.innerHTML = "Please enter your password";
+                    validation = false;
+                }
+                if (validation) {
+                    email = email.value;
+                    password = password.value;
+                    try {
+						console.log("kkkkkkkkkkkkhgghhh")
+                        axios
+                            .post("/admin/index", {
+                                email: email,
+                                password: password,
+                            })
+                            .then((e) => {
+                                if (!e.data.response) {
+                                    form.submit();
+                                    location.href = "/admin/adminHome";
+                                } else {
+                                    document.getElementById("errmsg").innerHTML = "Invalid credentials";
+                                }
+                            });
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    return validation;
+                }
+            }
+        </script>
 	
 		<!-- Javascript -->
+		
 		<script src="/admin/plugins/jquery/jquery-3.5.1.min.js"></script>
 		<script src="/admin/js/bootstrap.bundle.min.js"></script>
 		<script src="/admin/plugins/jquery-zoom/jquery.zoom.min.js"></script>

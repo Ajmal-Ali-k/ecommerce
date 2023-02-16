@@ -467,7 +467,7 @@ const placeOrder = async (req, res) => {
       discount: discount,
       address: DeliveryAddress._id,
       paymentmethod: ordertype,
-      orderstatus: "pending",
+      orderstatus: "processing",
       peymentstatus: "pending",
     });
     await neworder.save().then((result) => {
