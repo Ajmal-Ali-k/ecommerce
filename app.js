@@ -9,6 +9,7 @@ const db = require('./config/database')
 
 const userRouter = require('./routes/user');
 const adminRouter = require('./routes/admin');
+const cartCount = require('./middleware/count')
 
 const app = express();
 
@@ -43,7 +44,7 @@ app.use( (req, res, next)=> {
 
   next();
 });
-
+app.use(cartCount)
 //routes
 app.use('/admin', adminRouter);
 app.use('/', userRouter);

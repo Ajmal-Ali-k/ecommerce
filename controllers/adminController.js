@@ -29,7 +29,9 @@ const userProfile_get = (req, res) => {
   res.render("admin/user-profile");
 };
 const adminHome = async(req,res)=>{
-  const recentOrders = await Order.find({}).populate('userId').limit(5).sort({date:-1})  
+  const recentOrders = await Order.find({}).populate('userId').limit(5).sort({date:-1})
+  const totalUsers = await User.find({})
+  console.log(totalUsers,"THIS IS TOTAL USER")
   const order = await Order.find({})
   let today = new Date();
   let startDate = new Date(today.setUTCHours(0,0,0,0))
@@ -60,9 +62,9 @@ const adminHome = async(req,res)=>{
     const totalOrder = todaySales[0].count
     
     console.log(recentOrders,"this is recent order")
-    res.render("admin/index",{recentOrders,totalAmount,totalOrder});
+    res.render("admin/index",{recentOrders,totalAmount,totalOrder,totalUsers});
   }
-  res.render("admin/index",{recentOrders,totalAmount:null,totalOrder:null});
+  res.render("admin/index",{recentOrders,totalAmount:null,totalOrder:null,totalUsers});
 }
 
 
