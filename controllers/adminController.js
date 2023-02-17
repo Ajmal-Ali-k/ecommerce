@@ -30,9 +30,41 @@ const userProfile_get = (req, res) => {
 };
 const adminHome = async(req,res)=>{
   const recentOrders = await Order.find({}).populate('userId').limit(5).sort({date:-1})  
-  console.log(recentOrders,"this is recent order")
-  res.render("admin/index",{recentOrders});
+  const order = await Order.find({})
+  let today = new Date();
+  let startDate = new Date(today.setUTCHours(0,0,0,0))
+  let endDate = new Date(today.setHours(23,59,59,999))
+
+
+  const todaySales = await Order.aggregate([
+    {
+    $match:{
+      orderstatus:{$eq:"delivered"},
+      createdAt:{$lt:endDate,$gt:startDate}
+    },
+   },{
+    $group:{
+      _id:"",
+      total:{$sum:"$subtotal"},
+      count:{$sum:1}
+    },
+   },{
+    $project:{
+      _id:0
+    }
+   }
+  ]);
+  console.log(todaySales,111111111111111111111111);
+  if( todaySales.length>0){
+    const totalAmount = todaySales[0].total
+    const totalOrder = todaySales[0].count
+    
+    console.log(recentOrders,"this is recent order")
+    res.render("admin/index",{recentOrders,totalAmount,totalOrder});
+  }
+  res.render("admin/index",{recentOrders,totalAmount:null,totalOrder:null});
 }
+
 
 //user list rendering
 
@@ -424,42 +456,7 @@ const yearlyreport =async(req,res)=>{
 
 
 
-const dailyChart = async(req,res)=>{
-  try {
-    const order = await Order.find({})
-    let today = new Date();
-    let startDate = new Date(today.setUTCHours(0,0,0,0))
-    let endDate = new Date(today.setHours(23,59,59,999))
 
-
-    const todaySales = await Order.aggregate([
-      {
-      $match:{
-        orderstatus:{$eq:"delivered"},
-        createdAt:{$lt:endDate,$gt:startDate}
-      },
-     },{
-      $group:{
-        _id:"",
-        total:{$sum:"$subtotal"},
-        count:{$sum:1}
-      },
-     },{
-      $project:{
-        _id:0
-      }
-     }
-    ]);
-    const totalAmount = todaySales[0].total
-    const totalOrder = todaySales[0].count
-    console.log(totalAmount,000000000000000000000)
-    res.json({Status:true,totalAmount,totalOrder})
-
-  } catch (error) {
-    console.log(error)
-    
-  }
-}
 const yearlyChart = async (req, res) => {
 
   try {
@@ -540,6 +537,64 @@ const deleteBanner=async(req,res)=>{
   }
  
 }
+const graph = async (req, res, next) => {
+  try {
+      let DailySale = await Order.aggregate([
+          {
+              $group: {
+                  _id: { date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } } },
+                  Total: { $sum: "$subtotal" },
+                  count: { $sum: 1 },
+              },
+          },
+          { $sort: { "_id.date": 1 } },
+      ]);
+
+      let dailysales = [];
+      let dailyprofits = [];
+      let datetata = [];
+
+      for (let i = 0; i < DailySale.length; i++) {
+          dailysales.push(DailySale[i].Total);
+          dailyprofits.push((DailySale[i].Total * 15) / 100);
+          datetata.push(DailySale[i]._id.date);
+      }
+      console.log(datetata);
+      res.json({ status: true, dailyprofits, dailysales, datetata });
+  } catch (error) {
+      console.log(error);
+      error.admin = true;
+      next(error);
+  }
+};
+const pieChart = async (req, res,next) => {
+
+  try {
+    const orderDelivered = await Order
+    .find({ orderstatus: "delivered" })
+    .count();
+  const orderCancelled = await Order
+    .find({ orderstatus: "cancelled" })
+    .count();
+  const orderShipped = await Order.find({ orderstatus: "shipped" }).count();
+  const orderProcessing = await Order.find({ orderstatus: "processing"}).count()
+
+  console.log(orderCancelled);
+  console.log(orderDelivered);
+  let data = [];
+  data.push(orderDelivered);
+  data.push(orderCancelled);
+  data.push(orderShipped);
+  data.push(orderProcessing)
+  console.log(data);
+  res.json({ data });
+  } catch (error) {
+    console.log(error);
+    
+    next(error)
+  }
+ 
+};
 
 module.exports = {
   
@@ -573,5 +628,7 @@ module.exports = {
   addbanner,
   listbanner,
   deleteBanner,
-  adminHome
+  adminHome,
+  graph,
+  pieChart
 };

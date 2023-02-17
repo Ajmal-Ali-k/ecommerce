@@ -537,24 +537,7 @@ const createOrder = async (req, res) => {
   }
 };
 
-// const varifypayment = async (req, res) => {
-//   console.log("verifyyyyyyyyyyyy");
-//   const orderedproducts = result.products
-//   orderedproducts.forEach(async(element) =>{
-//     let remove = await Product.findByIdAndUpdate(
-//       {_id:element.product},
-//       {$inc:{quantity :-element.quantity}}
-//     )
-//   });
 
-//   const userId = req.session.user._id;
-//   const ordercart = await Cart.findOne({ owner: userId });
-//   ordercart.items = [];
-//   ordercart.cartTotal = 0;
-//   ordercart.save();
-
-//   res.json({ status: true });
-// };
 const varifypayment = async (req, res) => {
   console.log("payment verification");
   try {

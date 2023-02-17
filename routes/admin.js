@@ -35,4 +35,6 @@ router.get('/createBanner',verifyAdmin,adminController.createbanner)
 router.post('/createBanner',verifyAdmin,productPhotos,adminController.addbanner)
 router.get('/bannerlist',verifyAdmin,adminController.listbanner)
 router.delete('/deletebanner',verifyAdmin,adminController.deleteBanner)
+router.get("/dashboardgraph", verifyAdmin,adminController.graph);
+router.get("/pieChart", verifyAdmin,adminController.pieChart)
 module.exports = router;

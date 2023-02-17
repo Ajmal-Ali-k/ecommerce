@@ -46,7 +46,7 @@
 						<div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
 							<div class="card card-mini dash-card card-3">
 								<div class="card-body">
-									<h2 class="mb-1">15,503</h2>
+									<h2 class="mb-1"><%= totalOrder %></h2>
 									<p>Daily Order</p>
 									<span><i class="fa-sharp fa-solid fa-cart-shopping"></i></span>
 								</div>
@@ -55,7 +55,7 @@
 						<div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
 							<div class="card card-mini dash-card card-4">
 								<div class="card-body">
-									<h2 class="mb-1">$98,503</h2>
+									<h2 class="mb-1">$<%=totalAmount%></h2>
 									<p>Daily Revenue</p>
 									<!-- <span class="mdi mdi-currency-usd"></span> -->
 									<span><i class="fa-sharp fa-solid fa-dollar-sign"></i></span>
@@ -71,8 +71,8 @@
 								<div class="card-header">
 									<h2>Sales Report</h2>
 								</div>
-								<div class="card-body">
-									<ul class="nav nav-tabs nav-style-border justify-content-between justify-content-lg-start border-bottom"
+								 <div class="card-body">
+									<!-- <ul class="nav nav-tabs nav-style-border justify-content-between justify-content-lg-start border-bottom"
 										role="tablist">
 										<li class="nav-item">
 											<a class="nav-link active" data-bs-toggle="tab" href="#todays" role="tab"
@@ -86,15 +86,18 @@
 											<a class="nav-link" data-bs-toggle="tab" href="#yearly" role="tab"
 												aria-selected="false">Yearly</a>
 										</li>
-									</ul>
-									<div class="tab-content pt-4" id="salesReport">
+									</ul> -->
+									<!-- <div class="tab-content pt-4" id="salesReport">
 										<div class="tab-pane fade show active" id="source-medium" role="tabpanel">
-											<div class="mb-6" style="max-height:247px">
-												<canvas id="acquisition" class="chartjs2"></canvas>
-												<div id="acqLegend" class="customLegend mb-2"></div>
-											</div>
+											<div class="mb-6" style="max-height:247px"> 
+												 <canvas id="acquisition" class=""></canvas> 
+												
+												 <div id="acqLegend" class="customLegend mb-2"></div> 
+												
+											 </div>
 										</div>
-									</div>
+									</div>  -->
+									<div id="chart" class="customLegend mb-2"></div>
 								</div>
 							</div>
 						</div>
@@ -115,11 +118,11 @@
 										<div class="p-20">
 											<ul class="d-flex flex-column justify-content-between">
 												<li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
-														style="color: #2355c1"></i>Order Completed</li>
+														style="color: #29cc97"></i>Delivered </li>
 												<li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
-														style="color: #80e1c1 "></i>Order Unpaid</li>
-												<li><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
-														style="color: #ff7b7b "></i>Order returned</li>
+														style="color: #ec4a58"></i>Cancelled</li>
+												<!-- <li><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
+														style="color: #ff7b7b "></i>Order returned</li> -->
 											</ul>
 										</div>
 									</div>
@@ -127,11 +130,11 @@
 										<div class="p-20">
 											<ul class="d-flex flex-column justify-content-between">
 												<li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
-														style="color: #8061ef"></i>Order Pending</li>
+														style="color: #8061ef"></i>processing</li>
 												<li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
-														style="color: #ffa128"></i>Order Canceled</li>
-												<li><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
-														style="color: #7be6ff"></i>Order Broken</li>
+														style="color: #ffa128"></i>shipped</li>
+												<!-- <li><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
+														style="color: #7be6ff"></i>Order Broken</li> -->
 											</ul>
 										</div>
 									</div>
@@ -140,9 +143,9 @@
 						</div>
 					</div>
 
-					<div class="row">
+					<!-- <div class="row">
 						<div class="col-xl-8 col-md-12 p-b-15">
-							<!-- User activity statistics -->
+							 User activity statistics 
 							<div class="card card-default" id="user-activity">
 								<div class="no-gutters">
 									<div>
@@ -179,7 +182,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 
 					<!-- <div class="row">
 						<div class="col-xl-8 col-12 p-b-15"> -->
@@ -645,6 +648,54 @@
 
 	<!-- Common Javascript -->
 	<%- include('./partials/commonscript.ejs') %>
+
+	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+	
+	<script>
+		$.ajax({
+			url:"/admin/dashboardgraph",
+			method:"get",
+			success:(res)=>{
+				console.log(res,11111)
+				if(res.status){
+					var options = {
+          series: [{
+          name: 'Sales',
+		  data:res.dailysales
+        }, {
+          name: 'Profit',
+		  data: res.dailyprofits,
+        }],
+          chart: {
+          height: 350,
+          type: 'area'
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        xaxis: {
+          type: 'datetime',
+          categories:  res.datetata,
+        },
+        tooltip: {
+          x: {
+            format: 'dd/MM/yy HH:mm'
+          },
+        },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+
+				}
+			}
+		})
+	   
+	</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 	
 </body>
 
