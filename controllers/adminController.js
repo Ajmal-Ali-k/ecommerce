@@ -64,7 +64,7 @@ const adminHome = async(req,res)=>{
     console.log(recentOrders,"this is recent order")
     res.render("admin/index",{recentOrders,totalAmount,totalOrder,totalUsers});
   }
-  res.render("admin/index",{recentOrders,totalAmount:null,totalOrder:null,totalUsers});
+  res.render("admin/index",{recentOrders,totalAmount:0,totalOrder:0,totalUsers});
 }
 
 
